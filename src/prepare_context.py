@@ -246,10 +246,14 @@ def context_mermin_plots(context, cfg):
         # Prepare paths for results
         results_path = base_path / "mermin" / calibration / run / "results.json"
 
+        # Extract description only once (from left side)
+        if label == "left":
+            context["mermin_description"] = fl.extract_description(results_path)
+
         # Generate Mermin plot
         context[label][f"plot_mermin"] = pl.mermin_plot(
             raw_data=results_path,
-            expname=f"mermin_{calibration}",
+            expname=f"mermin_{calibration}_{run}",
             output_path="build/",
         )
 
@@ -291,19 +295,28 @@ def context_grover2q_plots(context, cfg):
         # Prepare path for results
         results_path = base_path / "grover2q" / calibration / run / "results.json"
 
+        # Extract description only once (from left side)
+        if label == "left":
+            context["grover2q_description"] = fl.extract_description(results_path)
+
         # Generate Grover 2Q plot
         context[label]["plot_grover2q"] = pl.plot_grover(
             raw_data=results_path,
-            expname=f"grover2q_{calibration}",
+            expname=f"grover2q_{calibration}_{run}",
             output_path="build/",
         )
+        # import pdb
 
+        # pdb.set_trace()
         # Extract runtime and qubits used
         context[label]["grover2q_runtime"] = fl.extract_runtime(results_path)
         context[label]["grover2q_qubits"] = fl.extract_qubits_used(results_path)
 
     context["grover2q_plot_is_set"] = True
     logging.info("Added Grover 2Q plots to context")
+    # import pdb
+
+    # pdb.set_trace()
     return context
 
 
@@ -326,7 +339,7 @@ def context_grover3q_plots(context, cfg):
         # Generate Grover 3Q plot
         context[label]["plot_grover3q"] = pl.plot_grover(
             raw_data=results_path,
-            expname=f"grover3q_{calibration}",
+            expname=f"grover3q_{calibration}_{run}",
             output_path="build/",
         )
 
@@ -385,6 +398,12 @@ def context_process_tomography_plots(context, cfg):
             base_path / "process_tomography" / calibration / run / "results.json"
         )
 
+        # Extract description only once (from left side)
+        if label == "left":
+            context["process_tomography_description"] = fl.extract_description(
+                results_path
+            )
+
         # Generate Process Tomography plot
         context[label]["plot_process_tomography"] = pl.plot_process_tomography(
             calid=calibration,
@@ -411,6 +430,10 @@ def context_tomography_plots(context, cfg):
     ):
         # Prepare path for results
         results_path = base_path / "tomography" / calibration / run / "results.json"
+
+        # Extract description only once (from left side)
+        if label == "left":
+            context["tomography_description"] = fl.extract_description(results_path)
 
         # Generate Tomography plot
         context[label]["plot_tomography"] = pl.plot_tomography(
@@ -482,7 +505,7 @@ def context_qft_plots(context, cfg):
         # Generate QFT plot
         context[label]["plot_qft"] = pl.plot_qft(
             raw_data=results_path,
-            expname=f"qft_{calibration}",
+            expname=f"qft_{calibration}_{run}",
             output_path=base_path / "build" / "qft" / calibration,
         )
 
@@ -511,14 +534,14 @@ def context_yeast_4q_plots(context, cfg):
         raw_data=os.path.join(
             "data", "qml_4Q_yeast", cfg.calibration_left, "results.json"
         ),
-        expname=f"4q_yeast_{cfg.calibration_left}",
+        expname=f"4q_yeast_{cfg.calibration_left}_{run}",
         output_path=os.path.join("build", "yeast", cfg.calibration_left),
     )
     context["plot_yeast_4q_right"] = pl.plot_qml(
         raw_data=os.path.join(
             "data", "qml_4Q_yeast", cfg.calibration_right, "results.json"
         ),
-        expname=f"4q_yeast_{cfg.calibration_right}",
+        expname=f"4q_yeast_{cfg.calibration_right}_{run}",
         output_path=os.path.join("build", "yeast", cfg.calibration_right),
     )
     logging.info("Added Yeast classification 4q plots to context")
@@ -545,7 +568,7 @@ def context_yeast_3q_plots(context, cfg):
         raw_data=os.path.join(
             "data", "qml_3Q_yeast", cfg.calibration_right, "results.json"
         ),
-        expname=f"3q_yeast_{cfg.calibration_right}",
+        expname=f"3q_yeast_{cfg.calibration_right}_{run}",
         output_path=os.path.join("build", "yeast", cfg.calibration_right),
     )
     logging.info("Added Yeast classification 3q plots to context")
@@ -559,14 +582,14 @@ def context_statlog_4q_plots(context, cfg):
         raw_data=os.path.join(
             "data", "qml_4Q_statlog", cfg.calibration_left, "results.json"
         ),
-        expname=f"4q_statlog_{cfg.calibration_left}",
+        expname=f"4q_statlog_{cfg.calibration_left}_{run}",
         output_path=os.path.join("build", "statlog", cfg.calibration_left),
     )
     context["plot_statlog_4q_right"] = pl.plot_qml(
         raw_data=os.path.join(
             "data", "qml_4Q_statlog", cfg.calibration_right, "results.json"
         ),
-        expname=f"4q_statlog_{cfg.calibration_right}",
+        expname=f"4q_statlog_{cfg.calibration_right}_{run}",
         output_path=os.path.join("build", "statlog", cfg.calibration_right),
     )
     logging.info("Added StatLog classification 4q plots to context")
@@ -586,14 +609,14 @@ def context_statlog_3q_plots(context, cfg):
         raw_data=os.path.join(
             "data", "qml_3Q_statlog", cfg.calibration_left, "results.json"
         ),
-        expname=f"3q_statlog_{cfg.calibration_left}",
+        expname=f"3q_statlog_{cfg.calibration_left}_{run}",
         output_path=os.path.join("build", "statlog", cfg.calibration_left),
     )
     context["plot_statlog_3q_right"] = pl.plot_qml(
         raw_data=os.path.join(
             "data", "qml_3Q_statlog", cfg.calibration_right, "results.json"
         ),
-        expname=f"3q_statlog_{cfg.calibration_right}",
+        expname=f"3q_statlog_{cfg.calibration_right}_{run}",
         output_path=os.path.join("build", "statlog", cfg.calibration_right),
     )
     logging.info("Added StatLog classification 3q plots to context")
@@ -614,10 +637,16 @@ def context_amplitude_encoding_plots(context, cfg):
             base_path / "amplitude_encoding" / calibration / run / "results.json"
         )
 
+        # Extract description only once (from left side)
+        if label == "left":
+            context["amplitude_encoding_description"] = fl.extract_description(
+                results_path
+            )
+
         # Generate Amplitude Encoding plot
         context[label]["plot_amplitude_encoding"] = pl.plot_amplitude_encoding(
             raw_data=results_path,
-            expname=f"amplitude_encoding_{calibration}",
+            expname=f"amplitude_encoding_{calibration}_{run}",
             output_path=base_path / "build" / "amplitude_encoding" / calibration,
         )
 
