@@ -8,7 +8,6 @@ authors = [
 license = {text = "MIT"}
 requires-python = ">=3.12"
 dependencies = [
-    "pylatex>=1.4.0",
     "jsonschema>=4.0.0",
     "numpy>=1.20.0",
     "jinja2>=3.0.0",
@@ -16,18 +15,11 @@ dependencies = [
     "matplotlib",
     "networkx",
     "aiohttp",
+    "scikit-learn",
     "jwt",
     "pyjwt",
     "requests",
     "dynaconf",
-    "sympy",
-    "qibo",
-    "qibo_client",
-    "qibocal",
-    "GitPython",
-    "torch",
-    "torchvision",
-    "qiboml",
 ]
 
 [build-system]
