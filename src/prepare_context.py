@@ -216,13 +216,16 @@ def context_fidelity_plots_and_table(context, cfg):
         )
 
         # Generate fidelity plot
-        context[label]["plot_fidelity"] = pl.plot_fidelity_graph(
-            calibration_path,
-            results_path,
-            run,
-            config.connectivity,
-            config.pos,
-        )
+        try:
+            context[label]["plot_fidelity"] = pl.plot_fidelity_graph(
+                calibration_path,
+                results_path,
+                run,
+                config.connectivity,
+                config.pos,
+            )
+        except Exception:
+            context[label]["plot_fidelity"] = "placeholder.png"
 
         # Extract best qubits data
         context[label]["best_qubits"] = fl.extract_best_qubits(results_path)
@@ -251,11 +254,14 @@ def context_mermin_plots(context, cfg):
             context["mermin_description"] = fl.extract_description(results_path)
 
         # Generate Mermin plot
-        context[label][f"plot_mermin"] = pl.mermin_plot(
-            raw_data=results_path,
-            expname=f"mermin_{calibration}_{run}",
-            output_path="build/",
-        )
+        try:
+            context[label][f"plot_mermin"] = pl.mermin_plot(
+                raw_data=results_path,
+                expname=f"mermin_{calibration}_{run}",
+                output_path="build/",
+            )
+        except Exception:
+            context[label][f"plot_mermin"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label][f"mermin_runtime"] = fl.extract_runtime(results_path)
@@ -300,11 +306,14 @@ def context_grover2q_plots(context, cfg):
             context["grover2q_description"] = fl.extract_description(results_path)
 
         # Generate Grover 2Q plot
-        context[label]["plot_grover2q"] = pl.plot_grover(
-            raw_data=results_path,
-            expname=f"grover2q_{calibration}_{run}",
-            output_path="build/",
-        )
+        try:
+            context[label]["plot_grover2q"] = pl.plot_grover(
+                raw_data=results_path,
+                expname=f"grover2q_{calibration}_{run}",
+                output_path="build/",
+            )
+        except Exception:
+            context[label]["plot_grover2q"] = "placeholder.png"
         # import pdb
 
         # pdb.set_trace()
@@ -337,11 +346,14 @@ def context_grover3q_plots(context, cfg):
             context["grover3q_description"] = fl.extract_description(results_path)
 
         # Generate Grover 3Q plot
-        context[label]["plot_grover3q"] = pl.plot_grover(
-            raw_data=results_path,
-            expname=f"grover3q_{calibration}_{run}",
-            output_path="build/",
-        )
+        try:
+            context[label]["plot_grover3q"] = pl.plot_grover(
+                raw_data=results_path,
+                expname=f"grover3q_{calibration}_{run}",
+                output_path="build/",
+            )
+        except Exception:
+            context[label]["plot_grover3q"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label]["grover3q_runtime"] = fl.extract_runtime(results_path)
@@ -369,11 +381,14 @@ def context_ghz_plots(context, cfg):
             context["ghz_description"] = fl.extract_description(results_path)
 
         # Generate GHZ plot
-        context[label]["plot_ghz"] = pl.plot_ghz(
-            raw_data=results_path,
-            experiment_name=calibration,
-            output_path=base_path / "build" / "ghz" / calibration,
-        )
+        try:
+            context[label]["plot_ghz"] = pl.plot_ghz(
+                raw_data=results_path,
+                experiment_name=calibration,
+                output_path=base_path / "build" / "ghz" / calibration,
+            )
+        except Exception:
+            context[label]["plot_ghz"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label]["ghz_runtime"] = fl.extract_runtime(results_path)
@@ -405,11 +420,14 @@ def context_process_tomography_plots(context, cfg):
             )
 
         # Generate Process Tomography plot
-        context[label]["plot_process_tomography"] = pl.plot_process_tomography(
-            calid=calibration,
-            runid=run,
-            output_path=base_path / "build" / "process_tomography" / calibration,
-        )
+        try:
+            context[label]["plot_process_tomography"] = pl.plot_process_tomography(
+                calid=calibration,
+                runid=run,
+                output_path=base_path / "build" / "process_tomography" / calibration,
+            )
+        except Exception:
+            context[label]["plot_process_tomography"] = "placeholder.png"
 
         # Extract runtime
         context[label]["process_tomography_runtime"] = fl.extract_runtime(results_path)
@@ -436,10 +454,13 @@ def context_tomography_plots(context, cfg):
             context["tomography_description"] = fl.extract_description(results_path)
 
         # Generate Tomography plot
-        context[label]["plot_tomography"] = pl.plot_tomography(
-            raw_data=results_path,
-            output_path=base_path / "build" / "tomography" / calibration,
-        )
+        try:
+            context[label]["plot_tomography"] = pl.plot_tomography(
+                raw_data=results_path,
+                output_path=base_path / "build" / "tomography" / calibration,
+            )
+        except Exception:
+            context[label]["plot_tomography"] = "placeholder.png"
 
     context["tomography_plot_is_set"] = True
     logging.info("Added Tomography plots to context")
@@ -467,11 +488,19 @@ def context_reuploading_classifier_plots(context, cfg):
             )
 
         # Generate Reuploading Classifier plot
-        context[label]["plot_reuploading_classifier"] = pl.plot_reuploading_classifier(
-            raw_data=results_path,
-            exp_name=calibration,
-            output_path=base_path / "build" / "reuploading_classifier" / calibration,
-        )
+        try:
+            context[label]["plot_reuploading_classifier"] = (
+                pl.plot_reuploading_classifier(
+                    raw_data=results_path,
+                    exp_name=calibration,
+                    output_path=base_path
+                    / "build"
+                    / "reuploading_classifier"
+                    / calibration,
+                )
+            )
+        except Exception:
+            context[label]["plot_reuploading_classifier"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label]["reuploading_classifier_runtime"] = fl.extract_runtime(
@@ -503,11 +532,14 @@ def context_qft_plots(context, cfg):
             context["qft_description"] = fl.extract_description(results_path)
 
         # Generate QFT plot
-        context[label]["plot_qft"] = pl.plot_qft(
-            raw_data=results_path,
-            expname=f"qft_{calibration}_{run}",
-            output_path=base_path / "build" / "qft" / calibration,
-        )
+        try:
+            context[label]["plot_qft"] = pl.plot_qft(
+                raw_data=results_path,
+                expname=f"qft_{calibration}_{run}",
+                output_path=base_path / "build" / "qft" / calibration,
+            )
+        except Exception:
+            context[label]["plot_qft"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label]["qft_runtime"] = fl.extract_runtime(results_path)
@@ -577,48 +609,70 @@ def context_yeast_3q_plots(context, cfg):
 
 def context_statlog_4q_plots(context, cfg):
     """Prepare StatLog 4Q classification plots and data."""
+    base_path = Path(cfg.base_dir)
+
+    for label, calibration, run in zip(
+        ["left", "right"],
+        [cfg.calibration_left, cfg.calibration_right],
+        [cfg.run_left, cfg.run_right],
+    ):
+        # Prepare path for results
+        results_path = base_path / "qml_4Q_statlog" / calibration / "results.json"
+
+        # Extract description only once (from left side)
+        if label == "left":
+            context["statlog_4q_description"] = fl.extract_description(results_path)
+
+        # Generate StatLog 4Q plot
+        try:
+            context[label]["plot_statlog_4q"] = pl.plot_qml(
+                raw_data=results_path,
+                expname=f"4q_statlog_{calibration}_{run}",
+                output_path=base_path / "build" / "statlog" / calibration,
+            )
+        except Exception:
+            context[label]["plot_statlog_4q"] = "placeholder.png"
+
+        # Extract runtime and qubits used
+        context[label]["statlog_4q_runtime"] = fl.extract_runtime(results_path)
+        context[label]["statlog_4q_qubits"] = fl.extract_qubits_used(results_path)
+
     context["statlog_classification_4q_is_set"] = True
-    context["plot_statlog_4q"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_4Q_statlog", cfg.calibration_left, "results.json"
-        ),
-        expname=f"4q_statlog_{cfg.calibration_left}_{run}",
-        output_path=os.path.join("build", "statlog", cfg.calibration_left),
-    )
-    context["plot_statlog_4q_right"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_4Q_statlog", cfg.calibration_right, "results.json"
-        ),
-        expname=f"4q_statlog_{cfg.calibration_right}_{run}",
-        output_path=os.path.join("build", "statlog", cfg.calibration_right),
-    )
     logging.info("Added StatLog classification 4q plots to context")
     return context
 
 
 def context_statlog_3q_plots(context, cfg):
     """Prepare StatLog 3Q classification plots and data."""
+    base_path = Path(cfg.base_dir)
+
+    for label, calibration, run in zip(
+        ["left", "right"],
+        [cfg.calibration_left, cfg.calibration_right],
+        [cfg.run_left, cfg.run_right],
+    ):
+        # Prepare path for results
+        results_path = base_path / "qml_3Q_statlog" / calibration / "results.json"
+
+        # Extract description only once (from left side)
+        if label == "left":
+            context["statlog_3q_description"] = fl.extract_description(results_path)
+
+        try:
+            context[label]["plot_statlog_3q"] = pl.plot_qml(
+                raw_data=results_path,
+                expname=f"3q_statlog_{calibration}_{run}",
+                output_path=base_path / "build" / "statlog" / calibration,
+            )
+        except Exception:
+            context[label]["plot_statlog_3q"] = "placeholder.png"
+
+        # Extract runtime, accuracy and qubits used
+        context[label]["statlog_3q_runtime"] = fl.extract_runtime(results_path)
+        context[label]["statlog_3q_accuracy"] = fl.get_qml_accuracy(results_path)
+        context[label]["statlog_3q_qubits"] = fl.extract_qubits_used(results_path)
+
     context["statlog_classification_3q_plot_is_set"] = True
-    context["statlog_3q_accuracy_right"] = fl.get_qml_accuracy(
-        os.path.join("data", "qml_3Q_statlog", cfg.calibration_right, "results.json")
-    )
-    context["statlog_3q_accuracy_left"] = fl.get_qml_accuracy(
-        os.path.join("data", "qml_3Q_statlog", cfg.calibration_left, "results.json")
-    )
-    context["plot_statlog_3q"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_3Q_statlog", cfg.calibration_left, "results.json"
-        ),
-        expname=f"3q_statlog_{cfg.calibration_left}_{run}",
-        output_path=os.path.join("build", "statlog", cfg.calibration_left),
-    )
-    context["plot_statlog_3q_right"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_3Q_statlog", cfg.calibration_right, "results.json"
-        ),
-        expname=f"3q_statlog_{cfg.calibration_right}_{run}",
-        output_path=os.path.join("build", "statlog", cfg.calibration_right),
-    )
     logging.info("Added StatLog classification 3q plots to context")
     return context
 
@@ -644,11 +698,14 @@ def context_amplitude_encoding_plots(context, cfg):
             )
 
         # Generate Amplitude Encoding plot
-        context[label]["plot_amplitude_encoding"] = pl.plot_amplitude_encoding(
-            raw_data=results_path,
-            expname=f"amplitude_encoding_{calibration}_{run}",
-            output_path=base_path / "build" / "amplitude_encoding" / calibration,
-        )
+        try:
+            context[label]["plot_amplitude_encoding"] = pl.plot_amplitude_encoding(
+                raw_data=results_path,
+                expname=f"amplitude_encoding_{calibration}_{run}",
+                output_path=base_path / "build" / "amplitude_encoding" / calibration,
+            )
+        except Exception:
+            context[label]["plot_amplitude_encoding"] = "placeholder.png"
 
         # Extract runtime and qubits used
         context[label]["amplitude_encoding_runtime"] = fl.extract_runtime(results_path)
