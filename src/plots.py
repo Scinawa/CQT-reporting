@@ -16,58 +16,58 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import itertools
 
 
-def prepare_grid_coupler(
-    max_number,
-    data_dir="data/DEMODATA",
-    baseline_dir="data/DEMODATA",
-    output_path="build/",
-):
-    """
-    Prepare the grid for the report.
-    Returns a list of dicts with 'plot' and 'baseline' keys for Jinja template.
-    """
-    plot_grid = []
-    for i in range(max_number):
-        plot_path = plot_swap_coupler(
-            qubit_number=i, data_dir=data_dir, output_path=output_path
-        )
-        baseline_path = plot_swap_coupler(
-            qubit_number=i, data_dir=baseline_dir, output_path=output_path
-        )
-        plot_grid.append(
-            {
-                "plot": plot_path,
-                "baseline": baseline_path,
-            }
-        )
-    return plot_grid
+# def prepare_grid_coupler(
+#     max_number,
+#     data_dir="data/DEMODATA",
+#     baseline_dir="data/DEMODATA",
+#     output_path="build/",
+# ):
+#     """
+#     Prepare the grid for the report.
+#     Returns a list of dicts with 'plot' and 'baseline' keys for Jinja template.
+#     """
+#     plot_grid = []
+#     for i in range(max_number):
+#         plot_path = plot_swap_coupler(
+#             qubit_number=i, data_dir=data_dir, output_path=output_path
+#         )
+#         baseline_path = plot_swap_coupler(
+#             qubit_number=i, data_dir=baseline_dir, output_path=output_path
+#         )
+#         plot_grid.append(
+#             {
+#                 "plot": plot_path,
+#                 "baseline": baseline_path,
+#             }
+#         )
+#     return plot_grid
 
 
-def prepare_grid_chevron_swap_coupler(
-    max_number,
-    data_dir="data/DEMODATA",
-    baseline_dir="data/DEMODATA",
-    output_path="build/",
-):
-    """
-    Prepare the grid for chevron swap coupler plots for the report.
-    Returns a list of dicts with 'plot' and 'baseline' keys for Jinja template.
-    """
-    plot_grid = []
-    for i in range(max_number):
-        plot_path = plot_chevron_swap_coupler(
-            qubit_number=i, data_dir=data_dir, output_path=output_path
-        )
-        baseline_path = plot_chevron_swap_coupler(
-            qubit_number=i, data_dir=baseline_dir, output_path=output_path
-        )
-        plot_grid.append(
-            {
-                "plot": plot_path,
-                "baseline": baseline_path,
-            }
-        )
-    return plot_grid
+# def prepare_grid_chevron_swap_coupler(
+#     max_number,
+#     data_dir="data/DEMODATA",
+#     baseline_dir="data/DEMODATA",
+#     output_path="build/",
+# ):
+#     """
+#     Prepare the grid for chevron swap coupler plots for the report.
+#     Returns a list of dicts with 'plot' and 'baseline' keys for Jinja template.
+#     """
+#     plot_grid = []
+#     for i in range(max_number):
+#         plot_path = plot_chevron_swap_coupler(
+#             qubit_number=i, data_dir=data_dir, output_path=output_path
+#         )
+#         baseline_path = plot_chevron_swap_coupler(
+#             qubit_number=i, data_dir=baseline_dir, output_path=output_path
+#         )
+#         plot_grid.append(
+#             {
+#                 "plot": plot_path,
+#                 "baseline": baseline_path,
+#             }
+#         )
+#     return plot_grid
 
 
 def plot_fidelity_graph(
@@ -626,7 +626,7 @@ def plot_grover(raw_data, expname, output_path="build/"):
     return out_file
 
 
-def plot_qft(raw_data, expname, output_path="build/"):
+def plot_qft(raw_data, expname, output_path="../build/"):
     """
     Plot QFT algorithm results on different triples as fidelities.
     """
@@ -657,7 +657,7 @@ def plot_qft(raw_data, expname, output_path="build/"):
     return out_file
 
 
-def plot_ghz(raw_data, experiment_name, output_path="build/"):
+def plot_ghz(raw_data, experiment_name, output_path="../build/"):
     """
     Plot GHZ results as a histogram of measured bitstrings.
     Expects a JSON with keys:
@@ -725,7 +725,7 @@ def plot_amplitude_encoding(raw_data, expname, output_path="build/"):
     return out_file
 
 
-def plot_reuploading_classifier(raw_data, exp_name, output_path="build/"):
+def plot_reuploading_classifier(raw_data, exp_name, output_path="../build/"):
     # Retrieve relevant data
     with open(raw_data, "r") as f:
         data_json = json.load(f)
@@ -862,7 +862,7 @@ def plot_process_tomography(calid, runid, output_path="build/"):
 
     repo_root = os.path.dirname(os.path.dirname(__file__))  # ../ from src/
     folder_path = os.path.join(
-        repo_root, "data", "process_tomography", calid, runid, "matrices"
+        repo_root, "data", calid, runid, "process_tomography", "matrices"
     )
     npy_files = np.sort([f for f in os.listdir(folder_path) if f.endswith(".npy")])
 

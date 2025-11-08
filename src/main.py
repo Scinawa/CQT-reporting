@@ -29,11 +29,12 @@ from prepare_context import (
     context_statlog_4q_plots,
     context_statlog_3q_plots,
     context_amplitude_encoding_plots,
-    context_fidelity_statistics,
-    context_pulse_fidelity_statistics,
-    context_t1_statistics,
-    context_t2_statistics,
-    context_readout_fidelity_statistics,
+    add_stat_changes,
+    # context_fidelity_statistics,
+    # context_pulse_fidelity_statistics,
+    # context_t1_statistics,
+    # context_t2_statistics,
+    # context_readout_fidelity_statistics,
     # context_calibration_data,
     # context_commit_info,
     context_version_extractor,
@@ -159,35 +160,102 @@ def prepare_template_context(cfg):
         context.setdefault("left", {}).update(default_meta)
         context.setdefault("right", {}).update(default_meta)
 
+    ##### T1 statistics
     try:
-        context = context_t1_statistics(context, cfg)
-        context = context_t2_statistics(context, cfg)
-        context = context_fidelity_statistics(context, cfg)
-        context = context_readout_fidelity_statistics(context, cfg)
+        stat_t1 = fl.get_stat_t12("calibrations/"+cfg.calibration_left + "/sinq20", "t1")
+        stat_t1_right = fl.get_stat_t12("calibrations/"+cfg.calibration_right + "/sinq20", "t1")
+        stat_t1_with_improvement = add_stat_changes(stat_t1, stat_t1_right)
+
+        context["left"]["stat_t1"] = stat_t1_with_improvement
+        context["right"]["stat_t1"] = stat_t1_right
+
+
+        logging.info("Prepared stat_t1 and stat_t1_with_improvement")
+
+    except Exception as e:
+        logging.error(f"Error preparing statistics 1 table: {e}")
+
+
+    ##### T2 statistics
+    try:    
+        """Prepare T2 statistics for both experiments."""
+        stat_t2 = fl.get_stat_t12("calibrations/" + cfg.calibration_left + "/sinq20", "t2")
+        stat_t2_right = fl.get_stat_t12("calibrations/" + cfg.calibration_right + "/sinq20", "t2")
+        stat_t2_with_improvement = add_stat_changes(stat_t2, stat_t2_right)
+
+        context["left"]["stat_t2"] = stat_t2_with_improvement
+        context["right"]["stat_t2"] = stat_t2_right
+
+        logging.info("Prepared stat_t2 and stat_t2_with_improvement")
+    except Exception as e:
+        logging.error(f"Error preparing statistics 2 table: {e}")
+
+    # import pdb
+    # pdb.set_trace()
+
+    ##### FIDELITY 
+    try:
+        """Prepare fidelity statistics for both experiments."""
+        stat_fidelity = fl.get_stat_fidelity(
+            os.path.join("data", "calibrations", cfg.calibration_left, "sinq20", "calibration.json"),
+            cfg.calibration_left,
+        )
+        stat_fidelity_right = fl.get_stat_fidelity(
+            os.path.join("data", "calibrations", cfg.calibration_right, "sinq20", "calibration.json"),
+            cfg.calibration_right,
+        )
+        stat_fidelity_with_improvement = add_stat_changes(
+            stat_fidelity, stat_fidelity_right
+        )
+
+        context["left"]["stat_fidelity"] = stat_fidelity_with_improvement
+        context["right"]["stat_fidelity"] = stat_fidelity_right
+
+        logging.info("Prepared stat_fidelity and stat_fidelity_with_improvement")
+    except Exception as e:
+        logging.error(f"Error preparing statistics 1' table: {e}")
+
+    ##### READOUT FIDELITY
+    try:
+        """Prepare readout fidelity statistics for both experiments."""
+        stat_readout_fidelity = fl.get_readout_fidelity(
+            os.path.join("data", "calibrations", cfg.calibration_left, "sinq20", "calibration.json"),
+            cfg.calibration_left,
+        )
+        stat_readout_fidelity_right = fl.get_readout_fidelity(
+            os.path.join("data", "calibrations", cfg.calibration_right, "sinq20", "calibration.json"),
+            cfg.calibration_right,
+        )
+
+        context["left"]["stat_readout_fidelity"] = stat_readout_fidelity
+        context["right"]["stat_readout_fidelity"] = stat_readout_fidelity_right
+
+        logging.info("Prepared readout fidelity statistics")
+    except Exception as e:
+        logging.error(f"Error preparing statistics 2' table: {e}")
         # context = context_mermin_table(context, cfg)
         # context = context_pulse_fidelity_statistics(context, cfg)
-    except Exception as e:
-        logging.error(f"Error preparing statistics table: {e}")
-        context.setdefault("left", {})
-        context.setdefault("right", {})
 
-        context["left"]["mermin_table"] = {}
-        context["right"]["mermin_table"] = {}
+    # context.setdefault("left", {})
+    # context.setdefault("right", {})
 
-        context["left"]["stat_fidelity"] = {}
-        context["right"]["stat_fidelity"] = {}
+    context["left"]["mermin_table"] = {}
+    context["right"]["mermin_table"] = {}
 
-        context["left"]["stat_pulse_fidelity"] = {}
-        context["right"]["stat_pulse_fidelity"] = {}
+    # context["left"]["stat_fidelity"] = {}
+    # context["right"]["stat_fidelity"] = {}
 
-        context["left"]["stat_t1"] = {}
-        context["right"]["stat_t1"] = {}
+    # context["left"]["stat_pulse_fidelity"] = {}
+    # context["right"]["stat_pulse_fidelity"] = {}
 
-        context["left"]["stat_t2"] = {}
-        context["right"]["stat_t2"] = {}
+    # context["left"]["stat_t1"] = {}
+    # context["right"]["stat_t1"] = {}
 
-        context["left"]["stat_readout_fidelity"] = {}
-        context["right"]["stat_readout_fidelity"] = {}
+    # context["left"]["stat_t2"] = {}
+    # context["right"]["stat_t2"] = {}
+
+    # context["left"]["stat_readout_fidelity"] = {}
+    # context["right"]["stat_readout_fidelity"] = {}
 
     # FIDELITY PLOT MAIN PAGE
     try:
@@ -268,6 +336,9 @@ def prepare_template_context(cfg):
         logging.info("Process Tomography plot is not set, skipping...")
         context["process_tomography_plot_is_set"] = None
 
+    # import pdb
+    # pdb.set_trace()
+
     # REUPLOADING CLASSIFIER PLOTS
     if cfg.reuploading_classifier_plot:
         try:
@@ -302,16 +373,16 @@ def prepare_template_context(cfg):
     #     logging.info("Yeast 4Q plot is not set, skipping...")
     #     context["yeast_classification_4q_plot_is_set"] = None
 
-    # # YEAST CLASSIFICATION 3Q PLOTS
-    # if cfg.yeast_plot_3q:
-    #     try:
-    #         context = context_yeast_3q_plots(context, cfg)
-    #     except Exception as e:
-    #         logging.error(f"Error preparing Yeast 3Q plots: {e}")
-    #         context["yeast_classification_3q_plot_is_set"] = None
-    # else:
-    #     logging.info("Yeast 3Q plot is not set, skipping...")
-    #     context["yeast_classification_3q_plot_is_set"] = None
+    # YEAST CLASSIFICATION 3Q PLOTS
+    if cfg.yeast_plot_3q:
+        try:
+            context = context_yeast_3q_plots(context, cfg)
+        except Exception as e:
+            logging.error(f"Error preparing Yeast 3Q plots: {e}")
+            context["yeast_classification_3q_plot_is_set"] = None
+    else:
+        logging.info("Yeast 3Q plot is not set, skipping...")
+        context["yeast_classification_3q_plot_is_set"] = None
 
     # # STATLOG CLASSIFICATION 4Q PLOTS
     # if cfg.statlog_plot_4q:

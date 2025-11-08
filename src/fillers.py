@@ -160,7 +160,7 @@ def context_fidelity(experiment_dir):
     Extracts the list of fidelities and error bars from the experiment results.
     Returns a list of dicts: {"fidelity": ..., "error_bars": ...}
     """
-    results_json_path = Path("data") / experiment_dir / "calibration.json"
+    results_json_path = Path("data") / "calibrations" / experiment_dir / "calibration.json"
     with open(results_json_path, "r") as f:
         results = json.load(f)
 

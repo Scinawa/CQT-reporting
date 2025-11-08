@@ -1,0 +1,85 @@
+{
+    "description": "Process tomography involves preparing a circuit particular set of states,         appending a gate (process) to the circuit, and measuring the circuit in the Pauli basis. \n        The data is processed to get the Pauli Liouville representation of a process (gate). \n         - Single qubit process tomography executed on qubits: [13, 17]\n         - Two qubit process tomography on coupled qubits: [[17, 13]]",
+    "oneQubitResults": {
+        "13": {
+            "gpi2(13, [0.7853981633974483])": {
+                "one_norm": 0.079774369009538,
+                "inf_norm": 0.09120741281733746,
+                "two_norm": 0.05975762636426351,
+                "time (s)": 29.67183569073677,
+                "average depth": 6.583333333333333,
+                "type of gates (dict)": {
+                    "id": 3,
+                    "gpi2": 12,
+                    "z": 10,
+                    "measure": 12,
+                    "rz": 6
+                }
+            },
+            "gpi2(13, [1.0471975511965976])": {
+                "one_norm": 0.08319086093240063,
+                "inf_norm": 0.10263176126192508,
+                "two_norm": 0.06830898990846787,
+                "time (s)": 20.33505544066429,
+                "average depth": 6.583333333333333,
+                "type of gates (dict)": {
+                    "id": 3,
+                    "gpi2": 12,
+                    "z": 10,
+                    "measure": 12,
+                    "rz": 6
+                }
+            }
+        },
+        "17": {
+            "gpi2(17, [0.7853981633974483])": {
+                "one_norm": 0.4082115345882612,
+                "inf_norm": 0.42659474190468893,
+                "two_norm": 0.2572058247225312,
+                "time (s)": 49.477833319455385,
+                "average depth": 6.583333333333333,
+                "type of gates (dict)": {
+                    "id": 3,
+                    "gpi2": 12,
+                    "z": 10,
+                    "measure": 12,
+                    "rz": 6
+                }
+            },
+            "gpi2(17, [1.0471975511965976])": {
+                "one_norm": 0.3506054613984798,
+                "inf_norm": 0.4099427398085364,
+                "two_norm": 0.24139114003649104,
+                "time (s)": 43.037549547851086,
+                "average depth": 6.583333333333333,
+                "type of gates (dict)": {
+                    "id": 3,
+                    "gpi2": 12,
+                    "z": 10,
+                    "measure": 12,
+                    "rz": 6
+                }
+            }
+        }
+    },
+    "twoQubitResults": {
+        "17_13": {
+            "cz(17, 13, [])": {
+                "one_norm": 0.5476659326031367,
+                "inf_norm": 0.10658928476689289,
+                "two_norm": 0.18060070751724946,
+                "time (s)": 563.233412258327,
+                "average depth": 7.6875,
+                "type of gates (dict)": {
+                    "id": 105,
+                    "cz": 240,
+                    "measure": 240,
+                    "z": 232,
+                    "gpi2": 237,
+                    "rz": 168
+                }
+            }
+        }
+    },
+    "runtime": "705.76 seconds."
+}

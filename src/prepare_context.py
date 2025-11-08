@@ -41,25 +41,9 @@ def add_stat_changes(current, baseline):
     return result
 
 
-def context_fidelity_statistics(context, cfg):
-    """Prepare fidelity statistics for both experiments."""
-    stat_fidelity = fl.get_stat_fidelity(
-        os.path.join("data", cfg.calibration_left, "sinq20", "calibration.json"),
-        cfg.calibration_left,
-    )
-    stat_fidelity_right = fl.get_stat_fidelity(
-        os.path.join("data", cfg.calibration_right, "sinq20", "calibration.json"),
-        cfg.calibration_right,
-    )
-    stat_fidelity_with_improvement = add_stat_changes(
-        stat_fidelity, stat_fidelity_right
-    )
+# def context_fidelity_statistics(context, cfg):
 
-    context["left"]["stat_fidelity"] = stat_fidelity_with_improvement
-    context["right"]["stat_fidelity"] = stat_fidelity_right
-
-    logging.info("Prepared stat_fidelity and stat_fidelity_with_improvement")
-    return context
+#     return context
 
 
 def context_pulse_fidelity_statistics(context, cfg):
@@ -85,48 +69,20 @@ def context_pulse_fidelity_statistics(context, cfg):
     return context
 
 
-def context_t1_statistics(context, cfg):
-    """Prepare T1 statistics for both experiments."""
-    stat_t1 = fl.get_stat_t12(cfg.calibration_left + "/sinq20", "t1")
-    stat_t1_right = fl.get_stat_t12(cfg.calibration_right + "/sinq20", "t1")
-    stat_t1_with_improvement = add_stat_changes(stat_t1, stat_t1_right)
+# def context_t1_statistics(context, cfg):
+#     """Prepare T1 statistics for both experiments."""
 
-    context["left"]["stat_t1"] = stat_t1_with_improvement
-    context["right"]["stat_t1"] = stat_t1_right
-
-    logging.info("Prepared stat_t1 and stat_t1_with_improvement")
-    return context
+#     return context
 
 
-def context_t2_statistics(context, cfg):
-    """Prepare T2 statistics for both experiments."""
-    stat_t2 = fl.get_stat_t12(cfg.calibration_left + "/sinq20", "t2")
-    stat_t2_right = fl.get_stat_t12(cfg.calibration_right + "/sinq20", "t2")
-    stat_t2_with_improvement = add_stat_changes(stat_t2, stat_t2_right)
+# def context_t2_statistics(context, cfg):
 
-    context["left"]["stat_t2"] = stat_t2_with_improvement
-    context["right"]["stat_t2"] = stat_t2_right
-
-    logging.info("Prepared stat_t2 and stat_t2_with_improvement")
-    return context
+#     return context
 
 
-def context_readout_fidelity_statistics(context, cfg):
-    """Prepare readout fidelity statistics for both experiments."""
-    stat_readout_fidelity = fl.get_readout_fidelity(
-        os.path.join("data", cfg.calibration_left, "sinq20", "calibration.json"),
-        cfg.calibration_left,
-    )
-    stat_readout_fidelity_right = fl.get_readout_fidelity(
-        os.path.join("data", cfg.calibration_right, "sinq20", "calibration.json"),
-        cfg.calibration_right,
-    )
+# def context_readout_fidelity_statistics(context, cfg):
 
-    context["left"]["stat_readout_fidelity"] = stat_readout_fidelity
-    context["right"]["stat_readout_fidelity"] = stat_readout_fidelity_right
-
-    logging.info("Prepared readout fidelity statistics")
-    return context
+#     return context
 
 
 def context_version_extractor(context, cfg):
@@ -138,7 +94,7 @@ def context_version_extractor(context, cfg):
         ("left", Path(cfg.calibration_left) / cfg.run_left),
         ("right", Path(cfg.calibration_right) / cfg.run_right),
     ]:
-        with open(base_path / "version_extractor" / exp / "results.json") as f:
+        with open(base_path / exp /  "version_extractor" / "results.json") as f:
             file = json.load(f)
             context[label]["device"] = file.get("device", "N/A")
             context[label]["calibration_id"] = file.get("calibration_id", "N/A")
@@ -210,10 +166,8 @@ def context_fidelity_plots_and_table(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare paths for calibration and results
-        calibration_path = base_path / calibration / "sinq20" / "calibration.json"
-        results_path = (
-            base_path / "bell_tomography" / calibration / run / "results.json"
-        )
+        calibration_path = base_path / "calibrations"/ calibration / "sinq20" / "calibration.json"
+        results_path = base_path / calibration / run / "bell_tomography" / "results.json"
 
         # Generate fidelity plot
         try:
@@ -247,7 +201,7 @@ def context_mermin_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare paths for results
-        results_path = base_path / "mermin" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "mermin" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -299,7 +253,7 @@ def context_grover2q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "grover2q" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "grover2q" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -339,7 +293,7 @@ def context_grover3q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "grover3q" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "grover3q" / "results.json"
 
         # Extract description (same for both sides — can store once)
         if label == "left":
@@ -374,7 +328,7 @@ def context_ghz_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "ghz" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "ghz" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -385,7 +339,12 @@ def context_ghz_plots(context, cfg):
             context[label]["plot_ghz"] = pl.plot_ghz(
                 raw_data=results_path,
                 experiment_name=calibration,
-                output_path=base_path / "build" / "ghz" / calibration,
+                output_path=os.path.join(
+                        "build",
+                        "ghz",
+                        calibration,
+                        run,
+                    ),
             )
         except Exception:
             context[label]["plot_ghz"] = "placeholder.png"
@@ -409,9 +368,7 @@ def context_process_tomography_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = (
-            base_path / "process_tomography" / calibration / run / "results.json"
-        )
+        results_path = base_path / calibration / run / "process_tomography" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -424,9 +381,10 @@ def context_process_tomography_plots(context, cfg):
             context[label]["plot_process_tomography"] = pl.plot_process_tomography(
                 calid=calibration,
                 runid=run,
-                output_path=base_path / "build" / "process_tomography" / calibration,
+                output_path=os.path.join("build", "process_tomography", calibration, run),
             )
-        except Exception:
+        except Exception as e:
+            logging.error(f"Error generating Process Tomography plot for {label}: {e}")
             context[label]["plot_process_tomography"] = "placeholder.png"
 
         # Extract runtime
@@ -447,7 +405,7 @@ def context_tomography_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "tomography" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "tomography" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -457,9 +415,10 @@ def context_tomography_plots(context, cfg):
         try:
             context[label]["plot_tomography"] = pl.plot_tomography(
                 raw_data=results_path,
-                output_path=base_path / "build" / "tomography" / calibration,
+                output_path=os.path.join("build", "tomography", calibration, run),
             )
-        except Exception:
+        except Exception as e:
+            logging.error(f"Error generating Tomography plot for {label}")
             context[label]["plot_tomography"] = "placeholder.png"
 
     context["tomography_plot_is_set"] = True
@@ -477,9 +436,7 @@ def context_reuploading_classifier_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = (
-            base_path / "reuploading_classifier" / calibration / run / "results.json"
-        )
+        results_path = base_path / calibration / run / "reuploading_classifier" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -487,16 +444,19 @@ def context_reuploading_classifier_plots(context, cfg):
                 results_path
             )
 
+        # import pdb
+        # pdb.set_trace()
         # Generate Reuploading Classifier plot
         try:
             context[label]["plot_reuploading_classifier"] = (
                 pl.plot_reuploading_classifier(
                     raw_data=results_path,
                     exp_name=calibration,
-                    output_path=base_path
-                    / "build"
-                    / "reuploading_classifier"
-                    / calibration,
+                    output_path=os.path.join(
+                        "build",
+                        "reuploading_classifier",
+                        calibration,
+                    ),
                 )
             )
         except Exception:
@@ -525,7 +485,7 @@ def context_qft_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "qft" / calibration / run / "results.json"
+        results_path = base_path / calibration / run / "qft" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -536,7 +496,11 @@ def context_qft_plots(context, cfg):
             context[label]["plot_qft"] = pl.plot_qft(
                 raw_data=results_path,
                 expname=f"qft_{calibration}_{run}",
-                output_path=base_path / "build" / "qft" / calibration,
+                output_path=os.path.join(
+                        "build",
+                        "qft",
+                        calibration,
+                    ),
             )
         except Exception:
             context[label]["plot_qft"] = "placeholder.png"
@@ -567,14 +531,14 @@ def context_yeast_4q_plots(context, cfg):
             "data", "qml_4Q_yeast", cfg.calibration_left, "results.json"
         ),
         expname=f"4q_yeast_{cfg.calibration_left}_{run}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_left),
+        output_path=os.path.join("build", "yeast", cfg.calibration_left, cfg.run_left),
     )
     context["plot_yeast_4q_right"] = pl.plot_qml(
         raw_data=os.path.join(
             "data", "qml_4Q_yeast", cfg.calibration_right, "results.json"
         ),
         expname=f"4q_yeast_{cfg.calibration_right}_{run}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_right),
+        output_path=os.path.join("build", "yeast", cfg.calibration_right, cfg.run_right),
     )
     logging.info("Added Yeast classification 4q plots to context")
     return context
@@ -594,14 +558,14 @@ def context_yeast_3q_plots(context, cfg):
             "data", "qml_3Q_yeast", cfg.calibration_left, "results.json"
         ),
         expname=f"3q_yeast_{cfg.calibration_left}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_left),
+        output_path=os.path.join("build", "yeast", cfg.calibration_left, cfg.run_left),
     )
     context["plot_yeast_3q_right"] = pl.plot_qml(
         raw_data=os.path.join(
             "data", "qml_3Q_yeast", cfg.calibration_right, "results.json"
         ),
         expname=f"3q_yeast_{cfg.calibration_right}_{run}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_right),
+        output_path=os.path.join("build", "yeast", cfg.calibration_right, cfg.run_right),
     )
     logging.info("Added Yeast classification 3q plots to context")
     return context
@@ -617,7 +581,7 @@ def context_statlog_4q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "qml_4Q_statlog" / calibration / "results.json"
+        results_path = base_path / calibration / "qml_4Q_statlog" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -628,7 +592,12 @@ def context_statlog_4q_plots(context, cfg):
             context[label]["plot_statlog_4q"] = pl.plot_qml(
                 raw_data=results_path,
                 expname=f"4q_statlog_{calibration}_{run}",
-                output_path=base_path / "build" / "statlog" / calibration,
+                output_path=os.path.join(
+                    "build",
+                    "statlog",
+                    calibration,
+                    run,
+                ),
             )
         except Exception:
             context[label]["plot_statlog_4q"] = "placeholder.png"
@@ -652,7 +621,7 @@ def context_statlog_3q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / "qml_3Q_statlog" / calibration / "results.json"
+        results_path = base_path / calibration / "qml_3Q_statlog" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -662,7 +631,12 @@ def context_statlog_3q_plots(context, cfg):
             context[label]["plot_statlog_3q"] = pl.plot_qml(
                 raw_data=results_path,
                 expname=f"3q_statlog_{calibration}_{run}",
-                output_path=base_path / "build" / "statlog" / calibration,
+                output_path=os.path.join(
+                    "build",
+                    "statlog",
+                    calibration,
+                    run,
+                ),
             )
         except Exception:
             context[label]["plot_statlog_3q"] = "placeholder.png"
@@ -687,9 +661,7 @@ def context_amplitude_encoding_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = (
-            base_path / "amplitude_encoding" / calibration / run / "results.json"
-        )
+        results_path = base_path / calibration / run / "amplitude_encoding" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -702,7 +674,12 @@ def context_amplitude_encoding_plots(context, cfg):
             context[label]["plot_amplitude_encoding"] = pl.plot_amplitude_encoding(
                 raw_data=results_path,
                 expname=f"amplitude_encoding_{calibration}_{run}",
-                output_path=base_path / "build" / "amplitude_encoding" / calibration,
+                output_path=os.path.join(
+                        "build",
+                        "amplitude_encoding",
+                        calibration,
+                        run,
+                    ),
             )
         except Exception:
             context[label]["plot_amplitude_encoding"] = "placeholder.png"

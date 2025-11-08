@@ -1,0 +1,22 @@
+{
+    "success_rate": 0.9,
+    "plotparameters": {
+        "frequencies": {
+            "000": 478,
+            "001": 13,
+            "010": 3,
+            "011": 29,
+            "100": 27,
+            "101": 10,
+            "110": 18,
+            "111": 422
+        }
+    },
+    "runtime": "4.32 seconds.",
+    "qubits_used": [
+        13,
+        17,
+        18
+    ],
+    "description": "GHZ circuit with 3 qubits executed on sinq20 backend with 1000 shots."
+}

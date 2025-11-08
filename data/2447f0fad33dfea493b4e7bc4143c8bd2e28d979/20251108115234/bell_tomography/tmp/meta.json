@@ -1,0 +1,25 @@
+{
+    "title": "tmp",
+    "backend": "qibolab",
+    "platform": "sinq20",
+    "start_time": "2025-11-08 04:03:05.652936+00:00",
+    "end_time": "2025-11-08 04:03:28.373564+00:00",
+    "stats": {
+        "two_qubit_state_tomography-0": {
+            "acquisition": 22.64567970111966,
+            "fit": 0.002376098185777664
+        }
+    },
+    "author": null,
+    "tag": null,
+    "targets": null,
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3"
+    },
+    "date": "2025-11-08",
+    "start-time": "04:03:05",
+    "end-time": "04:03:28"
+}
