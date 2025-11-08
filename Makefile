@@ -3,13 +3,10 @@ TARGET = report.pdf
 .PHONY: build clean pdf runscripts runscripts-device
 
 # Default experiment directory
-calibration_left ?= fdb93a3978fe6356741e31b98c93c68837767080
 calibration_right ?= fdb93a3978fe6356741e31b98c93c68837767080
-RUNID_LEFT ?= 1234
-RUNID_RIGHT ?= 1235
-
-# calibration_right ?= 32fa7be02d2d6d5812d7cb47f8c293561b74c0b5
-#calibration_right ?= 41f4570fce52da0c4bbb483f6fb7d870a551df65
+calibration_left ?= 2447f0fad33dfea493b4e7bc4143c8bd2e28d979
+RUNID_RIGHT ?= df31a65089fe
+RUNID_LEFT ?= 20251108115234
 
 
 download-latest-two:
@@ -25,18 +22,18 @@ download-data:
 	#@[ -d data ] && rm -rf data/* || true
 
 	@echo "Downloading data for experiment $(calibration_left)"
-	@python download.py --hash-id $(calibration_left)
+	@python download.py --hash-id $(calibration_left) --run-id $(RUNID_LEFT)
 
 	@echo "Downloading data for experiment $(calibration_right)"
-	@python download.py --hash-id $(calibration_right)
+	@python download.py --hash-id $(calibration_right) --run-id $(RUNID_RIGHT)
 
 
-upload-data:
-	@echo "Uploading data for experiment $(calibration_left)"
-	@python upload.py --hash-id $(calibration_left)
+# upload-data:
+# 	@echo "Uploading data for experiment $(calibration_left)"
+# 	@python upload.py --hash-id $(calibration_left)
 
-	@echo "Uploading data for experiment $(calibration_right)"
-	@python upload.py --hash-id $(calibration_right)
+# 	@echo "Uploading data for experiment $(calibration_right)"
+# 	@python upload.py --hash-id $(calibration_right)
 
 build: clean
 	@mkdir -p build
@@ -105,3 +102,8 @@ batch-runscripts-sinq20:
 	sbatch scripts/runscripts_sinq20.sh
 
 all: batch-runscripts-numpy batch-runscripts-sinq20 build pdf
+
+
+
+###  rsync -av --ignore-existing -e ssh nqch-machine:~/CQT-experiments/data /tmp/diocane/  
+### rsync -av --ignore-existing -e ssh /tmp/diocane/data/ cqtreporting.tortuga:/opt/cqt-reporting/data/

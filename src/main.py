@@ -236,26 +236,7 @@ def prepare_template_context(cfg):
         # context = context_mermin_table(context, cfg)
         # context = context_pulse_fidelity_statistics(context, cfg)
 
-    # context.setdefault("left", {})
-    # context.setdefault("right", {})
 
-    context["left"]["mermin_table"] = {}
-    context["right"]["mermin_table"] = {}
-
-    # context["left"]["stat_fidelity"] = {}
-    # context["right"]["stat_fidelity"] = {}
-
-    # context["left"]["stat_pulse_fidelity"] = {}
-    # context["right"]["stat_pulse_fidelity"] = {}
-
-    # context["left"]["stat_t1"] = {}
-    # context["right"]["stat_t1"] = {}
-
-    # context["left"]["stat_t2"] = {}
-    # context["right"]["stat_t2"] = {}
-
-    # context["left"]["stat_readout_fidelity"] = {}
-    # context["right"]["stat_readout_fidelity"] = {}
 
     # FIDELITY PLOT MAIN PAGE
     try:
@@ -373,17 +354,6 @@ def prepare_template_context(cfg):
     #     logging.info("Yeast 4Q plot is not set, skipping...")
     #     context["yeast_classification_4q_plot_is_set"] = None
 
-    # YEAST CLASSIFICATION 3Q PLOTS
-    if cfg.yeast_plot_3q:
-        try:
-            context = context_yeast_3q_plots(context, cfg)
-        except Exception as e:
-            logging.error(f"Error preparing Yeast 3Q plots: {e}")
-            context["yeast_classification_3q_plot_is_set"] = None
-    else:
-        logging.info("Yeast 3Q plot is not set, skipping...")
-        context["yeast_classification_3q_plot_is_set"] = None
-
     # # STATLOG CLASSIFICATION 4Q PLOTS
     # if cfg.statlog_plot_4q:
     #     try:
@@ -395,16 +365,29 @@ def prepare_template_context(cfg):
     #     logging.info("StatLog 4Q plot is not set, skipping...")
     #     context["statlog_classification_4q_plot_is_set"] = None
 
-    # # STATLOG CLASSIFICATION 3Q PLOTS
-    # if cfg.statlog_plot_3q:
-    #     try:
-    #         context = context_statlog_3q_plots(context, cfg)
-    #     except Exception as e:
-    #         logging.error(f"Error preparing StatLog 3Q plots: {e}")
-    #         context["statlog_classification_3q_plot_is_set"] = None
-    # else:
-    #     logging.info("StatLog 3Q plot is not set, skipping...")
-    #     context["statlog_classification_3q_plot_is_set"] = None
+    # STATLOG CLASSIFICATION 3Q PLOTS
+    if cfg.statlog_plot_3q:
+        try:
+            context = context_statlog_3q_plots(context, cfg, "statlog")
+        except Exception as e:
+            logging.error(f"Error preparing StatLog 3Q plots: {e}")
+            context["statlog_classification_3q_plot_is_set"] = None
+    else:
+        logging.info("StatLog 3Q plot is not set, skipping...")
+        context["statlog_classification_3q_plot_is_set"] = None
+
+    # YEAST CLASSIFICATION 3Q PLOTS
+    if cfg.yeast_plot_3q:
+        try:
+            context = context_yeast_3q_plots(context, cfg, "yeast")
+        except Exception as e:
+            logging.error(f"Error preparing Yeast 3Q plots: {e}")
+            context["yeast_classification_3q_plot_is_set"] = None
+    else:
+        logging.info("Yeast 3Q plot is not set, skipping...")
+        context["yeast_classification_3q_plot_is_set"] = None
+
+
 
     # AMPLITUDE ENCODING PLOTS
     if cfg.amplitude_encoding_plot:

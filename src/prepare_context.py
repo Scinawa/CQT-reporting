@@ -94,23 +94,24 @@ def context_version_extractor(context, cfg):
         ("left", Path(cfg.calibration_left) / cfg.run_left),
         ("right", Path(cfg.calibration_right) / cfg.run_right),
     ]:
+
         with open(base_path / exp /  "version_extractor" / "results.json") as f:
             file = json.load(f)
             context[label]["device"] = file.get("device", "N/A")
-            context[label]["calibration_id"] = file.get("calibration_id", "N/A")
-            context[label]["calibration_date"] = file.get("calibration_date", "Unknown")
-            context[label]["calibration_note"] = file.get("calibration_note", "N/A")
+            context[label]["calibration_id"] = file.get("commit_hash", "N/A")
+            context[label]["calibration_date"] = file.get("commit_date", "Unknown")
+            context[label]["calibration_note"] = file.get("commit_message", "N/A")
 
             context[label]["versions"] = file.get("versions", "N/A")
 
             context[label]["run_id"] = file.get("run_id", "N/A")
-            context[label]["run_date"] = file.get("run_date", "Unknown")
-            context[label]["run_note"] = file.get("run_note", "N/A")
+            context[label]["run_date"] = file.get("experiment_date", "Unknown")
+            context[label]["run_note"] = file.get("experiment_note", "N/A")
+            # import pdb
 
+            # pdb.set_trace()
     logging.info("Prepared calibration data")
-    # import pdb
 
-    # pdb.set_trace()
     return context
 
 
@@ -137,7 +138,7 @@ def context_version_extractor(context, cfg):
 #         "calibration_date", "Unknown Date"
 #     )
 #     context["experiment_date_left"] = commit_info.get("experiment_date", "Unknown Date")
-#     context["run_id_left"] = commit_info.get("run_id", "N/A")
+#     context["run_left"] = commit_info.get("run_id", "N/A")
 
 #     # Right experiment commit info
 #     commit_info_right = fl.process_commit_info(
@@ -150,7 +151,7 @@ def context_version_extractor(context, cfg):
 #     context["experiment_date_right"] = commit_info_right.get(
 #         "experiment_date", "Unknown Date"
 #     )
-#     context["run_id_right"] = commit_info_right.get("run_id", "N/A")
+#     context["run_right"] = commit_info_right.get("run_id", "N/A")
 
 #     logging.info("Prepared commit information")
 #     return context
@@ -544,30 +545,40 @@ def context_yeast_4q_plots(context, cfg):
     return context
 
 
-def context_yeast_3q_plots(context, cfg):
+def context_yeast_3q_plots(context, cfg, dataset):
     """Prepare Yeast 3Q classification plots and data."""
     context["yeast_classification_3q_plot_is_set"] = True
-    context["yeast_3q_accuracy_right"] = fl.get_qml_accuracy(
-        os.path.join("data", "qml_3Q_yeast", cfg.calibration_right, "results.json")
-    )
-    context["yeast_3q_accuracy_left"] = fl.get_qml_accuracy(
-        os.path.join("data", "qml_3Q_yeast", cfg.calibration_left, "results.json")
-    )
-    context["plot_yeast_3q"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_3Q_yeast", cfg.calibration_left, "results.json"
-        ),
-        expname=f"3q_yeast_{cfg.calibration_left}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_left, cfg.run_left),
-    )
-    context["plot_yeast_3q_right"] = pl.plot_qml(
-        raw_data=os.path.join(
-            "data", "qml_3Q_yeast", cfg.calibration_right, "results.json"
-        ),
-        expname=f"3q_yeast_{cfg.calibration_right}_{run}",
-        output_path=os.path.join("build", "yeast", cfg.calibration_right, cfg.run_right),
-    )
+
+    for label, calibration, run in zip(
+        ["left", "right"],
+        [cfg.calibration_left, cfg.calibration_right],
+        [cfg.run_left, cfg.run_right],
+    ):
+        results_path = os.path.join(
+            "data", calibration, run, f"qml_3q_{dataset}", "results.json"
+        )
+
+        # Extract accuracy
+        context[label][f"{dataset}_3q_accuracy"] = fl.get_qml_accuracy(results_path)
+
+        # Extract description only once (from left side)
+        if label == "left":
+            context[label][f"{dataset}_3q_description"] = fl.extract_description(results_path)
+
+        # Generate plot
+        try:
+            context[label][f"plot_{dataset}_3q"] = pl.plot_qml(
+                raw_data=results_path,
+                expname=f"3q_{dataset}_{calibration}_{run}",
+                output_path=os.path.join("build", dataset, calibration, run),
+            )
+        except Exception as e:
+            print(f"Error generating {dataset} 3q plot for {label}: {e}")
+            context[label][f"plot_{dataset}_3q"] = "placeholder.png"
+
     logging.info("Added Yeast classification 3q plots to context")
+    # import pdb
+    # pdb.set_trace()
     return context
 
 
@@ -621,7 +632,7 @@ def context_statlog_3q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / calibration / "qml_3Q_statlog" / "results.json"
+        results_path = base_path / calibration / "qml_3q_statlog" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":

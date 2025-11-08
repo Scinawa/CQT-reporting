@@ -24,7 +24,9 @@
         "n_trials": 80,
         "n_jobs": 40,
         "selected_layer": 1,
-        "output_size": 1
+        "output_size": 1,
+        "description": "This is a 3-qubit classifier of the 'YEAST' dataset. It has 16 single-qubit gates and 8 two-qubit gates. This shows plot shows the confusion matrix of the inference over 178 points.",
+        "runtime": "5 minutes 20 seconds"
     },
     "accuracy": 0.6256983240223464,
     "noiseless_experiment_ios": {

@@ -922,17 +922,24 @@ def plot_qml(raw_data, expname, output_path="build/"):
     with open(raw_data, "r") as f:
         data = json.load(f)
 
-    qc_configurations = data.get("qc_configurations", {})
+    qc_configurations = data.get("NQCH", {})
+    noiseless_configuration = data.get("verification_ios", {})
 
     # Extract true and predicted labels from the dict values
     true = []
     pred = []
     noiseless = []
 
-    for sample in qc_configurations.values():
-        true.append(int(sample.get("label", 0)))
-        pred.append(int(sample.get("qibo_predicted_label", 0)))
-        noiseless.append(int(sample.get("noiseless_label", 0)))
+    for key, sample in qc_configurations.items():
+        pred_label = int(sample.get("predicted_label", 0))
+        is_correct = sample.get("is_correct", True)
+        # Infer true label from is_correct and predicted_label
+        true_label = pred_label if is_correct else 1 - pred_label
+        true.append(true_label)
+        pred.append(pred_label)
+        # Get noiseless label from verification_ios dict
+        noiseless_label = int(noiseless_configuration.get(key, {}).get("predicted_label", 0))
+        noiseless.append(noiseless_label)
 
     true = np.array(true, dtype=int)
     pred = np.array(pred, dtype=int)
@@ -948,13 +955,13 @@ def plot_qml(raw_data, expname, output_path="build/"):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4))
     disp1 = ConfusionMatrixDisplay(confusion_matrix=cm_pred, display_labels=labels)
     disp1.plot(cmap="Blues", ax=axes[0], colorbar=False)
-    axes[0].set_title("True vs Predicted")
+    axes[0].set_title("Prediction vs Ground Truth")
 
     disp2 = ConfusionMatrixDisplay(confusion_matrix=cm_noiseless, display_labels=labels)
     disp2.plot(cmap="Greens", ax=axes[1], colorbar=False)
-    axes[1].set_title("True vs Noiseless")
+    axes[1].set_title("Noiseless circuit vs Ground Truth")
 
-    fig.suptitle(f"QML Confusion Matrices - {expname}", fontsize=14)
+    fig.suptitle(f"QML Confusion Matrices", fontsize=14)
     plt.tight_layout(rect=[0, 0, 1, 0.95])
 
     out_file = os.path.join(output_path, f"{expname}_qml_confusion_matrices.pdf")
