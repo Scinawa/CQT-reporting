@@ -362,9 +362,37 @@ def get_readout_fidelity(raw_data, experiment_dir):
     return dict_readout_fidelities
 
 
+def extract_qubits_from_edges(edges):
+    """
+    Extract unique qubits from list of edges.
+    
+    Args:
+        edges: List of edges, where each edge is a list [a, b] or nested [[a, b]]
+    
+    Returns:
+        list: Sorted list of unique qubits
+    """
+    qubits_set = set()
+    for edge in edges:
+        # Handle nested edge format [[a, b]] or flat edge format [a, b]
+        if isinstance(edge, list):
+            if len(edge) == 2 and all(isinstance(x, int) for x in edge):
+                # Flat edge format [a, b]
+                qubits_set.add(edge[0])
+                qubits_set.add(edge[1])
+            elif len(edge) > 0 and isinstance(edge[0], list):
+                # Nested edge format [[a, b]] - extract the inner list
+                inner_edge = edge[0]
+                if isinstance(inner_edge, list) and len(inner_edge) == 2:
+                    qubits_set.add(inner_edge[0])
+                    qubits_set.add(inner_edge[1])
+    return sorted(list(qubits_set))
+
+
 def extract_best_qubits(bell_tomography_results_path):
     """
     Extract the best qubits data from bell tomography results.
+    Supports both old format (flat qubit list) and new format (edges list).
 
     Args:
         bell_tomography_results_path (str): Path to the bell_tomography results.json file
@@ -382,8 +410,52 @@ def extract_best_qubits(bell_tomography_results_path):
         formatted_data = {}
         for k in ["2", "3", "4", "5"]:
             if k in best_qubits_data:
-                qubits_list = best_qubits_data[k][0]  # First element is the qubit list
-                fidelity = best_qubits_data[k][1]  # Second element is the fidelity
+                # Handle structure: may be [[[edges], fidelity]] or [[qubits], fidelity]
+                value = best_qubits_data[k]
+                # Unwrap if there's an extra wrapping level
+                if isinstance(value, list) and len(value) == 1 and isinstance(value[0], list):
+                    value = value[0]
+                
+                first_elem = value[0]  # First element is the qubit list or edges list
+                fidelity = value[1]  # Second element is the fidelity
+
+                # Unwrap nested structure to get to the actual data
+                # New format: [[[[edge1], [edge2], ...]], fidelity] -> unwrap to [[edge1], [edge2], ...]
+                # Old format: [[qubits...], fidelity] -> unwrap to [qubits...]
+                current = first_elem
+                # Unwrap single-element lists until we reach the actual data
+                # Stop if we find a list that looks like edges (list of 2-element lists) or qubits (list of integers)
+                while isinstance(current, list) and len(current) == 1:
+                    next_level = current[0]
+                    # Check if next level is edges format (list of 2-element lists) or qubits format (list of integers)
+                    if isinstance(next_level, list):
+                        if len(next_level) > 0:
+                            # Check if it's a list of edges (each element is a 2-element list)
+                            if isinstance(next_level[0], list) and len(next_level[0]) == 2:
+                                # This is the edges list, stop unwrapping
+                                current = next_level
+                                break
+                            elif isinstance(next_level[0], int):
+                                # This is the qubits list, stop unwrapping
+                                break
+                    current = next_level
+                
+                # Now current should be either list of edges [[a,b], [c,d], ...] or list of qubits [a, b, c, ...]
+                if isinstance(current, list) and len(current) > 0:
+                    # Check if first element is a 2-element list (edge) or an integer (qubit)
+                    if isinstance(current[0], list) and len(current[0]) == 2:
+                        # New format: list of edges
+                        edges = current
+                        qubits_list = extract_qubits_from_edges(edges)
+                    elif isinstance(current[0], int):
+                        # Old format: flat list of qubits
+                        qubits_list = current
+                    else:
+                        # Might be nested edges format [[[a, b]]], try to extract
+                        qubits_list = extract_qubits_from_edges(current)
+                else:
+                    # Fallback: treat as old format
+                    qubits_list = current if isinstance(current, list) else []
 
                 # Format qubits as comma-separated string
                 qubits_str = ", ".join(map(str, qubits_list))

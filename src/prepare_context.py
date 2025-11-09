@@ -184,6 +184,15 @@ def context_fidelity_plots_and_table(context, cfg):
 
         # Extract best qubits data
         context[label]["best_qubits"] = fl.extract_best_qubits(results_path)
+
+        # Extract fidelities list for Benchmark Results table
+        try:
+            context[label]["fidelities_list"] = fl.context_fidelity(
+                f"{calibration}/sinq20"
+            )
+        except Exception as e:
+            logging.warning(f"Error preparing fidelities_list for {label}: {e}")
+            context[label]["fidelities_list"] = []
     # import pdb
 
     # pdb.set_trace()
