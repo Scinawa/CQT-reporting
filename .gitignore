@@ -1,5 +1,4 @@
 .vscode/*
 src/__pycache__/*
 .DS_Store
-report.tex
 logs/*
