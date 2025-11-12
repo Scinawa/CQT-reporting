@@ -175,9 +175,10 @@ def context_fidelity_plots_and_table(context, cfg):
             context[label]["plot_fidelity"] = pl.plot_fidelity_graph(
                 calibration_path,
                 results_path,
-                run,
+                f"{calibration}_{run}",
                 config.connectivity,
                 config.pos,
+                output_path=os.path.join("build", "fidelity", calibration, run) + "/",  # Unique output path
             )
         except Exception:
             context[label]["plot_fidelity"] = "placeholder.png"
@@ -567,8 +568,19 @@ def context_yeast_3q_plots(context, cfg, dataset):
             "data", calibration, run, f"qml_3q_{dataset}", "results.json"
         )
 
-        # Extract accuracy
-        context[label][f"{dataset}_3q_accuracy"] = fl.get_qml_accuracy(results_path)
+        # Extract accuracy and format to 2 decimal places
+        accuracy = fl.get_qml_accuracy(results_path)
+        context[label][f"{dataset}_3q_accuracy"] = f"{accuracy:.2f}"
+
+        # Extract runtime/duration
+        context[label][f"{dataset}_3q_duration"] = fl.extract_runtime(results_path)
+
+        # Extract qubits used and format as comma-separated string if it's a list
+        qubits_used = fl.extract_qubits_used(results_path)
+        if isinstance(qubits_used, list):
+            context[label][f"{dataset}_3q_qubits"] = ", ".join(map(str, qubits_used))
+        else:
+            context[label][f"{dataset}_3q_qubits"] = qubits_used
 
         # Extract description only once (from left side)
         if label == "left":

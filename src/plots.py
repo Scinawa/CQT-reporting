@@ -199,6 +199,7 @@ def plot_fidelity_graph(
     plt.box(False)
     plt.tight_layout()
     filename = "fidelities.pdf"
+    os.makedirs(output_path, exist_ok=True)
     full_path = output_path + experiment_name + "_" + filename
     plt.savefig(full_path)
     plt.close()

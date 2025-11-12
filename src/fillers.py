@@ -16,8 +16,11 @@ def get_qml_accuracy(filename):
 
     with open(filename, "r") as f:
         results = json.load(f)
-
-    return results["accuracy"]
+    try:
+        _ = results['NQCH']['_statistics']['qibo_accuracy']
+    except exception as e:
+        _ = "N/A."
+    return _
 
 
 def extract_description(filename):

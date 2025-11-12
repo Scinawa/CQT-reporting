@@ -368,7 +368,7 @@ def prepare_template_context(cfg):
     # STATLOG CLASSIFICATION 3Q PLOTS
     if cfg.statlog_plot_3q:
         try:
-            context = context_statlog_3q_plots(context, cfg, "statlog")
+            context = context_yeast_3q_plots(context, cfg, "statlog")
         except Exception as e:
             logging.error(f"Error preparing StatLog 3Q plots: {e}")
             context["statlog_classification_3q_plot_is_set"] = None
