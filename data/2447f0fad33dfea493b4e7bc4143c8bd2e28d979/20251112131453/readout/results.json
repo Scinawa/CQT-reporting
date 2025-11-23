@@ -21,6 +21,6 @@
         "18": 0.9865,
         "19": 0.9835
     },
-    "runtime": "225.67 seconds.",
+    "runtime": 225.67,
     "description": "Readout fidelity experiment executed on sinq20 backend with 1000 shots per circuit."
 }

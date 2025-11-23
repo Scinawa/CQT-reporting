@@ -6,7 +6,7 @@
         "3": 0.9699697096665039,
         "4": 0.9882865908324745
     },
-    "runtime": "2355.23 seconds.",
+    "runtime": 2355.23,
     "description": "Single qubit Randomized Benchmarking executed on sinq20 backend with 100 shots per circuit and 3 iterations per depth. \n The gate fidelity is computed in a SPAM robust way.",
     "qubits_used": [
         0,

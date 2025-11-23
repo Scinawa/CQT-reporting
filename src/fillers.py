@@ -7,6 +7,7 @@ import os
 import json
 import numpy as np
 import pdb
+import re
 
 
 import matplotlib.pyplot as plt
@@ -31,12 +32,42 @@ def extract_description(filename):
     return results.get("description", " --- No description provided. ---")
 
 
+def format_runtime(runtime_value):
+    """
+    Format runtime value (in seconds) as a human-readable string.
+    
+    Args:
+        runtime_value: Numeric value (float/int) representing seconds, or None/null
+        
+    Returns:
+        Formatted string like "X.XX seconds" or "N/A" if None/null
+    """
+    if runtime_value is None:
+        return "N/A"
+    
+    try:
+        # Convert to float if it's a string (for transition period)
+        if isinstance(runtime_value, str):
+            # Try to extract numeric value from strings like "680.07 seconds." or "793 seconds"
+            match = re.search(r'(\d+\.?\d*)', runtime_value)
+            if match:
+                runtime_value = float(match.group(1))
+            else:
+                return "N/A"
+        
+        runtime_float = float(runtime_value)
+        return f"{runtime_float:.2f} seconds"
+    except (ValueError, TypeError):
+        return "N/A"
+
+
 def extract_runtime(filename):
 
     with open(filename, "r") as f:
         results = json.load(f)
 
-    return results.get("runtime", " --- No runtime provided. ---")
+    runtime_value = results.get("runtime", None)
+    return format_runtime(runtime_value)
 
 
 def extract_qubits_used(filename):

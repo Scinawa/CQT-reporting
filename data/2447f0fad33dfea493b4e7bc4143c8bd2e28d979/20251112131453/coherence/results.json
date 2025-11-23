@@ -43,6 +43,6 @@
         "18": 6.154519869503253,
         "19": 12.992668190512015
     },
-    "runtime": "95.56 seconds.",
+    "runtime": 95.56,
     "description": "T1 and T2 experiments performed on sinq20 backend. \n The thermalization and coherence times are computed with this routine."
 }
