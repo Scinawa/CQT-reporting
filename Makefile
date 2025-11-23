@@ -3,11 +3,14 @@ TARGET = report.pdf
 .PHONY: build clean pdf runscripts runscripts-device
 
 # Default experiment directory
-calibration_right ?= fdb93a3978fe6356741e31b98c93c68837767080
-calibration_left ?= 2447f0fad33dfea493b4e7bc4143c8bd2e28d979
-RUNID_RIGHT ?= df31a65089fe
-RUNID_LEFT ?= 20251108115234
+# calibration_right ?= fdb93a3978fe6356741e31b98c93c68837767080
+# RUNID_RIGHT ?= df31a65089fe
 
+calibration_right ?= 2447f0fad33dfea493b4e7bc4143c8bd2e28d979
+RUNID_RIGHT ?= 20251108115234 
+
+calibration_left ?= 1e1f7e1d1af58009eda1986bb3689e6b9b2356b6
+RUNID_LEFT ?= 20251123023814
 
 download-latest-two:
 	@mkdir -p data
@@ -103,7 +106,3 @@ batch-runscripts-sinq20:
 
 all: batch-runscripts-numpy batch-runscripts-sinq20 build pdf
 
-
-
-###  rsync -av --ignore-existing -e ssh nqch-machine:~/CQT-experiments/data /tmp/diocane/  
-### rsync -av --ignore-existing -e ssh /tmp/diocane/data/ cqtreporting.tortuga:/opt/cqt-reporting/data/

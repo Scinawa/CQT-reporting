@@ -214,23 +214,23 @@ def context_mermin_plots(context, cfg):
         # Prepare paths for results
         results_path = base_path / calibration / run / "mermin" / "results.json"
 
-        # Extract description only once (from left side)
-        if label == "left":
-            context["mermin_description"] = fl.extract_description(results_path)
-
-        # Generate Mermin plot
         try:
+            # Extract description only once (from left side)
+            if label == "left":
+                context["mermin_description"] = fl.extract_description(results_path)
+
             context[label][f"plot_mermin"] = pl.mermin_plot(
                 raw_data=results_path,
                 expname=f"mermin_{calibration}_{run}",
                 output_path="build/",
             )
-        except Exception:
+            # Extract runtime and qubits used
+            context[label][f"mermin_runtime"] = fl.extract_runtime(results_path)
+            context[label][f"mermin_qubits"] = fl.extract_qubits_used(results_path)
+        except Exception as e:
+            logging.warning(f"Using placeholder for Mermin plot due to an error: {e}")
             context[label][f"plot_mermin"] = "placeholder.png"
 
-        # Extract runtime and qubits used
-        context[label][f"mermin_runtime"] = fl.extract_runtime(results_path)
-        context[label][f"mermin_qubits"] = fl.extract_qubits_used(results_path)
 
     context["mermin_plot_is_set"] = True
     logging.info("Added Mermin 5Q plots to context")
@@ -277,14 +277,12 @@ def context_grover2q_plots(context, cfg):
                 expname=f"grover2q_{calibration}_{run}",
                 output_path="build/",
             )
+            # pdb.set_trace()
+            # Extract runtime and qubits used
+            context[label]["grover2q_runtime"] = fl.extract_runtime(results_path)
+            context[label]["grover2q_qubits"] = fl.extract_qubits_used(results_path)
         except Exception:
             context[label]["plot_grover2q"] = "placeholder.png"
-        # import pdb
-
-        # pdb.set_trace()
-        # Extract runtime and qubits used
-        context[label]["grover2q_runtime"] = fl.extract_runtime(results_path)
-        context[label]["grover2q_qubits"] = fl.extract_qubits_used(results_path)
 
     context["grover2q_plot_is_set"] = True
     logging.info("Added Grover 2Q plots to context")
@@ -317,12 +315,14 @@ def context_grover3q_plots(context, cfg):
                 expname=f"grover3q_{calibration}_{run}",
                 output_path="build/",
             )
+
+            # Extract runtime and qubits used
+            context[label]["grover3q_runtime"] = fl.extract_runtime(results_path)
+            context[label]["grover3q_qubits"] = fl.extract_qubits_used(results_path)
         except Exception:
             context[label]["plot_grover3q"] = "placeholder.png"
 
-        # Extract runtime and qubits used
-        context[label]["grover3q_runtime"] = fl.extract_runtime(results_path)
-        context[label]["grover3q_qubits"] = fl.extract_qubits_used(results_path)
+
 
     context["grover3q_plot_is_set"] = True
     logging.info("Added Grover 3Q plots to context")

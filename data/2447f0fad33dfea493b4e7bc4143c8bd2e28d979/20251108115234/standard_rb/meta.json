@@ -1,0 +1,20 @@
+{
+    "title": "standard_rb",
+    "backend": "qibolab",
+    "platform": "sinq20",
+    "start_time": null,
+    "end_time": null,
+    "stats": {},
+    "author": null,
+    "tag": null,
+    "targets": null,
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3"
+    },
+    "date": null,
+    "start-time": null,
+    "end-time": null
+}
