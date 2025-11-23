@@ -12,7 +12,7 @@
             "111": 395
         }
     },
-    "runtime": "9.70 seconds.",
+    "runtime": 9.7,
     "qubits_used": [
         8,
         3,
