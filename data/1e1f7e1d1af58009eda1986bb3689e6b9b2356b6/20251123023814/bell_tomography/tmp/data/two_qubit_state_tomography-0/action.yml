@@ -1,0 +1,8 @@
+id: two_qubit_state_tomography
+operation: two_qubit_state_tomography
+parameters:
+  circuit: /mnt/home/Scinawa/CQT-experiments/data/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/bell_tomography/tmp/data/two_qubit_state_tomography-0/circuit.json
+targets:
+- - 18
+  - 19
+update: true

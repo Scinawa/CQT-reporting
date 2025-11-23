@@ -1,0 +1,37 @@
+{
+    "title": "coherence",
+    "backend": "qibolab",
+    "platform": "sinq20",
+    "start_time": "2025-11-22 18:48:31.318986+00:00",
+    "end_time": "2025-11-22 18:50:00.564690+00:00",
+    "stats": {
+        "t1-0": {
+            "acquisition": 19.33445444703102,
+            "fit": 0.025820836424827576
+        },
+        "t1-1": {
+            "acquisition": 12.986499350517988,
+            "fit": 0.021652184426784515
+        },
+        "ramsey-0": {
+            "acquisition": 29.71333108842373,
+            "fit": 0.020943868905305862
+        },
+        "ramsey-1": {
+            "acquisition": 26.640157599002123,
+            "fit": 0.019604146480560303
+        }
+    },
+    "author": null,
+    "tag": null,
+    "targets": null,
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3"
+    },
+    "date": "2025-11-22",
+    "start-time": "18:48:31",
+    "end-time": "18:50:00"
+}

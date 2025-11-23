@@ -1,0 +1,20 @@
+{
+    "title": "executor_tmp",
+    "backend": "qibolab",
+    "platform": "sinq20",
+    "start_time": "2025-11-22 19:41:00.704319+00:00",
+    "end_time": "2025-11-22 19:43:25.262834+00:00",
+    "stats": {},
+    "author": null,
+    "tag": null,
+    "targets": null,
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3"
+    },
+    "date": "2025-11-22",
+    "start-time": "19:41:00",
+    "end-time": "19:43:25"
+}

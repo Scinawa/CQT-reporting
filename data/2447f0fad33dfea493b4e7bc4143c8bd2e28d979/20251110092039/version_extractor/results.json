@@ -1,0 +1,23 @@
+{
+    "run_id": 20251110092039,
+    "commit_message": "chore(sinq20): Retune CZ for Q5-Q6 and Q17-Q18\n",
+    "commit_hash": "2447f0fad33dfea493b4e7bc4143c8bd2e28d979",
+    "commit_date": "2025-11-05 08:58:37",
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3",
+        "matplotlib": "3.10.3",
+        "scipy": "1.15.3",
+        "scikit-learn": "1.6.1",
+        "pandas": "2.2.3",
+        "networkx": "3.4.2",
+        "sympy": "1.14.0",
+        "torch": "2.7.0"
+    },
+    "device": "sinq20",
+    "experiment_date": "2025-11-10 09:25:32",
+    "platform": "sinq20",
+    "experiment_note": "Second execution."
+}

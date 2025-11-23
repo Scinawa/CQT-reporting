@@ -1,0 +1,25 @@
+{
+    "title": "standard_rb",
+    "backend": "qibolab",
+    "platform": "sinq20",
+    "start_time": "2025-11-10 01:44:28.413452+00:00",
+    "end_time": "2025-11-10 02:23:44.074961+00:00",
+    "stats": {
+        "standard_rb-0": {
+            "acquisition": 2355.071479290724,
+            "fit": 0.15752935782074928
+        }
+    },
+    "author": null,
+    "tag": null,
+    "targets": null,
+    "versions": {
+        "qibo": "0.2.19",
+        "numpy": "2.2.6",
+        "qibolab": "0.2.9",
+        "qibocal": "0.2.3"
+    },
+    "date": "2025-11-10",
+    "start-time": "01:44:28",
+    "end-time": "02:23:44"
+}

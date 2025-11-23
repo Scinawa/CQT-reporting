@@ -1,0 +1,20 @@
+id: ramsey
+operation: ramsey
+parameters:
+  delay_between_pulses_end: 20000
+  delay_between_pulses_start: 20
+  delay_between_pulses_step: 100
+  detuning: 200000
+targets:
+- 0
+- 2
+- 4
+- 8
+- 12
+- 6
+- 10
+- 14
+- 17
+- 16
+- 19
+update: true

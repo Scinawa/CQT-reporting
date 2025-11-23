@@ -1,0 +1,22 @@
+{
+    "success_rate": {
+        "[8, 2, 3]": 0.181
+    },
+    "plotparameters": {
+        "frequencies": {
+            "[8, 2, 3]": {
+                "00": 0.0,
+                "01": 0.0,
+                "10": 0.0,
+                "11": 0.0
+            }
+        }
+    },
+    "runtime": 4.534881830215454,
+    "description": "Grover's algorithm for 3 qubits executed on sinq20 backend with 1000 shots per circuit. \n We measure the success rate of finding the target state '111' for each pair of qubits in [[8, 3], [2, 3]].",
+    "qubits_used": [
+        8,
+        2,
+        3
+    ]
+}
