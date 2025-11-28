@@ -184,7 +184,7 @@ The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit
 \end{multicols}
 
 
-
+\newpage
 \section{Statistics} 
 
 % Ensure proper table alignment
@@ -296,8 +296,7 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \end{multicols}
 
-
-
+\newpage
 
 {% if mermin_plot_is_set %}
 \section{Mermin}
@@ -345,45 +344,40 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ grover2q_description }}
 
 \begin{multicols}{2}
-\raggedcolumns  % avoid balancing at the end
-
-% --- LEFT BLOCK ---
-\Needspace{0.48\textheight} 
-\begin{samepage}            
 \begin{itemize}
 \item \textbf{Runtime:} {{ left.grover2q_runtime }}
 \item \textbf{Qubits used:} {{ left.grover2q_qubits }}
 \end{itemize}
+
 \begin{center}
-\includegraphics[width=0.95\linewidth]{ {{ left.plot_grover2q }} }
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ left.plot_grover2q }} }
+\end{minipage}
 \end{center}
-\end{samepage}
 
 \columnbreak
-
-% --- RIGHT BLOCK ---
-\Needspace{0.48\textheight}
-\begin{samepage}
 \begin{itemize}
 \item \textbf{Runtime:} {{ right.grover2q_runtime }}
 \item \textbf{Qubits used:} {{ right.grover2q_qubits }}
 \end{itemize}
 \begin{center}
-\includegraphics[width=0.95\linewidth]{ {{ right.plot_grover2q }} }
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ right.plot_grover2q }} }
+\end{minipage}
 \end{center}
-\end{samepage}
-
 \end{multicols}
 {% endif %}
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Grover 3Q state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 {% if grover3q_plot_is_set %}
+{% if grover2q_plot_is_set %}
 \newpage
+{% endif %}
 \section{Grover - 3 qubits}
 {{ grover3q_description }}
 
@@ -415,12 +409,14 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {% endif %}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GHZ state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {% if ghz_plot_is_set %}
+{% if not grover2q_plot_is_set %}
+\newpage
+{% endif %}
 \section{GHZ state preparation}
 {{ ghz_description }}
 
@@ -452,6 +448,9 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {% if tomography_plot_is_set %}
+{% if not ghz_plot_is_set %}
+\newpage
+{% endif %}
 \section{Tomography state preparation}
 {{ tomography_description }}
 
@@ -489,8 +488,8 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Process tomography state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 {% if process_tomography_plot_is_set %}
+\newpage
 \section{Process Tomography state preparation}
 {{ process_tomography_description }}
 
@@ -517,11 +516,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 \end{multicols}
 {% endif %}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reuploading classifier 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {% if reuploading_classifier_plot_is_set %}
+\newpage
 \section{Reuploading Classifier}
 {{ reuploading_classifier_description }}
 
@@ -561,6 +562,9 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {% if qft_plot_is_set %}
+{% if not reuploading_classifier_plot_is_set %}
+\newpage
+{% endif %}
 \section{QFT Plots}
 {{ qft_description }}
 
