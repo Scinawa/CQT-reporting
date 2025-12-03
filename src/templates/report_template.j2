@@ -115,7 +115,7 @@
 \begin{tabular}{@{}ll|ll@{}}
 \toprule
 \textbf{Library} & \textbf{Version} & \textbf{Library} & \textbf{Version} \\ \midrule
-{% set items = left.versions.items()|list %}
+{% set items = left["versions"].items()|list %}
 {% for i in range(0, items|length, 2) %}
     {{ items[i][0] | replace('_', '\\_') }} & {{ items[i][1] | replace('_', '\\_') }} 
     {% if i + 1 < items|length %}
@@ -141,7 +141,7 @@
 \begin{tabular}{@{}ll|ll@{}}
 \toprule
 \textbf{Library} & \textbf{Version} & \textbf{Library} & \textbf{Version} \\ \midrule
-{% set items = right.versions.items()|list %}
+{% set items = right["versions"].items()|list %}
 {% for i in range(0, items|length, 2) %}
     {{ items[i][0] | replace('_', '\\_') }} & {{ items[i][1] | replace('_', '\\_') }} 
     {% if i + 1 < items|length %}
