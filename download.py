@@ -1,335 +1,138 @@
-import os
-import tarfile
+#!/usr/bin/env python3
 import argparse
-import logging
-import shutil
-import toml  # Added for reading .secrets.toml
+import sys
 
-from clientdb.client import (
-    set_server,
-    calibrations_upload,
-    calibrations_list,
-    calibrations_download,
-    calibrations_get_latest,
-    results_upload,
-    results_download,
-    unpack,
-    test,
-    results_list,
-)
+# try:
+from clientdb import client
+# except ImportError:
+#     import client
 
-from scripts.scripts_executor import load_experiment_list
+client.set_server(server_url='http://54.169.91.191',api_token='EtadObqx4MRwCTLsTa_YWmTfUl24Jg57tngu_feXna4')
 
 
-def get_server_params_from_secrets(secrets_path=".secrets.toml"):
-    """
-    Load qibodbhost and qibodbkey from a TOML secrets file.
-    """
-    try:
-        secrets = toml.load(secrets_path)
-        qibodbhost = secrets.get("qibodbhost")
-        qibodbkey = secrets.get("qibodbkey")
-        if not qibodbhost or not qibodbkey:
-            raise ValueError("qibodbhost or qibodbkey missing in secrets file")
-        return qibodbhost, qibodbkey
-    except Exception as e:
-        logging.error(f"Failed to read server parameters from {secrets_path}: {e}")
-        raise
+def download_best(args):
+    calib_hash_id, run_id, created_at = client.get_best_run()
 
+    print(f"[best] Best run: hashID={calib_hash_id}, runID={run_id}", file=sys.stderr)
 
-####
-
-
-def clean_output_directory(output_dir):
-    """
-    Remove all contents of the output directory if it exists.
-
-    Args:
-        output_dir (str): Directory to clean
-    """
-    logger = logging.getLogger(__name__)
-
-    if os.path.exists(output_dir):
-        logger.info(f"Cleaning output directory: {output_dir}")
-        for item in os.listdir(output_dir):
-            item_path = os.path.join(output_dir, item)
-            if os.path.isdir(item_path):
-                shutil.rmtree(item_path)
-            else:
-                os.remove(item_path)
-        logger.info(f"Successfully cleaned output directory: {output_dir}")
-    else:
-        logger.info(f"Output directory {output_dir} does not exist, will be created")
-
-
-def setup_logging(log_level):
-    """Setup logging configuration"""
-    log_dir = "logs"
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, "download.log")
-
-    # Clear existing handlers to avoid duplicate logs if reconfigured
-    for h in logging.root.handlers[:]:
-        logging.root.removeHandler(h)
-
-    logging.basicConfig(
-        level=log_level,
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler(log_file, mode="a"),
-        ],
+    # Download the best calibration (new requirement)
+    print(f"[best] Downloading calibration for {calib_hash_id}", file=sys.stderr)
+    client.calibrations_download(
+        hashID=calib_hash_id,
+        output_folder=args.calib_folder,
     )
 
+    # Download the best result
+    print(f"[best] Downloading results for runID={run_id}", file=sys.stderr)
+    client.results_download(
+        hashID=calib_hash_id,
+        runID=run_id,
+        output_folder=args.data_folder,
+    )
 
-def download_calibration_data(hash_id, output_dir="data_decompressed"):
-    """
-    Download and decompress calibration data.
-
-    Args:
-        hash_id (str): Hash ID for the calibration
-        output_dir (str): Directory to extract the data to
-
-    Returns:
-        str: Path to the extracted calibration directory
-    """
-    logger = logging.getLogger(__name__)
-
-    try:
-        logger.info(f"Downloading calibration data for hash ID: {hash_id}")
-        notes, fname, created_at, zip_bytes = calibrations_download(hash_id)
-        logger.info(f"Downloaded calibration: {fname} (created: {created_at})")
-        logger.debug(f"Notes: {notes}")
-
-        # Create hash-specific directory for calibration data
-        calibration_dir = os.path.join(output_dir, hash_id)
-        os.makedirs(calibration_dir, exist_ok=True)
-
-        # Unpack the calibration data directly to the hash directory
-        logger.info(f"Unpacking calibration data to {calibration_dir}")
-        unpack(calibration_dir, zip_bytes)
-        # Unpack the tar.gz file.
-
-        # # print(fname)
-        # import pdb
-
-        # pdb.set_trace()
-
-        with tarfile.open(
-            fileobj=open(os.path.join(calibration_dir, hash_id + ".tar.gz"), "rb"),
-            mode="r:gz",
-        ) as tar:
-            tar.extractall(path=os.path.join(calibration_dir, "../"))
-
-        # Remove the temporary tar.gz file
-        temp_tar_path = os.path.join(calibration_dir, fname)
-        if os.path.exists(temp_tar_path):
-            os.remove(temp_tar_path)
-
-        logger.info(f"Calibration data extracted to: {calibration_dir}")
-        return calibration_dir
-
-    except Exception as e:
-        logger.error(f"Failed to download calibration data: {e}")
-        raise
+    # Return ONLY hashID and runID to stdout (for bash)
+    print(f"{calib_hash_id} {run_id}")
+    return 0
 
 
-def load_enabled_experiments():
-    """Load all enabled experiments from the INI file."""
-    experiment_groups = load_experiment_list()
-    enabled = []
-    for experiments in experiment_groups.values():
-        enabled.extend(experiments)
-    return set(enabled)
+def download_latest(args):
+    # 1. Get latest calibration metadata
+    meta = client.calibrations_get_latest()
+    if not meta:
+        print("[latest] No calibrations found on the server.", file=sys.stderr)
+        print("")  # keep stdout parse-safe
+        return 1
+
+    hash_id = meta["hashID"]
+
+    print(f"[latest] Latest calibration is {hash_id}", file=sys.stderr)
+
+    # 2. Download that calibration
+    print(f"[latest] Downloading calibration for {hash_id}", file=sys.stderr)
+    client.calibrations_download(
+        hashID=hash_id,
+        output_folder=args.calib_folder,
+    )
+
+    # 3. List all results for this calibration (already newest first)
+    items = client.results_list(hashID=hash_id)
+    if not items:
+        print(f"[latest] No results found for {hash_id}", file=sys.stderr)
+        print("")  # keep stdout clean
+        return 1
+
+    # Pick the first non-empty run_id
+    run_id = None
+    for row in items:
+        if row.get("run_id"):
+            run_id = row["run_id"]
+            break
+
+    if not run_id:
+        print(f"[latest] No valid runID found for {hash_id}", file=sys.stderr)
+        print("")  # keep stdout clean
+        return 1
+
+    print(f"[latest] Latest run is runID={run_id}", file=sys.stderr)
+
+    # 4. Download the result ZIP
+    print(f"[latest] Downloading results for {hash_id} {run_id}", file=sys.stderr)
+    client.results_download(
+        hashID=hash_id,
+        runID=run_id,
+        output_folder=args.data_folder,
+    )
+
+    # 5. Output ONLY hashID runID to stdout (for bash scripting)
+    print(f"{hash_id} {run_id}")
+    return 0
 
 
-def download_experiment_results(hash_id, output_dir="data_decompressed"):
-    """
-    Download and decompress experiment results for all experiments.
 
-    Args:
-        hash_id (str): Hash ID for the calibration
-        output_dir (str): Directory to extract the data to
+def download_specific(args):
+    if not args.hashID or not args.runID:
+        print("Error: specific mode requires HASHID and RUNID", file=sys.stderr)
+        print("")  # keep stdout clean
+        return 1
 
-    Returns:
-        dict: Dictionary mapping experiment names to their extracted paths
-    """
-    logger = logging.getLogger(__name__)
-    extracted_experiments = {}
+    hash_id = args.hashID
+    run_id = args.runID
 
-    try:
-        # Get list of available results for this hash_id
-        logger.info(f"Getting results list for hash ID: {hash_id}")
-        available_results = results_list(hash_id)
-        logger.info(f"Found {len(available_results)} result sets")
-    except Exception as e:
-        logger.error(f"Failed to get results list: {e}")
+    print(f"[specific] Downloading calibration for {hash_id}", file=sys.stderr)
+    client.calibrations_download(
+        hashID=hash_id,
+        output_folder=args.calib_folder,
+    )
 
-    enabled_experiments = load_enabled_experiments()
+    print(f"[specific] Downloading results: hashID={hash_id}, runID={run_id}", file=sys.stderr)
+    client.results_download(
+        hashID=hash_id,
+        runID=run_id,
+        output_folder=args.data_folder,
+    )
 
-    for result in available_results:
-        experiment_name = result.get("name", "unknown")
+    # Return ONLY hashID and runID to stdout (for bash scripts)
+    print(f"{hash_id} {run_id}")
+    return 0
 
-        if experiment_name in enabled_experiments:
-            # Validate parameters before making API call
-            if not hash_id or not experiment_name:
-                logger.error(
-                    f"Invalid parameters: hash_id='{hash_id}', experiment_name='{experiment_name}'"
-                )
-                continue
-            print("\n\n\n")
-            try:
-                logger.info(
-                    f"Downloading results for experiment: {experiment_name} with hash_id: {hash_id}"
-                )
-
-                notes, fname, created_at, zip_bytes = results_download(
-                    hash_id, experiment_name
-                )
-                logger.info(
-                    f"Downloaded {experiment_name}: {fname} (created: {created_at})"
-                )
-
-                # Create hash-specific directory under the experiment folder
-                # Structure: data_decompressed/experiment_name/hash_id/
-                experiment_base_dir = os.path.join(output_dir, experiment_name)
-                experiment_hash_dir = os.path.join(experiment_base_dir, hash_id)
-                os.makedirs(experiment_hash_dir, exist_ok=True)
-
-                # First unpack using the unpack function (handles ZIP format)
-                logger.debug(f"Unpacking {experiment_name} data")
-                unpack(experiment_hash_dir, zip_bytes)
-
-                # import pdb
-
-                # pdb.set_trace()
-
-                # Then check if there's a tar.gz file that needs further extraction
-                tar_gz_path = os.path.join(
-                    experiment_hash_dir, experiment_name + "_" + hash_id + ".tar.gz"
-                )
-                if os.path.exists(tar_gz_path):
-                    logger.debug(f"Extracting tar.gz file: {tar_gz_path}")
-                    with tarfile.open(
-                        fileobj=open(tar_gz_path, "rb"),
-                        mode="r:gz",
-                    ) as tar:
-                        tar.extractall(path=experiment_base_dir)
-
-                    # Remove the temporary tar.gz file
-                    os.remove(tar_gz_path)
-
-                extracted_experiments[experiment_name] = experiment_hash_dir
-                logger.info(
-                    f"Experiment {experiment_name} extracted to: {experiment_hash_dir}"
-                )
-
-            except Exception as e:
-                logger.error(f"Failed to download experiment {experiment_name}: {e}")
-        else:
-            logger.debug(f"Skipping unknown experiment: {experiment_name}")
-
-    return extracted_experiments
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Download calibration data and experiment results"
-    )
-    parser.add_argument(
-        "--hash-id",
-        help="Hash ID for the calibration",
-        default="9848c933bfcafbb8f81c940f504b893a2fa6ac23",
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="data/",
-        help="Directory to extract downloaded data",
-    )
-    parser.add_argument(
-        "--log-level",
-        default="INFO",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        help="Set the logging level",
-    )
-    parser.add_argument(
-        "--calibration-only",
-        action="store_true",
-        help="Download only the calibration data",
-    )
-    parser.add_argument(
-        "--experiments-only",
-        action="store_true",
-        help="Download only experiment results",
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("mode", choices=["best", "latest", "specific"])
+    parser.add_argument("hashID", nargs="?")
+    parser.add_argument("runID", nargs="?")
+    parser.add_argument("--data-folder", default="./data")
+    parser.add_argument("--calib-folder", default="./data/calibrations")
     args = parser.parse_args()
 
-    # Setup logging
-    setup_logging(getattr(logging, args.log_level))
-    logger = logging.getLogger(__name__)
-
-    logger.info("Starting download process")
-
-    # Clean the output directory before downloading
-    # clean_output_directory(args.output_dir)
-
-    # Load secrets from secrets.toml
-    try:
-        dburi, dbkey = get_server_params_from_secrets()
-        logger.info("Successfully loaded secrets from secrets.toml")
-    except Exception as e:
-        logger.error(f"Failed to load secrets: {e}")
-        return 1
-
-    # Set up the server connection
-    set_server(dburi, api_token=dbkey)
-    logger.info("Connected to server")
-
-    success = True
-
-    # Download calibration data (unless experiments-only is specified)
-    if not args.experiments_only:
-        try:
-            logger.info("Downloading calibration data")
-            calibration_path = download_calibration_data(args.hash_id, args.output_dir)
-            if calibration_path:
-                logger.info(
-                    f"Calibration download completed successfully: {calibration_path}"
-                )
-            else:
-                logger.warning("Calibration download completed but path is unknown")
-        except Exception as e:
-            logger.error(f"Calibration download failed: {e}")
-            success = False
-
-    # Download experiment results (unless calibration-only is specified)
-    if not args.calibration_only:
-        try:
-            logger.info("Downloading experiment results")
-            extracted_experiments = download_experiment_results(
-                args.hash_id, args.output_dir
-            )
-
-            # if extracted_experiments:
-            #     logger.info(
-            #         f"Successfully downloaded {len(extracted_experiments)} experiments:"
-            #     )
-            #     for exp_name, exp_path in extracted_experiments.items():
-            #         logger.info(f"  {exp_name}: {exp_path}")
-            # else:
-            #     logger.warning("No experiment results were downloaded")
-
-        except Exception as e:
-            logger.error(f"Experiment results download failed: {e}")
-            success = False
-
-    if success:
-        logger.info("Download process completed successfully!")
-        return 0
+    if args.mode == "best":
+        return download_best(args)
+    elif args.mode == "latest":
+        return download_latest(args)
     else:
-        logger.error("Download process completed with errors!")
-        return 1
+        return download_specific(args)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
