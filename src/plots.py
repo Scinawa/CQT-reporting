@@ -627,30 +627,65 @@ def plot_grover(raw_data, expname, output_path="build/"):
     return out_file
 
 
-def plot_qft(raw_data, expname, output_path="../build/"):
+# def plot_qft(raw_data, expname, output_path="../build/"):
+#     """
+#     Plot QFT algorithm results on different triples as fidelities.
+#     """
+#     # Load data from JSON file
+#     with open(raw_data, "r") as f:
+#         data = json.load(f)
+
+#     # Extract frequencies for the first (and only) key in 'frequencies'
+#     fidelities = data["plotparameters"]["fidelities"]
+#     qubits_lists = data["plotparameters"]["qubits_lists"]
+
+#     # Ensure bitstrings are strings for plotting
+#     bitstrings = [str(bs) for bs in qubits_lists]
+
+#     plt.figure()
+#     plt.plot(bitstrings, fidelities, color="skyblue", linestyle="None", marker="x")
+#     # plt.plot(bitstrings, np.ones_like(fidelities), color="r")
+#     plt.xticks(rotation=90)
+#     plt.xlabel("Qubits Set")
+#     plt.ylabel("Fidelity")
+#     plt.title("QFT's Fidelity on Different set of qubits")
+#     plt.tight_layout()
+
+#     os.makedirs(output_path, exist_ok=True)
+#     out_file = os.path.join(output_path, f"{expname}_results.pdf")
+#     plt.savefig(out_file)
+#     plt.close()
+#     return out_file
+
+def plot_qft(raw_data, expname, output_path="build/"):
     """
-    Plot QFT algorithm results on different triples as fidelities.
+    Plot the results of a Quantum Fourier Transform (QFT) experiment as a histogram.
+    Args:
+        raw_data (str): Path to the JSON file containing the QFT results.
+        output_path (str): Directory to save the output plot.
+    Returns:
+        str: Path to the saved plot file.
     """
-    # Load data from JSON file
+    # Data load
     with open(raw_data, "r") as f:
         data = json.load(f)
-
-    # Extract frequencies for the first (and only) key in 'frequencies'
-    fidelities = data["plotparameters"]["fidelities"]
-    qubits_lists = data["plotparameters"]["qubits_lists"]
-
-    # Ensure bitstrings are strings for plotting
-    bitstrings = [str(bs) for bs in qubits_lists]
-
-    plt.figure()
-    plt.plot(bitstrings, fidelities, color="skyblue", linestyle="None", marker="x")
-    # plt.plot(bitstrings, np.ones_like(fidelities), color="r")
-    plt.xticks(rotation=90)
-    plt.xlabel("Qubits Set")
-    plt.ylabel("Fidelity")
-    plt.title("QFT's Fidelity on Different set of qubits")
+    qubits_list = data["edges"]
+    dataplot = data["frequencies"].values()
+    # n_shots = data["nshots"]
+    qubits_set = set(sum(qubits_list, []))
+    n_qubits = len(qubits_set)                         # number of qubits
+    all_bitstrings = [format(i, f"0{n_qubits}b") for i in range(2**n_qubits)]
+    os.makedirs(output_path, exist_ok=True)
+    # Plot
+    plt.bar(all_bitstrings, dataplot, color="skyblue", edgecolor="black")
+    plt.title(f"QFT Manually Transpiled on with shots. \n Execution on edges {qubits_list}")
+    plt.xlabel("States")
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("Counts")
+    plt.legend()
     plt.tight_layout()
-
+    # plt.show()
+    # Save plot
     os.makedirs(output_path, exist_ok=True)
     out_file = os.path.join(output_path, f"{expname}_results.pdf")
     plt.savefig(out_file)
