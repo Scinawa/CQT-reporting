@@ -20,6 +20,7 @@ dependencies = [
     "pyjwt",
     "requests",
     "dynaconf",
+    "tabulate",
 ]
 
 [build-system]
