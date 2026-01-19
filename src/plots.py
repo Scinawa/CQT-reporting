@@ -657,7 +657,7 @@ def plot_grover(raw_data, expname, output_path="build/"):
 #     plt.close()
 #     return out_file
 
-def plot_qft(raw_data, expname, output_path="build/"):
+def plot_qft(raw_data, expname, output_path="../build/"):
     """
     Plot the results of a Quantum Fourier Transform (QFT) experiment as a histogram.
     Args:
