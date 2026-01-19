@@ -202,7 +202,7 @@ def context_fidelity_plots_and_table(context, cfg):
     return context
 
 
-def context_mermin_plots(context, cfg):
+def context_mermin_plots(context, cfg, nqubits):
     """Prepare Mermin plots and table data."""
     base_path = Path(cfg.base_dir)
 
@@ -212,7 +212,7 @@ def context_mermin_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare paths for results
-        results_path = base_path / calibration / run / "mermin" / "results.json"
+        results_path = base_path / calibration / run / "mermin" / nqubits / "results.json"
 
         try:
             # Extract description only once (from left side)
@@ -233,7 +233,7 @@ def context_mermin_plots(context, cfg):
 
 
     context["mermin_plot_is_set"] = True
-    logging.info("Added Mermin 5Q plots to context")
+    logging.info(f"Added Mermin {nqubits}Q plots to context")
     return context
 
 
@@ -264,7 +264,7 @@ def context_grover2q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / calibration / run / "grover2q" / "results.json"
+        results_path = base_path / calibration / run / "grover2q" / "2" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -302,7 +302,7 @@ def context_grover3q_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / calibration / run / "grover3q" / "results.json"
+        results_path = base_path / calibration / run / "grover3q" / "3" / "results.json"
 
         # Extract description (same for both sides — can store once)
         if label == "left":
@@ -329,7 +329,7 @@ def context_grover3q_plots(context, cfg):
     return context
 
 
-def context_ghz_plots(context, cfg):
+def context_ghz_plots(context, cfg, nqubits):
     """Prepare GHZ plots and data."""
     base_path = Path(cfg.base_dir)
 
@@ -339,7 +339,7 @@ def context_ghz_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / calibration / run / "ghz" / "results.json"
+        results_path = base_path / calibration / run / "ghz" / nqubits / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
@@ -365,7 +365,7 @@ def context_ghz_plots(context, cfg):
         context[label]["ghz_qubits"] = fl.extract_qubits_used(results_path)
 
     context["ghz_plot_is_set"] = True
-    logging.info("Added GHZ plots to context")
+    logging.info(f"Added {nqubits} qubits GHZ plots to context")
     return context
 
 
@@ -496,7 +496,7 @@ def context_qft_plots(context, cfg):
         [cfg.run_left, cfg.run_right],
     ):
         # Prepare path for results
-        results_path = base_path / calibration / run / "qft" / "results.json"
+        results_path = base_path / calibration / run / "qft3_swap" / "3" / "results.json"
 
         # Extract description only once (from left side)
         if label == "left":
