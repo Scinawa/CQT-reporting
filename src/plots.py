@@ -675,17 +675,17 @@ def plot_qft(raw_data, expname, output_path="build/"):
     qubits_set = set(sum(qubits_list, []))
     n_qubits = len(qubits_set)                         # number of qubits
     all_bitstrings = [format(i, f"0{n_qubits}b") for i in range(2**n_qubits)]
-    os.makedirs(output_path, exist_ok=True)
     # Plot
     plt.bar(all_bitstrings, dataplot, color="skyblue", edgecolor="black")
     plt.title(f"QFT Manually Transpiled on with shots. \n Execution on edges {qubits_list}")
     plt.xlabel("States")
     plt.xticks(rotation=45, ha="right")
     plt.ylabel("Counts")
-    plt.legend()
+    # plt.legend()
     plt.tight_layout()
     # plt.show()
     # Save plot
+    
     os.makedirs(output_path, exist_ok=True)
     out_file = os.path.join(output_path, f"{expname}_results.pdf")
     plt.savefig(out_file)

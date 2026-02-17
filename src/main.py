@@ -254,11 +254,12 @@ def prepare_template_context(cfg):
 
     # MERMIN
     if cfg.mermin_plot:
-        try:
-            context = context_mermin_plots(context, cfg)
-        except Exception as e:
-            logging.error(f"Error preparing Mermin plots: {e}")
-            context["mermin_plot_is_set"] = None
+        for i in ["3", "4", "5"]:
+            try:
+                context = context_mermin_plots(context, cfg, i)
+            except Exception as e:
+                logging.error(f"Error preparing Mermin {i} qubits plots: {e}")
+                context[f"mermin{i}_plot_is_set"] = None
     else:
         context["mermin_plot_is_set"] = None
 
@@ -286,11 +287,12 @@ def prepare_template_context(cfg):
 
     # GHZ PLOTS
     if cfg.ghz_plot:
-        try:
-            context = context_ghz_plots(context, cfg)
-        except Exception as e:
-            logging.error(f"Error preparing GHZ plots: {e}")
-            context["ghz_plot_is_set"] = None
+        for i in ["3", "4", "5"]:
+            try:
+                context = context_ghz_plots(context, cfg, i)
+            except Exception as e:
+                logging.error(f"Error preparing GHZ {i} qubits plots: {e}")
+                context[f"ghz{i}_plot_is_set"] = None
     else:
         logging.info("GHZ plot is not set, skipping...")
         context["ghz_plot_is_set"] = None

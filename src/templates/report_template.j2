@@ -298,42 +298,124 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \newpage
 
-{% if mermin_plot_is_set %}
-\section{Mermin}
-{{ mermin_description }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mermin 3Q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% if mermin3_plot_is_set %}
+\section{Mermin 3 qubits}
+{{ mermin3_description }}
 
 \begin{multicols}{2}
 
 \begin{itemize}
-\item \textbf{Runtime:} {{ left.mermin_runtime }}
-\item \textbf{Qubits used:} {{ left.mermin_qubits }}
+\item \textbf{Runtime:} {{ left.mermin3_runtime }}
+\item \textbf{Qubits used:} {{ left.mermin3_qubits }}
 
 \end{itemize}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ {{ left.plot_mermin }} }
+\includegraphics[width=\linewidth]{ {{ left.plot_mermin3 }} }
 \end{minipage}
 \end{center}
 
 \columnbreak
 
 \begin{itemize}
-\item \textbf{Runtime:} {{ right.mermin_runtime }}
-\item \textbf{Qubits used:} {{ right.mermin_qubits }}
+\item \textbf{Runtime:} {{ right.mermin3_runtime }}
+\item \textbf{Qubits used:} {{ right.mermin3_qubits }}
 \end{itemize}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ {{ right.plot_mermin }} }
+\includegraphics[width=\linewidth]{ {{ right.plot_mermin3 }} }
+\end{minipage}
+\end{center}
+\end{multicols}
+{% endif %}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mermin 4Q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% if mermin4_plot_is_set %}
+\section{Mermin 4 qubits}
+{{ mermin4_description }}
+
+\begin{multicols}{2}
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ left.mermin4_runtime }}
+\item \textbf{Qubits used:} {{ left.mermin4_qubits }}
+
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ left.plot_mermin4 }} }
+\end{minipage}
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ right.mermin4_runtime }}
+\item \textbf{Qubits used:} {{ right.mermin4_qubits }}
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ right.plot_mermin4 }} }
 \end{minipage}
 \end{center}
 \end{multicols}
 {% endif %}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mermin 5Q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% if mermin5_plot_is_set %}
+\section{Mermin 5 qubits}
+{{ mermin5_description }}
+
+\begin{multicols}{2}
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ left.mermin5_runtime }}
+\item \textbf{Qubits used:} {{ left.mermin5_qubits }}
+
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ left.plot_mermin5 }} }
+\end{minipage}
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ right.mermin5_runtime }}
+\item \textbf{Qubits used:} {{ right.mermin5_qubits }}
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ {{ right.plot_mermin5 }} }
+\end{minipage}
+\end{center}
+\end{multicols}
+{% endif %}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Grover 2Q state preparation
@@ -410,35 +492,100 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GHZ state preparation
+% GHZ 3 qubits state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{% if ghz_plot_is_set %}
+{% if ghz3_plot_is_set %}
 {% if not grover2q_plot_is_set %}
 \newpage
 {% endif %}
-\section{GHZ state preparation}
-{{ ghz_description }}
+\section{GHZ 3 qubits state preparation}
+{{ ghz3_description }}
 
 \begin{multicols}{2}
 \begin{itemize}
-\item \textbf{Runtime:} {{ left.ghz_runtime }}
-\item \textbf{Qubits used:} {{ left.ghz_qubits }}
+\item \textbf{Runtime:} {{ left.ghz3_runtime }}
+\item \textbf{Qubits used:} {{ left.ghz3_qubits }}
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=0.95\linewidth]{ {{ left.plot_ghz }} }
+\includegraphics[width=0.95\linewidth]{ {{ left.plot_ghz3 }} }
 \end{center}
 
 \columnbreak
 
 \begin{itemize}
-\item \textbf{Runtime:} {{ right.ghz_runtime }}
-\item \textbf{Qubits used:} {{ right.ghz_qubits }}
+\item \textbf{Runtime:} {{ right.ghz3_runtime }}
+\item \textbf{Qubits used:} {{ right.ghz3_qubits }}
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=0.95\linewidth]{ {{ right.plot_ghz }} }
+\includegraphics[width=0.95\linewidth]{ {{ right.plot_ghz3 }} }
+\end{center}
+\end{multicols}
+{% endif %}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GHZ 4 qubits state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% if ghz4_plot_is_set %}
+\newpage
+\section{GHZ 4 qubits state preparation}
+{{ ghz4_description }}
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} {{ left.ghz4_runtime }}
+\item \textbf{Qubits used:} {{ left.ghz4_qubits }}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ left.plot_ghz4 }} }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ right.ghz4_runtime }}
+\item \textbf{Qubits used:} {{ right.ghz4_qubits }}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ right.plot_ghz4 }} }
+\end{center}
+\end{multicols}
+{% endif %}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GHZ 5 qubits state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+{% if ghz5_plot_is_set %}
+\newpage
+\section{GHZ 5 qubits state preparation}
+{{ ghz5_description }}
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} {{ left.ghz5_runtime }}
+\item \textbf{Qubits used:} {{ left.ghz5_qubits }}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ left.plot_ghz5 }} }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ right.ghz5_runtime }}
+\item \textbf{Qubits used:} {{ right.ghz5_qubits }}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ right.plot_ghz5 }} }
 \end{center}
 \end{multicols}
 {% endif %}
@@ -562,9 +709,6 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {% if qft_plot_is_set %}
-{% if not reuploading_classifier_plot_is_set %}
-\newpage
-{% endif %}
 \section{QFT Plots}
 {{ qft_description }}
 

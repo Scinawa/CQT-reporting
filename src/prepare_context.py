@@ -217,27 +217,27 @@ def context_mermin_plots(context, cfg, nqubits):
         try:
             # Extract description only once (from left side)
             if label == "left":
-                context["mermin_description"] = fl.extract_description(results_path)
+                context["mermin{nqubits}_description"] = fl.extract_description(results_path)
 
-            context[label][f"plot_mermin"] = pl.mermin_plot(
+            context[label][f"plot_mermin{nqubits}"] = pl.mermin_plot(
                 raw_data=results_path,
-                expname=f"mermin_{calibration}_{run}",
+                expname=f"mermin{nqubits}_{calibration}_{run}",
                 output_path="build/",
             )
             # Extract runtime and qubits used
-            context[label][f"mermin_runtime"] = fl.extract_runtime(results_path)
-            context[label][f"mermin_qubits"] = fl.extract_qubits_used(results_path)
+            context[label][f"mermin{nqubits}_runtime"] = fl.extract_runtime(results_path)
+            context[label][f"mermin{nqubits}_qubits"] = fl.extract_qubits_used(results_path)
         except Exception as e:
             logging.warning(f"Using placeholder for Mermin plot due to an error: {e}")
-            context[label][f"plot_mermin"] = "placeholder.png"
+            context[label][f"plot_mermin{nqubits}"] = "placeholder.png"
 
 
-    context["mermin_plot_is_set"] = True
+    context[f"mermin{nqubits}_plot_is_set"] = True
     logging.info(f"Added Mermin {nqubits}Q plots to context")
     return context
 
 
-def context_mermin_table(context, cfg):
+def context_mermin_table(context, cfg, nqubits):
     """Prepare Mermin table data."""
     from pathlib import Path
 
@@ -249,8 +249,8 @@ def context_mermin_table(context, cfg):
     maximum_mermin_right = fl.get_maximum_mermin(
         base_path / "mermin" / cfg.calibration_right, "results.json"
     )
-    context["mermin_maximum"] = maximum_mermin
-    context["mermin_maximum_right"] = maximum_mermin_right
+    context[f"mermin{nqubits}_maximum"] = maximum_mermin
+    context[f"mermin{nqubits}_maximum_right"] = maximum_mermin_right
     return context
 
 
@@ -343,28 +343,23 @@ def context_ghz_plots(context, cfg, nqubits):
 
         # Extract description only once (from left side)
         if label == "left":
-            context["ghz_description"] = fl.extract_description(results_path)
+            context[f"ghz{nqubits}_description"] = fl.extract_description(results_path)
 
         # Generate GHZ plot
         try:
-            context[label]["plot_ghz"] = pl.plot_ghz(
+            context[label][f"plot_ghz{nqubits}"] = pl.plot_ghz(
                 raw_data=results_path,
                 experiment_name=calibration,
-                output_path=os.path.join(
-                        "build",
-                        "ghz",
-                        calibration,
-                        run,
-                    ),
+                output_path="build/"
             )
         except Exception:
-            context[label]["plot_ghz"] = "placeholder.png"
+            context[label][f"plot_ghz{nqubits}"] = "placeholder.png"
 
         # Extract runtime and qubits used
-        context[label]["ghz_runtime"] = fl.extract_runtime(results_path)
-        context[label]["ghz_qubits"] = fl.extract_qubits_used(results_path)
+        context[label][f"ghz{nqubits}_runtime"] = fl.extract_runtime(results_path)
+        context[label][f"ghz{nqubits}_qubits"] = fl.extract_qubits_used(results_path)
 
-    context["ghz_plot_is_set"] = True
+    context[f"ghz{nqubits}_plot_is_set"] = True
     logging.info(f"Added {nqubits} qubits GHZ plots to context")
     return context
 
@@ -507,18 +502,16 @@ def context_qft_plots(context, cfg):
             context[label]["plot_qft"] = pl.plot_qft(
                 raw_data=results_path,
                 expname=f"qft_{calibration}_{run}",
-                output_path=os.path.join(
-                        "build",
-                        "qft",
-                        calibration,
-                    ),
+                output_path="build/"
             )
-        except Exception:
+            # Extract runtime and qubits used
+            context[label]["qft_runtime"] = fl.extract_runtime(results_path)
+            context[label]["qft_qubits"] = fl.extract_qubits_used(results_path)
+        except Exception as e:
+            logging.warning(f"Using placeholder for QFT plot due to an error: {e}")
             context[label]["plot_qft"] = "placeholder.png"
 
-        # Extract runtime and qubits used
-        context[label]["qft_runtime"] = fl.extract_runtime(results_path)
-        context[label]["qft_qubits"] = fl.extract_qubits_used(results_path)
+        
 
     context["qft_plot_is_set"] = True
     logging.info("Added QFT plots to context")
