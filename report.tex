@@ -1,0 +1,608 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --------------------------------------------------------
+% Quantum Benchmark Report
+% Using Tau LaTeX Class
+% --------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[9pt,a4paper]{src/templates/tau-class/tau}
+\usepackage[english]{babel}
+
+% Additional packages that might be needed and are not in tau.cls
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{needspace}
+
+%----------------------------------------------------------
+% TITLE
+%----------------------------------------------------------
+
+\journalname{Benchmark Report}
+\title{Benchmarking of NQCH's quantum computer}
+
+%----------------------------------------------------------
+% AUTHORS AND INFORMATION
+%----------------------------------------------------------
+
+\makeatletter
+\xdef\authordate{\today}   % expand \today now; define globally
+\makeatother
+
+\author{\authordate}       % will print the actual date where author goes
+
+
+
+%----------------------------------------------------------
+% LOGO CONFIGURATION
+%----------------------------------------------------------
+
+\logopath{src/templates/cqt.pdf}
+\logoheight{1.5cm}
+
+%----------------------------------------------------------
+% FOOTER INFORMATION
+%----------------------------------------------------------
+
+\institution{Centre for Quantum Technologies}
+\footinfo{Benchmark Report}
+\theday{  } 
+\leadauthor{Quantum hardware lab of CQT}
+\course{Quantum Hardware Team}
+
+%----------------------------------------------------------
+% ABSTRACT
+%----------------------------------------------------------
+
+%\begin{abstract}
+%This report presents the quantum benchmark results for  with  qubits. 
+%The benchmark was conducted on  at . The report includes comparison between 
+%the new version and control version, routine results, and T1/T2 measurements.
+%\end{abstract}
+
+\keywords{quantum computing, benchmarking, quantum hardware, performance analysis}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{firststyle}
+
+% Report of changes
+\section{Report of Changes}
+
+
+\begin{multicols}{2}
+
+\begin{center}
+\begin{tauenvmine}
+{\textbf{Platform:}  sinq20 } \\
+\textbf{Calibration-id:} \emph{ 2447f0fad33dfea493b4e7bc4143c8bd2e28d979 } \\
+\textbf{Calibration date:} \emph{ 2025-11-05 08:58:37 } \\
+\textbf{Calibration note:} chore(sinq20): Retune CZ for Q5-Q6 and Q17-Q18
+ \\
+\: \\
+\textbf{Experiment-id:} \emph{ None } \\
+\textbf{Experiment date:} \emph{ 2025-11-16 23:48:24 } \\
+\textbf{Experiment note:} \emph{ temporary note!!! } \\
+
+
+\end{tauenvmine}
+\end{center}
+
+\columnbreak
+
+\begin{center}
+\begin{tauenvmine}
+{\textbf{Platform:}  sinq20 } \\
+\textbf{Calibration-id:} \emph{ 1e1f7e1d1af58009eda1986bb3689e6b9b2356b6 } \\
+\textbf{Calibration date:} \emph{ 2025-11-20 03:59:33 } \\
+\textbf{Calibration note:} chore(sinq20): Update CZ for Q4-Q5
+ \\
+\: \\
+\textbf{Experiment-id:} \emph{ None } \\
+\textbf{Experiment date:} \emph{ 2025-11-23 02:38:14 } \\
+\textbf{Experiment note:} \emph{ Scheduled runs of experiments } \\
+\end{tauenvmine}
+\end{center}
+
+\end{multicols}
+
+
+%----------------------------------------------------------
+\section{Version Comparison}
+\begin{multicols}{2}
+
+%\subsection{New Version}
+\begin{tauenv}
+\begin{center}
+\begin{tabular}{@{}ll|ll@{}}
+\toprule
+\textbf{Library} & \textbf{Version} & \textbf{Library} & \textbf{Version} \\ \midrule
+
+
+    qibo & 0.2.19 
+    
+        & numpy & 2.2.6 \\
+    
+
+    qibolab & 0.2.9 
+    
+        & qibocal & 0.2.3 \\
+    
+
+    matplotlib & 3.10.3 
+    
+        & scipy & 1.15.3 \\
+    
+
+    scikit-learn & 1.6.1 
+    
+        & pandas & 2.2.3 \\
+    
+
+    networkx & 3.4.2 
+    
+        & sympy & 1.14.0 \\
+    
+
+    torch & 2.7.0 
+    
+        & & \\
+    
+
+\bottomrule
+\end{tabular}
+\end{center}
+\hspace{1cm}
+\begin{minipage}{0.45\linewidth}
+
+\end{minipage}
+\end{tauenv}
+
+\columnbreak
+
+%\subsection{Control Version}
+\begin{tauenv}
+\begin{center}
+\begin{tabular}{@{}ll|ll@{}}
+\toprule
+\textbf{Library} & \textbf{Version} & \textbf{Library} & \textbf{Version} \\ \midrule
+
+
+    qibo & 0.2.19 
+    
+        & numpy & 2.2.6 \\
+    
+
+    qibolab & 0.2.9 
+    
+        & qibocal & 0.2.3 \\
+    
+
+    matplotlib & 3.10.3 
+    
+        & scipy & 1.15.3 \\
+    
+
+    scikit-learn & 1.6.1 
+    
+        & pandas & 2.2.3 \\
+    
+
+    networkx & 3.4.2 
+    
+        & sympy & 1.14.0 \\
+    
+
+    torch & 2.7.0 
+    
+        & & \\
+    
+
+\bottomrule
+\end{tabular}
+\end{center}
+\hspace{1cm}
+\begin{minipage}{0.45\linewidth}
+\end{minipage}
+\end{tauenv}
+
+
+\end{multicols}
+
+
+\section{One and two qubit fidelities}
+The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit fidelity is the "Bell-state fidelity". 
+\begin{multicols}{2}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/fidelity/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_fidelities.pdf }
+\end{minipage}
+\end{center}
+
+\columnbreak
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/fidelity/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_fidelities.pdf }
+\end{minipage}
+\end{center}
+\end{multicols}
+
+
+\newpage
+\section{Statistics} 
+
+% Ensure proper table alignment
+\renewcommand{\arraystretch}{1.2}
+
+% Use table side by side with proper alignment
+\noindent\begin{minipage}{0.49\textwidth}
+{\small
+\begin{center}
+\begin{tabular}{@{}p{1.8cm}p{1.3cm}p{1.2cm}p{1.2cm}p{1.2cm}@{}}
+\toprule
+ & Average & Median & Min & Max \\
+\midrule
+T1 (ns) & 1.28e+04 & 1.23e+04 & 646 & 3.65e+04 \\
+T2 (ns) & 2.36e+25 & 4.11e+03 & 125 & 9.43e+26 \\
+Fidelity & None & None & None & None \\
+RO fidelity  & 0.794 & 0.777 & 0.777 & 0.927 \\
+%Mermin Max  & N/A & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+}
+\end{minipage}
+\hfill
+\noindent\begin{minipage}{0.49\textwidth}
+{\small
+\begin{center}
+\begin{tabular}{@{}p{1.8cm}p{1.3cm}p{1.2cm}p{1.2cm}p{1.2cm}@{}}
+\toprule
+ & Average & Median & Min & Max \\
+\midrule
+T1 (ns) & 1.28e+04 & 1.23e+04 & 646 & 3.65e+04 \\
+T2 (ns) & 2.36e+25 & 4.11e+03 & 125 & 9.43e+26 \\
+Fidelity  & None & None & None & None \\
+RO Fidelity  & 0.794 & 0.777 & 0.777 & 0.927 \\
+%Mermin Max  & N/A & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+}
+\end{minipage}
+
+% Reset arraystretch to default
+\renewcommand{\arraystretch}{1.0}
+
+\section{Best Qubits Selection}
+
+\begin{multicols}{2}
+
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+k-qubits & Best Qubits & Fidelity \\ \midrule
+2 & 18, 19 & 0.948 \\
+3 & 17, 18, 19 & 0.946 \\
+4 & 13, 17, 18, 19 & 0.938 \\
+5 & 8, 13, 17, 18, 19 & 0.931 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\columnbreak
+
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+k-qubits & Best Qubits & Fidelity \\ \midrule
+2 & 2, 3 & 0.914 \\
+3 & 2, 3, 8 & 0.878 \\
+4 & 2, 3, 8, 9 & 0.869 \\
+5 & 0, 2, 3, 8, 9 & 0.858 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{multicols}
+
+
+
+\section{Randomized Benchmarking Results}
+
+\begin{multicols}{2}
+
+%\subsection{New Fidelities}
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+Qubit n & Fidelity & Error Bars \\ \midrule
+
+0 & 0.997 & $\pm$ 0.00041 \\
+
+1 & \textcolor{green}{0.998} & $\pm$ 0.0006 \\
+
+2 & 0.996 & $\pm$ 0.000236 \\
+
+3 & \textcolor{green}{0.998} & $\pm$ 0.000236 \\
+
+4 & 0.99 & $\pm$ 0.00167 \\
+
+5 & 0.996 & $\pm$ 0.000826 \\
+
+6 & \textcolor{green}{0.999} & $\pm$ 0.000308 \\
+
+7 & 0.983 & $\pm$ 0.00219 \\
+
+8 & 0.995 & $\pm$ 0.00054 \\
+
+9 & 0.996 & $\pm$ 0.000782 \\
+
+10 & 0.995 & $\pm$ 0.000441 \\
+
+11 & \textcolor{green}{0.998} & $\pm$ 0.000246 \\
+
+12 & \textcolor{green}{0.998} & $\pm$ 0.000396 \\
+
+13 & \textcolor{green}{0.998} & $\pm$ 0.000344 \\
+
+14 & 0.996 & $\pm$ 0.000846 \\
+
+15 & 0.995 & $\pm$ 0.000647 \\
+
+16 & 0.997 & $\pm$ 0.000463 \\
+
+17 & 0.991 & $\pm$ 0.0006 \\
+
+18 & 0.987 & $\pm$ 0.00163 \\
+
+19 & \textcolor{green}{0.998} & $\pm$ 0.00042 \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\columnbreak
+
+%\subsection{Control Fidelities}
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+Qubit n & Fidelity & Error Bars \\ \midrule
+
+0 & 0.997 & $\pm$ 0.00041 \\
+
+1 & \textcolor{green}{0.998} & $\pm$ 0.0006 \\
+
+2 & 0.996 & $\pm$ 0.000236 \\
+
+3 & \textcolor{green}{0.998} & $\pm$ 0.000236 \\
+
+4 & 0.995 & $\pm$ 0.000486 \\
+
+5 & 0.996 & $\pm$ 0.000826 \\
+
+6 & \textcolor{green}{0.999} & $\pm$ 0.000308 \\
+
+7 & 0.983 & $\pm$ 0.00219 \\
+
+8 & 0.995 & $\pm$ 0.00054 \\
+
+9 & 0.996 & $\pm$ 0.000782 \\
+
+10 & 0.995 & $\pm$ 0.000441 \\
+
+11 & \textcolor{green}{0.998} & $\pm$ 0.000246 \\
+
+12 & \textcolor{green}{0.998} & $\pm$ 0.000396 \\
+
+13 & \textcolor{green}{0.998} & $\pm$ 0.000344 \\
+
+14 & 0.997 & $\pm$ 0.000357 \\
+
+15 & 0.995 & $\pm$ 0.000647 \\
+
+16 & 0.997 & $\pm$ 0.000463 \\
+
+17 & 0.991 & $\pm$ 0.0006 \\
+
+18 & 0.987 & $\pm$ 0.00163 \\
+
+19 & \textcolor{green}{0.998} & $\pm$ 0.00042 \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{multicols}
+
+\newpage
+
+
+\section{Mermin}
+
+
+\begin{multicols}{2}
+
+\begin{itemize}
+\item \textbf{Runtime:} 
+\item \textbf{Qubits used:} 
+\item \textbf{Max:} 
+
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ placeholder.png }
+\end{minipage}
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} 
+\item \textbf{Qubits used:} 
+\item \textbf{Max:} 
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ placeholder.png }
+\end{minipage}
+\end{center}
+\end{multicols}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Grover 2Q state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Grover 3Q state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GHZ state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tomography state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Process tomography state preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reuploading classifier 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage
+\section{Reuploading Classifier}
+Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} N/A
+\item \textbf{Qubits used:} [7]
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/reuploading_classifier/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/reuploading_classifier_results_2447f0fad33dfea493b4e7bc4143c8bd2e28d979.pdf }
+\end{minipage}
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} N/A
+\item \textbf{Qubits used:} [7]
+\end{itemize}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/reuploading_classifier/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/reuploading_classifier_results_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6.pdf }
+\end{minipage}
+\end{center}
+\end{multicols}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% QFT PLOT  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Yeast classifier 3q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{QML: Yeast dataset (3 qubits)}
+
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Duration:} 148.54 seconds
+\item \textbf{Accuracy:} 0.60
+\item \textbf{Qubits used:} 17, 18, 19
+\end{itemize}
+
+\begin{center}
+\centering
+\includegraphics[width=0.95\linewidth]{ build/yeast/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/3q_yeast_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_qml_confusion_matrices.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Duration:} 144.28 seconds
+\item \textbf{Accuracy:} 0.63
+\item \textbf{Qubits used:} 8, 3, 2
+\end{itemize}
+
+\begin{center}
+\centering
+\includegraphics[width=0.95\linewidth]{ build/yeast/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/3q_yeast_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_qml_confusion_matrices.pdf }
+\end{center}
+\end{multicols}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Statlog classifier 3q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Yeast classifier 4q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Statlog classifier 4q
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Amplitude Encoding
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\end{document}

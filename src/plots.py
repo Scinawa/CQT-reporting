@@ -534,14 +534,14 @@ def mermin_plot(raw_data, expname, output_path="build/"):
     plt.grid()
     if len(series) > 1:
         plt.legend()
-    plt.title(f"Mermin Inequality [{number_of_qubits} qubits]\nMax: {global_max}")
+    plt.title(f"Mermin Inequality [{number_of_qubits} qubits]")
     plt.tight_layout()
 
     filename = f"{expname}_mermin.png"
     full_path = os.path.join(output_path, filename)
     plt.savefig(full_path)
     plt.close()
-    return full_path
+    return full_path, global_max
 
 
 def plot_reuploading(x, target, predictions=None, err=None, title="plot", outdir="."):
@@ -620,11 +620,13 @@ def plot_grover(raw_data, expname, output_path="build/"):
     plt.xticks(x, tick_labels, rotation=45, ha="right")
     plt.tight_layout()
 
+    max_prob = max(counts)
+
     os.makedirs(output_path, exist_ok=True)
     out_file = os.path.join(output_path, f"{expname}_results.pdf")
     plt.savefig(out_file)
     plt.close()
-    return out_file
+    return out_file, max_prob
 
 
 # def plot_qft(raw_data, expname, output_path="../build/"):
@@ -714,10 +716,7 @@ def plot_ghz(raw_data, experiment_name, output_path="../build/"):
     plt.bar(bitstrings, counts, color="mediumseagreen", edgecolor="black")
     plt.xlabel("Bitstring")
     plt.ylabel("Counts")
-    title = "GHZ State Measurement Histogram"
-    if success_rate is not None:
-        title += f" (Success: {success_rate:.3f})"
-    plt.title(title)
+    plt.title("GHZ State Measurement Histogram")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
 
@@ -725,7 +724,7 @@ def plot_ghz(raw_data, experiment_name, output_path="../build/"):
     out_file = os.path.join(output_path, f"{experiment_name}_ghz_results.pdf")
     plt.savefig(out_file)
     plt.close()
-    return out_file
+    return out_file, success_rate
 
 
 def plot_amplitude_encoding(raw_data, expname, output_path="build/"):
