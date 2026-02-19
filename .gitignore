@@ -3,4 +3,3 @@ src/__pycache__/*
 .DS_Store
 logs/*
 build/*
-uv.lock
