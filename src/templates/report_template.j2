@@ -268,7 +268,7 @@ k-qubits & Best Qubits & Fidelity \\ \midrule
 \begin{center}
 \begin{tabular}{@{}l c c l c@{}}
 \toprule
-Benchmark Experiment & Qubits used & Runtime (seconds) & Metric name & Metric value \\
+Benchmark Experiment & Qubits used & Runtime & Metric name & Metric value \\
 \midrule
 {% if mermin_plot_is_set %}
 Mermin & {{ left.mermin_qubits | default(' - ') }} & {{ left.mermin_runtime | default(' - ') }} & Max & {{ left.mermin_max | default(' - ') }} \\
