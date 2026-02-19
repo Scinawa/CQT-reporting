@@ -488,6 +488,9 @@ def context_reuploading_classifier_plots(context, cfg):
         context[label]["reuploading_classifier_qubits"] = fl.extract_qubits_used(
             results_path
         )
+        with open(results_path, "r") as f:
+            rc_data = json.load(f)
+        context[label]["reuploading_classifier_accuracy"] = rc_data.get("test_accuracy", "N/A")
 
     context["reuploading_classifier_plot_is_set"] = True
     logging.info("Added Reuploading Classifier plots to context")

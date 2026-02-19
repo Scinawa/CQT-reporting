@@ -75,7 +75,10 @@ def extract_qubits_used(filename):
     with open(filename, "r") as f:
         results = json.load(f)
 
-    return results.get("qubits_used", " --- No ``qubits\_used'' provided. ---")
+    qubits = results.get("qubits_used", None)
+    if qubits is None:
+        return "-"
+    return str(qubits).replace("[", "").replace("]", "")
 
 
 def process_commit_info(filename):
