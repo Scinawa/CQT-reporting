@@ -470,7 +470,7 @@ def context_reuploading_classifier_plots(context, cfg):
             context[label]["plot_reuploading_classifier"] = (
                 pl.plot_reuploading_classifier(
                     raw_data=results_path,
-                    exp_name=calibration,
+                    exp_name=f"{calibration}_{run}",
                     output_path=os.path.join(
                         "build",
                         "reuploading_classifier",
