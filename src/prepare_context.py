@@ -219,11 +219,13 @@ def context_mermin_plots(context, cfg):
             if label == "left":
                 context["mermin_description"] = fl.extract_description(results_path)
 
-            context[label][f"plot_mermin"] = pl.mermin_plot(
+            plot_path, mermin_max = pl.mermin_plot(
                 raw_data=results_path,
                 expname=f"mermin_{calibration}_{run}",
                 output_path="build/",
             )
+            context[label]["plot_mermin"] = plot_path
+            context[label]["mermin_max"] = mermin_max
             # Extract runtime and qubits used
             context[label][f"mermin_runtime"] = fl.extract_runtime(results_path)
             context[label][f"mermin_qubits"] = fl.extract_qubits_used(results_path)
@@ -272,11 +274,13 @@ def context_grover2q_plots(context, cfg):
 
         # Generate Grover 2Q plot
         try:
-            context[label]["plot_grover2q"] = pl.plot_grover(
+            plot_path, max_prob = pl.plot_grover(
                 raw_data=results_path,
                 expname=f"grover2q_{calibration}_{run}",
                 output_path="build/",
             )
+            context[label]["plot_grover2q"] = plot_path
+            context[label]["grover2q_max_prob"] = max_prob
             # pdb.set_trace()
             # Extract runtime and qubits used
             context[label]["grover2q_runtime"] = fl.extract_runtime(results_path)
@@ -310,11 +314,13 @@ def context_grover3q_plots(context, cfg):
 
         # Generate Grover 3Q plot
         try:
-            context[label]["plot_grover3q"] = pl.plot_grover(
+            plot_path, max_prob = pl.plot_grover(
                 raw_data=results_path,
                 expname=f"grover3q_{calibration}_{run}",
                 output_path="build/",
             )
+            context[label]["plot_grover3q"] = plot_path
+            context[label]["grover3q_max_prob"] = max_prob
 
             # Extract runtime and qubits used
             context[label]["grover3q_runtime"] = fl.extract_runtime(results_path)
@@ -347,7 +353,7 @@ def context_ghz_plots(context, cfg):
 
         # Generate GHZ plot
         try:
-            context[label]["plot_ghz"] = pl.plot_ghz(
+            plot_path, success_rate = pl.plot_ghz(
                 raw_data=results_path,
                 experiment_name=calibration,
                 output_path=os.path.join(
@@ -357,6 +363,8 @@ def context_ghz_plots(context, cfg):
                         run,
                     ),
             )
+            context[label]["plot_ghz"] = plot_path
+            context[label]["ghz_success"] = f"{success_rate:.3f}" if success_rate is not None else "N/A"
         except Exception:
             context[label]["plot_ghz"] = "placeholder.png"
 
