@@ -80,9 +80,9 @@
 \textbf{Calibration note:} chore(sinq20): Retune CZ for Q5-Q6 and Q17-Q18
  \\
 \: \\
-\textbf{Experiment-id:} \emph{ None } \\
-\textbf{Experiment date:} \emph{ 2025-11-16 23:48:24 } \\
-\textbf{Experiment note:} \emph{ temporary note!!! } \\
+\textbf{Experiment-id:} \emph{ 20251108115234 } \\
+\textbf{Experiment date:} \emph{ 2025-11-08 11:54:43 } \\
+\textbf{Experiment note:} \emph{ First execution after malfunctioning of cables. } \\
 
 
 \end{tauenvmine}
@@ -93,14 +93,14 @@
 \begin{center}
 \begin{tauenvmine}
 {\textbf{Platform:}  sinq20 } \\
-\textbf{Calibration-id:} \emph{ 1e1f7e1d1af58009eda1986bb3689e6b9b2356b6 } \\
-\textbf{Calibration date:} \emph{ 2025-11-20 03:59:33 } \\
-\textbf{Calibration note:} chore(sinq20): Update CZ for Q4-Q5
+\textbf{Calibration-id:} \emph{ 2447f0fad33dfea493b4e7bc4143c8bd2e28d979 } \\
+\textbf{Calibration date:} \emph{ 2025-11-05 08:58:37 } \\
+\textbf{Calibration note:} chore(sinq20): Retune CZ for Q5-Q6 and Q17-Q18
  \\
 \: \\
-\textbf{Experiment-id:} \emph{ None } \\
-\textbf{Experiment date:} \emph{ 2025-11-23 02:38:14 } \\
-\textbf{Experiment note:} \emph{ Scheduled runs of experiments } \\
+\textbf{Experiment-id:} \emph{ 20251110092039 } \\
+\textbf{Experiment date:} \emph{ 2025-11-10 09:25:32 } \\
+\textbf{Experiment note:} \emph{ Second execution. } \\
 \end{tauenvmine}
 \end{center}
 
@@ -217,7 +217,7 @@ The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ build/fidelity/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_fidelities.pdf }
+\includegraphics[width=\linewidth]{ build/fidelity/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251108115234/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251108115234_fidelities.pdf }
 \end{minipage}
 \end{center}
 
@@ -226,7 +226,7 @@ The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ build/fidelity/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_fidelities.pdf }
+\includegraphics[width=\linewidth]{ build/fidelity/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251110092039/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251110092039_fidelities.pdf }
 \end{minipage}
 \end{center}
 \end{multicols}
@@ -286,10 +286,10 @@ RO Fidelity  & 0.794 & 0.777 & 0.777 & 0.927 \\
 \begin{tabular}{@{}c c c@{}}
 \toprule
 k-qubits & Best Qubits & Fidelity \\ \midrule
-2 & 18, 19 & 0.948 \\
-3 & 17, 18, 19 & 0.946 \\
-4 & 13, 17, 18, 19 & 0.938 \\
-5 & 8, 13, 17, 18, 19 & 0.931 \\
+2 & 13, 17 & 0.945 \\
+3 & 13, 17, 18 & 0.938 \\
+4 & 3, 8, 13, 17 & 0.936 \\
+5 & 3, 8, 9, 13, 17 & 0.935 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -300,16 +300,55 @@ k-qubits & Best Qubits & Fidelity \\ \midrule
 \begin{tabular}{@{}c c c@{}}
 \toprule
 k-qubits & Best Qubits & Fidelity \\ \midrule
-2 & 2, 3 & 0.914 \\
-3 & 2, 3, 8 & 0.878 \\
-4 & 2, 3, 8, 9 & 0.869 \\
-5 & 0, 2, 3, 8, 9 & 0.858 \\
+2 & 3, 8 & 0.949 \\
+3 & 3, 8, 9 & 0.948 \\
+4 & 0, 3, 8, 9 & 0.945 \\
+5 & 3, 8, 9, 13, 17 & 0.938 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \end{multicols}
 
+
+\section{Summary metrics}
+
+\begin{center}
+\begin{tabular}{@{}l c c l c@{}}
+\toprule
+Benchmark Experiment & Qubits used & Runtime & Metric name & Metric value \\
+\midrule
+
+Mermin &  -  &  -  & Max &  -  \\
+Mermin &  -  &  -  & Max &  -  \\
+
+
+
+
+GHZ state preparation & 13, 17, 18 & 4.32 seconds & Success & 0.900 \\
+GHZ state preparation & 3, 8, 9 & 5.60 seconds & Success & 0.910 \\
+
+
+
+Process Tomography &  -  & 705.76 seconds &  -  &  -  \\
+Process Tomography &  -  & 612.76 seconds &  -  &  -  \\
+
+
+Reuploading Classifier & - & N/A & Accuracy test & 0.93 \\
+Reuploading Classifier & 7 & N/A & Accuracy test & 0.94 \\
+
+
+
+QML: Yeast 3q & 0, 1, 2, 3 & 793.00 seconds & Accuracy & 0.56 \\
+QML: Yeast 3q & 3, 8, 9 & 247.00 seconds & Accuracy & 0.62 \\
+
+
+
+
+
+\bottomrule
+\end{tabular}
+\end{center}
 
 
 \section{Randomized Benchmarking Results}
@@ -382,7 +421,7 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 3 & \textcolor{green}{0.998} & $\pm$ 0.000236 \\
 
-4 & 0.995 & $\pm$ 0.000486 \\
+4 & 0.99 & $\pm$ 0.00167 \\
 
 5 & 0.996 & $\pm$ 0.000826 \\
 
@@ -402,7 +441,7 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 13 & \textcolor{green}{0.998} & $\pm$ 0.000344 \\
 
-14 & 0.997 & $\pm$ 0.000357 \\
+14 & 0.996 & $\pm$ 0.000846 \\
 
 15 & 0.995 & $\pm$ 0.000647 \\
 
@@ -480,6 +519,36 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 
 
+\newpage
+
+\section{GHZ state preparation}
+GHZ circuit with 3 qubits executed on sinq20 backend with 1000 shots.
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} 4.32 seconds
+\item \textbf{Qubits used:} 13, 17, 18
+\item \textbf{Success:} 0.900
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/ghz/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251108115234/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_ghz_results.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} 5.60 seconds
+\item \textbf{Qubits used:} 3, 8, 9
+\item \textbf{Success:} 0.910
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/ghz/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251110092039/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_ghz_results.pdf }
+\end{center}
+\end{multicols}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tomography state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -491,6 +560,35 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Process tomography state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Process Tomography state preparation}
+Process tomography involves preparing a circuit particular set of states,         appending a gate (process) to the circuit, and measuring the circuit in the Pauli basis. 
+        The data is processed to get the Pauli Liouville representation of a process (gate). 
+         - Single qubit process tomography executed on qubits: [13, 17]
+         - Two qubit process tomography on coupled qubits: [[17, 13]]
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} 705.76 seconds
+\item \textbf{Qubits used:} 
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/process_tomography/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251108115234/process_tomography_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_matrices.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} 612.76 seconds
+\item \textbf{Qubits used:} 
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/process_tomography/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251110092039/process_tomography_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_matrices.pdf }
+\end{center}
+\end{multicols}
 
 
 
@@ -506,7 +604,8 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 \begin{multicols}{2}
 \begin{itemize}
 \item \textbf{Runtime:} N/A
-\item \textbf{Qubits used:} [7]
+\item \textbf{Qubits used:} -
+\item \textbf{Accuracy test:} 0.93
 \end{itemize}
 
 \begin{center}
@@ -520,13 +619,14 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 
 \begin{itemize}
 \item \textbf{Runtime:} N/A
-\item \textbf{Qubits used:} [7]
+\item \textbf{Qubits used:} 7
+\item \textbf{Accuracy test:} 0.94
 \end{itemize}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ build/reuploading_classifier/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/reuploading_classifier_results_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6.pdf }
+\includegraphics[width=\linewidth]{ build/reuploading_classifier/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/reuploading_classifier_results_2447f0fad33dfea493b4e7bc4143c8bd2e28d979.pdf }
 \end{minipage}
 \end{center}
 \end{multicols}
@@ -554,27 +654,27 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 
 \begin{multicols}{2}
 \begin{itemize}
-\item \textbf{Duration:} 148.54 seconds
-\item \textbf{Accuracy:} 0.60
-\item \textbf{Qubits used:} 17, 18, 19
+\item \textbf{Runtime:} 793.00 seconds
+\item \textbf{Qubits used:} 0, 1, 2, 3
+\item \textbf{Accuracy:} 0.56
 \end{itemize}
 
 \begin{center}
 \centering
-\includegraphics[width=0.95\linewidth]{ build/yeast/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/3q_yeast_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_qml_confusion_matrices.pdf }
+\includegraphics[width=0.95\linewidth]{ build/yeast/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251108115234/3q_yeast_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251108115234_qml_confusion_matrices.pdf }
 \end{center}
 
 \columnbreak
 
 \begin{itemize}
-\item \textbf{Duration:} 144.28 seconds
-\item \textbf{Accuracy:} 0.63
-\item \textbf{Qubits used:} 8, 3, 2
+\item \textbf{Runtime:} 247.00 seconds
+\item \textbf{Qubits used:} 3, 8, 9
+\item \textbf{Accuracy:} 0.62
 \end{itemize}
 
 \begin{center}
 \centering
-\includegraphics[width=0.95\linewidth]{ build/yeast/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/3q_yeast_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_qml_confusion_matrices.pdf }
+\includegraphics[width=0.95\linewidth]{ build/yeast/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251110092039/3q_yeast_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251110092039_qml_confusion_matrices.pdf }
 \end{center}
 \end{multicols}
 
