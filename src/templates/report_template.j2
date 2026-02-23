@@ -11,6 +11,7 @@
 % Additional packages that might be needed and are not in tau.cls
 \usepackage{longtable}
 \usepackage{multicol}
+\usepackage{multirow}
 \usepackage{needspace}
 
 %----------------------------------------------------------
@@ -266,62 +267,112 @@ k-qubits & Best Qubits & Fidelity \\ \midrule
 \section{Summary metrics}
 
 \begin{center}
-\begin{tabular}{@{}l c c l c@{}}
+\begin{tabular}{l l c c l c}
 \toprule
-Benchmark Experiment & Qubits used & Runtime & Metric name & Metric value \\
+Benchmark Experiment & col & Qubits used & Runtime & Metric name & Metric value \\
 \midrule
-{% if mermin_plot_is_set %}
-Mermin & {{ left.mermin_qubits | default(' - ') }} & {{ left.mermin_runtime | default(' - ') }} & Max & {{ left.mermin_max | default(' - ') }} \\
-Mermin & {{ right.mermin_qubits | default(' - ') }} & {{ right.mermin_runtime | default(' - ') }} & Max & {{ right.mermin_max | default(' - ') }} \\
-{% endif %}
-{% if grover2q_plot_is_set %}
-Grover - 2 qubits & {{ left.grover2q_qubits | default(' - ') }} & {{ left.grover2q_runtime | default(' - ') }} & Max prob & {{ left.grover2q_max_prob | default(' - ') }} \\
-Grover - 2 qubits & {{ right.grover2q_qubits | default(' - ') }} & {{ right.grover2q_runtime | default(' - ') }} & Max prob & {{ right.grover2q_max_prob | default(' - ') }} \\
-{% endif %}
-{% if grover3q_plot_is_set %}
-Grover - 3 qubits & {{ left.grover3q_qubits | default(' - ') }} & {{ left.grover3q_runtime | default(' - ') }} & Max prob & {{ left.grover3q_max_prob | default(' - ') }} \\
-Grover - 3 qubits & {{ right.grover3q_qubits | default(' - ') }} & {{ right.grover3q_runtime | default(' - ') }} & Max prob & {{ right.grover3q_max_prob | default(' - ') }} \\
-{% endif %}
-{% if ghz_plot_is_set %}
-GHZ state preparation & {{ left.ghz_qubits | default(' - ') }} & {{ left.ghz_runtime | default(' - ') }} & Success & {{ left.ghz_success | default(' - ') }} \\
-GHZ state preparation & {{ right.ghz_qubits | default(' - ') }} & {{ right.ghz_runtime | default(' - ') }} & Success & {{ right.ghz_success | default(' - ') }} \\
-{% endif %}
-{% if tomography_plot_is_set %}
-Tomography & {{ tomography_qubits_left | default(' - ') }} & {{ tomography_duration_left | default(' - ') }} &  -  &  -  \\
-Tomography & {{ tomography_qubits_right | default(' - ') }} & {{ tomography_duration_right | default(' - ') }} &  -  &  -  \\
-{% endif %}
-{% if process_tomography_plot_is_set %}
-Process Tomography & {{ left.process_tomography_qubits | default(' - ') }} & {{ left.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
-Process Tomography & {{ right.process_tomography_qubits | default(' - ') }} & {{ right.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
-{% endif %}
-{% if reuploading_classifier_plot_is_set %}
-Reuploading Classifier & {{ left.reuploading_classifier_qubits | default(' - ') }} & {{ left.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ left.reuploading_classifier_accuracy | default(' - ') }} \\
-Reuploading Classifier & {{ right.reuploading_classifier_qubits | default(' - ') }} & {{ right.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ right.reuploading_classifier_accuracy | default(' - ') }} \\
-{% endif %}
-{% if qft_plot_is_set %}
-QFT & {{ left.qft_qubits | default(' - ') }} & {{ left.qft_runtime | default(' - ') }} &  -  &  -  \\
-QFT & {{ right.qft_qubits | default(' - ') }} & {{ right.qft_runtime | default(' - ') }} &  -  &  -  \\
-{% endif %}
-{% if yeast_classification_3q_plot_is_set %}
-QML: Yeast 3q & {{ left.yeast_3q_qubits | default(' - ') }} & {{ left.yeast_3q_duration | default(' - ') }} & Accuracy & {{ left.yeast_3q_accuracy | default(' - ') }} \\
-QML: Yeast 3q & {{ right.yeast_3q_qubits | default(' - ') }} & {{ right.yeast_3q_duration | default(' - ') }} & Accuracy & {{ right.yeast_3q_accuracy | default(' - ') }} \\
-{% endif %}
-{% if statlog_classification_3q_plot_is_set %}
-QML: Statlog 3q & -  & {{ left.statlog_3q_duration | default(' - ') }} & Accuracy & {{ left.statlog_3q_accuracy | default(' - ') }} \\
-QML: Statlog 3q & -  & {{ right.statlog_3q_duration | default(' - ') }} & Accuracy & {{ right.statlog_3q_accuracy | default(' - ') }} \\
-{% endif %}
-{% if yeast_classification_4q_plot_is_set %}
-QML: Yeast 4q & -  & {{ left.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
-QML: Yeast 4q & -  & {{ right.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
-{% endif %}
-{% if statlog_classification_4q_plot_is_set %}
-QML: Statlog 4q & -  & {{ left.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
-QML: Statlog 4q & -  & {{ right.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
-{% endif %}
-{% if amplitude_encoding_plot_is_set %}
-Amplitude Encoding & {{ left.amplitude_encoding_qubits | default(' - ') }} & {{ left.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
-Amplitude Encoding & {{ right.amplitude_encoding_qubits | default(' - ') }} & {{ right.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
-{% endif %}
+{%- set ns = namespace(idx=0) %}
+{%- if mermin_plot_is_set %}
+\multirow{2}{*}{Mermin} & left & {{ left.mermin_qubits | default(' - ') }} & {{ left.mermin_runtime | default(' - ') }} & Max & {{ left.mermin_max | default(' - ') }} \\
+ & right & {{ right.mermin_qubits | default(' - ') }} & {{ right.mermin_runtime | default(' - ') }} & Max & {{ right.mermin_max | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if grover2q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Grover - 2 qubits} & left & {{ left.grover2q_qubits | default(' - ') }} & {{ left.grover2q_runtime | default(' - ') }} & Max prob & {{ left.grover2q_max_prob | default(' - ') }} \\
+ & right & {{ right.grover2q_qubits | default(' - ') }} & {{ right.grover2q_runtime | default(' - ') }} & Max prob & {{ right.grover2q_max_prob | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if grover3q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Grover - 3 qubits} & left & {{ left.grover3q_qubits | default(' - ') }} & {{ left.grover3q_runtime | default(' - ') }} & Max prob & {{ left.grover3q_max_prob | default(' - ') }} \\
+ & right & {{ right.grover3q_qubits | default(' - ') }} & {{ right.grover3q_runtime | default(' - ') }} & Max prob & {{ right.grover3q_max_prob | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if ghz_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{GHZ state preparation} & left & {{ left.ghz_qubits | default(' - ') }} & {{ left.ghz_runtime | default(' - ') }} & Success & {{ left.ghz_success | default(' - ') }} \\
+ & right & {{ right.ghz_qubits | default(' - ') }} & {{ right.ghz_runtime | default(' - ') }} & Success & {{ right.ghz_success | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if tomography_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Tomography} & left & {{ tomography_qubits_left | default(' - ') }} & {{ tomography_duration_left | default(' - ') }} &  -  &  -  \\
+ & right & {{ tomography_qubits_right | default(' - ') }} & {{ tomography_duration_right | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if process_tomography_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Process Tomography} & left & {{ left.process_tomography_qubits | default(' - ') }} & {{ left.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
+ & right & {{ right.process_tomography_qubits | default(' - ') }} & {{ right.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if reuploading_classifier_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Reuploading Classifier} & left & {{ left.reuploading_classifier_qubits | default(' - ') }} & {{ left.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ left.reuploading_classifier_accuracy | default(' - ') }} \\
+ & right & {{ right.reuploading_classifier_qubits | default(' - ') }} & {{ right.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ right.reuploading_classifier_accuracy | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if qft_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{QFT} & left & {{ left.qft_qubits | default(' - ') }} & {{ left.qft_runtime | default(' - ') }} &  -  &  -  \\
+ & right & {{ right.qft_qubits | default(' - ') }} & {{ right.qft_runtime | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if yeast_classification_3q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{QML: Yeast 3q} & left & {{ left.yeast_3q_qubits | default(' - ') }} & {{ left.yeast_3q_duration | default(' - ') }} & Accuracy & {{ left.yeast_3q_accuracy | default(' - ') }} \\
+ & right & {{ right.yeast_3q_qubits | default(' - ') }} & {{ right.yeast_3q_duration | default(' - ') }} & Accuracy & {{ right.yeast_3q_accuracy | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if statlog_classification_3q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{QML: Statlog 3q} & left & -  & {{ left.statlog_3q_duration | default(' - ') }} & Accuracy & {{ left.statlog_3q_accuracy | default(' - ') }} \\
+ & right & -  & {{ right.statlog_3q_duration | default(' - ') }} & Accuracy & {{ right.statlog_3q_accuracy | default(' - ') }} \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if yeast_classification_4q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{QML: Yeast 4q} & left & -  & {{ left.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
+ & right & -  & {{ right.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if statlog_classification_4q_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{QML: Statlog 4q} & left & -  & {{ left.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
+ & right & -  & {{ right.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
+{%- if amplitude_encoding_plot_is_set %}
+{%- if ns.idx > 0 %}
+\midrule
+{%- endif %}
+\multirow{2}{*}{Amplitude Encoding} & left & {{ left.amplitude_encoding_qubits | default(' - ') }} & {{ left.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
+ & right & {{ right.amplitude_encoding_qubits | default(' - ') }} & {{ right.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
+{%- set ns.idx = ns.idx + 1 %}
+{%- endif %}
 \bottomrule
 \end{tabular}
 \end{center}
