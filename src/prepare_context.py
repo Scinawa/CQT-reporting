@@ -536,6 +536,45 @@ def context_qft_plots(context, cfg):
     return context
 
 
+def context_qft3_swap_plots(context, cfg):
+    """Prepare QFT3 Swap plots and data."""
+    base_path = Path(cfg.base_dir)
+
+    for label, calibration, run in zip(
+        ["left", "right"],
+        [cfg.calibration_left, cfg.calibration_right],
+        [cfg.run_left, cfg.run_right],
+    ):
+        # Prepare path for results
+        results_path = str(base_path / calibration / run / "qft3_swap" / "results.json")
+
+        # Extract description only once (from left side)
+        if label == "left":
+            context["qft3_swap_description"] = fl.extract_description(results_path)
+
+        # Generate QFT3 Swap plot
+        try:
+            context[label]["plot_qft3_swap"] = pl.plot_qft3_swap(
+                raw_data=results_path,
+                expname=f"qft3_swap_{calibration}_{run}",
+                output_path=os.path.join(
+                        "build",
+                        "qft3_swap",
+                        calibration,
+                    ),
+            )
+        except Exception:
+            context[label]["plot_qft3_swap"] = "placeholder.png"
+
+        # Extract runtime and qubits used
+        context[label]["qft3_swap_runtime"] = fl.extract_runtime(results_path)
+        context[label]["qft3_swap_qubits"] = fl.extract_qubits_from_edges_file(results_path)
+
+    context["qft3_swap_plot_is_set"] = True
+    logging.info("Added QFT3 Swap plots to context")
+    return context
+
+
 def context_yeast_4q_plots(context, cfg):
     """Prepare Yeast 4Q classification plots and data."""
     context["qml_4Q_yeast_description"] = fl.extract_description(

@@ -24,6 +24,7 @@ from prepare_context import (
     context_tomography_plots,
     context_reuploading_classifier_plots,
     context_qft_plots,
+    context_qft3_swap_plots,
     context_yeast_4q_plots,
     context_yeast_3q_plots,
     context_statlog_4q_plots,
@@ -106,6 +107,11 @@ def setup_argument_parser():
     parser.add_argument(
         "--no-qft-plot",
         dest="qft_plot",
+        action="store_false",
+    )
+    parser.add_argument(
+        "--no-qft3-swap-plot",
+        dest="qft3_swap_plot",
         action="store_false",
     )
     parser.add_argument(
@@ -342,6 +348,17 @@ def prepare_template_context(cfg):
     else:
         logging.info("QFT plot is not set, skipping...")
         context["qft_plot_is_set"] = None
+
+    # QFT3 SWAP PLOTS
+    if cfg.qft3_swap_plot:
+        try:
+            context = context_qft3_swap_plots(context, cfg)
+        except Exception as e:
+            logging.error(f"Error preparing QFT3 Swap plots: {e}")
+            context["qft3_swap_plot_is_set"] = None
+    else:
+        logging.info("QFT3 Swap plot is not set, skipping...")
+        context["qft3_swap_plot_is_set"] = None
 
     # # YEAST CLASSIFICATION 4Q PLOTS
     # if cfg.yeast_plot_4q:
