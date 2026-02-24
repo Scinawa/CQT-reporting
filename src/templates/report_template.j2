@@ -670,6 +670,41 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% QFT3 SWAP PLOT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% if qft3_swap_plot_is_set %}
+\newpage
+\section{QFT3 Swap Plots}
+{{ qft3_swap_description }}
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} {{ left.qft3_swap_runtime }}
+\item \textbf{Qubits used:} {{ left.qft3_swap_qubits }}
+
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ left.plot_qft3_swap }} }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} {{ right.qft3_swap_runtime }}
+\item \textbf{Qubits used:} {{ right.qft3_swap_qubits }}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ {{ right.plot_qft3_swap }} }
+\end{center}
+\end{multicols}
+{% endif %}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Yeast classifier 3q
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
