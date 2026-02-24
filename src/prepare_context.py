@@ -529,7 +529,7 @@ def context_qft_plots(context, cfg):
 
         # Extract runtime and qubits used
         context[label]["qft_runtime"] = fl.extract_runtime(results_path)
-        context[label]["qft_qubits"] = fl.extract_qubits_used(results_path)
+        context[label]["qft_qubits"] = fl.extract_qubits_from_edges_file(results_path)
 
     context["qft_plot_is_set"] = True
     logging.info("Added QFT plots to context")

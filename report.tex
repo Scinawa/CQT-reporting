@@ -344,6 +344,9 @@ Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
 Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
 
 
+QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
+QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
+
 
 QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
 QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
@@ -711,6 +714,33 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 
 
 
+\section{QFT Plots}
+Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
+
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Runtime:} 2.59 seconds
+\item \textbf{Qubits used:} 0, 2, 3
+
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{itemize}
+\item \textbf{Runtime:} 2.59 seconds
+\item \textbf{Qubits used:} 0, 2, 3
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+\end{multicols}
+
+
 
 
 
@@ -720,9 +750,7 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
 \newpage
-
 \section{QFT3 Swap Plots}
 Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
 
