@@ -695,6 +695,41 @@ def plot_qft(raw_data, expname, output_path="build/"):
     return out_file
 
 
+def plot_qft3_swap(raw_data, expname, output_path="build/"):
+    """
+    Plot the results of a QFT3 Swap experiment as a histogram.
+    Args:
+        raw_data (str): Path to the JSON file containing the QFT3 Swap results.
+        expname (str): Experiment name used for output filename.
+        output_path (str): Directory to save the output plot.
+    Returns:
+        str: Path to the saved plot file.
+    """
+    # Data load
+    with open(raw_data, "r") as f:
+        data = json.load(f)
+    qubits_list = data["edges"]
+    dataplot = data["frequencies"].values()
+    qubits_set = set(sum(qubits_list, []))
+    n_qubits = len(qubits_set)
+    all_bitstrings = [format(i, f"0{n_qubits}b") for i in range(2**n_qubits)]
+    os.makedirs(output_path, exist_ok=True)
+    # Plot
+    plt.bar(all_bitstrings, dataplot, color="skyblue", edgecolor="black")
+    plt.title(f"QFT3 Swap Manually Transpiled with shots. \n Execution on edges {qubits_list}")
+    plt.xlabel("States")
+    plt.xticks(rotation=45, ha="right")
+    plt.ylabel("Counts")
+    plt.legend()
+    plt.tight_layout()
+    # Save plot
+    os.makedirs(output_path, exist_ok=True)
+    out_file = os.path.join(output_path, f"{expname}_results.pdf")
+    plt.savefig(out_file)
+    plt.close()
+    return out_file
+
+
 def plot_ghz(raw_data, experiment_name, output_path="../build/"):
     """
     Plot GHZ results as a histogram of measured bitstrings.

@@ -1,4 +1,5 @@
 import argparse
+import configparser
 from multiprocessing import context
 from pathlib import Path
 from datetime import datetime
@@ -24,6 +25,7 @@ from prepare_context import (
     context_tomography_plots,
     context_reuploading_classifier_plots,
     context_qft_plots,
+    context_qft3_swap_plots,
     context_yeast_4q_plots,
     context_yeast_3q_plots,
     context_statlog_4q_plots,
@@ -109,6 +111,11 @@ def setup_argument_parser():
         action="store_false",
     )
     parser.add_argument(
+        "--no-qft3-swap-plot",
+        dest="qft3_swap_plot",
+        action="store_false",
+    )
+    parser.add_argument(
         "--no-tomography-plot", dest="tomography_plot", action="store_false"
     )
     parser.add_argument(
@@ -134,6 +141,46 @@ def setup_argument_parser():
         action="store_false",
     )
     return parser
+
+
+def apply_experiment_list(args, ini_path="experiment_list.ini"):
+    """
+    Read experiment_list.ini and override plot flags on args.
+    If an experiment is 'disabled' in the INI, set the corresponding
+    plot flag to False. CLI --no-* flags still take precedence
+    (if already False, stay False).
+    """
+    INI_TO_ARG = {
+        "qft": "qft_plot",
+        "qft3_swap": "qft3_swap_plot",
+        "ghz": "ghz_plot",
+        "mermin": "mermin_plot",
+        "grover2q": "grover2q_plot",
+        "grover3q": "grover3q_plot",
+        "process_tomography": "process_tomography_plot",
+        "reuploading_classifier": "reuploading_classifier_plot",
+        "amplitude_encoding": "amplitude_encoding_plot",
+        "qml_3q_yeast": "yeast_plot_3q",
+        "qml_3q_statlog": "statlog_plot_3q",
+        "qml_4q_yeast": "yeast_plot_4q",
+        "qml_4q_statlog": "statlog_plot_4q",
+    }
+
+    if not os.path.exists(ini_path):
+        logging.warning(f"experiment_list.ini not found at {ini_path}, skipping.")
+        return args
+
+    cp = configparser.ConfigParser()
+    cp.read(ini_path)
+
+    for section in cp.sections():
+        for experiment, status in cp.items(section):
+            attr = INI_TO_ARG.get(experiment)
+            if attr and status.strip().lower() == "disabled":
+                setattr(args, attr, False)
+                logging.info(f"Disabled {experiment} plot via experiment_list.ini")
+
+    return args
 
 
 def prepare_template_context(cfg):
@@ -343,6 +390,17 @@ def prepare_template_context(cfg):
         logging.info("QFT plot is not set, skipping...")
         context["qft_plot_is_set"] = None
 
+    # QFT3 SWAP PLOTS
+    if cfg.qft3_swap_plot:
+        try:
+            context = context_qft3_swap_plots(context, cfg)
+        except Exception as e:
+            logging.error(f"Error preparing QFT3 Swap plots: {e}")
+            context["qft3_swap_plot_is_set"] = None
+    else:
+        logging.info("QFT3 Swap plot is not set, skipping...")
+        context["qft3_swap_plot_is_set"] = None
+
     # # YEAST CLASSIFICATION 4Q PLOTS
     # if cfg.yeast_plot_4q:
     #     try:
@@ -445,6 +503,9 @@ def main():
     # Step 1: Parse command line arguments
     parser = setup_argument_parser()
     args = parser.parse_args()
+
+    # Step 1b: Apply experiment_list.ini overrides
+    args = apply_experiment_list(args)
 
     # Step 2: Prepare template context with all required data
     context = prepare_template_context(args)

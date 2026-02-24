@@ -67,6 +67,10 @@ def extract_runtime(filename):
         results = json.load(f)
 
     runtime_value = results.get("runtime", None)
+    if runtime_value is None:
+        runtime_value = results.get("duration", None)
+    if runtime_value is None:
+        return "-"
     return format_runtime(runtime_value)
 
 
@@ -79,6 +83,18 @@ def extract_qubits_used(filename):
     if qubits is None:
         return "-"
     return str(qubits).replace("[", "").replace("]", "")
+
+
+def extract_qubits_from_edges_file(filename):
+
+    with open(filename, "r") as f:
+        results = json.load(f)
+
+    edges = results.get("edges", None)
+    if edges is None:
+        return "-"
+    qubits = sorted(set(q for edge in edges for q in edge))
+    return ", ".join(str(q) for q in qubits)
 
 
 def process_commit_info(filename):
