@@ -1,5 +1,7 @@
 # Quantum Benchmark Reporter
 
+Currently work in progress
+
 This project automates the generation of PDF reports for quantum benchmarking experiments. It uses a LaTeX template (with Jinja2) populated from JSON files containing experiment results and metadata.
 
 Currently targets the **sinq20** platform but calibration bundles may include data for other platforms (e.g. sinq-5).
