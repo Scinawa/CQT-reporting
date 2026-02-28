@@ -313,43 +313,40 @@ k-qubits & Best Qubits & Fidelity \\ \midrule
 
 \section{Summary metrics}
 
+\noindent\begin{minipage}{0.48\textwidth}
+\setlength{\tabcolsep}{3pt}
 \begin{center}
-\begin{tabular}{@{}l c c l c@{}}
+\begin{tabular}{@{}l l c c@{}}  % add 'c' column before 'l' to re-enable Qubits used
 \toprule
-Benchmark Experiment & Qubits used & Runtime & Metric name & Metric value \\
+Benchmark & Metric & Value & Runtime \\  % add '& Qubits used' as 2nd column to re-enable
 \midrule
 
-Mermin &  -  &  -  & Max &  -  \\
-Mermin &  -  &  -  & Max &  -  \\
+Mermin & Max &  -  &  -  \\  % &  - 
 
 
-Grover - 2 qubits & 2, 3 & 10.08 seconds & Max prob & 0.916 \\
-Grover - 2 qubits & 2, 3 & 10.08 seconds & Max prob & 0.916 \\
+Grover 2q & Max prob & 0.916 & 10.08 sec \\  % & 2, 3
 
 
-Grover - 3 qubits & 8, 2, 3 & 4.53 seconds & Max prob & 0.0 \\
-Grover - 3 qubits & 8, 2, 3 & 4.53 seconds & Max prob & 0.0 \\
+Grover 3q & Max prob & 0.0 & 4.53 sec \\  % & 8, 2, 3
 
 
-GHZ state preparation & 8, 3, 2 & 9.70 seconds & Success & 0.830 \\
-GHZ state preparation & 8, 3, 2 & 9.70 seconds & Success & 0.830 \\
+GHZ state prep. & Success & 0.830 & 9.70 sec \\  % & 8, 3, 2
 
 
 
-Process Tomography &  -  & 680.07 seconds &  -  &  -  \\
-Process Tomography &  -  & 680.07 seconds &  -  &  -  \\
+Tomography &  -  &  -  & 680.07 sec \\  % &  - 
 
 
-Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
-Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
+Reup. Classif. & Accuracy test & 0.94 & - \\  % & 7
 
 
-QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
-QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
+QFT &  -  &  -  & 2.59 sec \\  % & 0, 2, 3
 
 
-QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
-QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
+QFT 3q swap &  -  &  -  & 2.59 sec \\  % & 0, 2, 3
+
+
+QML: Yeast 3q & Accuracy & 0.63 & 144.28 sec \\  % & 8, 3, 2
 
 
 
@@ -358,6 +355,51 @@ QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
 \bottomrule
 \end{tabular}
 \end{center}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\setlength{\tabcolsep}{3pt}
+\begin{center}
+\begin{tabular}{@{}l l c c@{}}  % add 'c' column before 'l' to re-enable Qubits used
+\toprule
+Benchmark & Metric & Value & Runtime \\  % add '& Qubits used' as 2nd column to re-enable
+\midrule
+
+Mermin & Max &  -  &  -  \\  % &  - 
+
+
+Grover 2q & Max prob & 0.916 & 10.08 sec \\  % & 2, 3
+
+
+Grover 3q & Max prob & 0.0 & 4.53 sec \\  % & 8, 2, 3
+
+
+GHZ state prep. & Success & 0.830 & 9.70 sec \\  % & 8, 3, 2
+
+
+
+Tomography &  -  &  -  & 680.07 sec \\  % &  - 
+
+
+Reup. Classif. & Accuracy test & 0.94 & - \\  % & 7
+
+
+QFT &  -  &  -  & 2.59 sec \\  % & 0, 2, 3
+
+
+QFT 3q swap &  -  &  -  & 2.59 sec \\  % & 0, 2, 3
+
+
+QML: Yeast 3q & Accuracy & 0.63 & 144.28 sec \\  % & 8, 3, 2
+
+
+
+
+
+\bottomrule
+\end{tabular}
+\end{center}
+\end{minipage}
 
 
 \section{Randomized Benchmarking Results}
