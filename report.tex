@@ -75,14 +75,14 @@
 \begin{center}
 \begin{tauenvmine}
 {\textbf{Platform:}  sinq20 } \\
-\textbf{Calibration-id:} \emph{ 2447f0fad33dfea493b4e7bc4143c8bd2e28d979 } \\
-\textbf{Calibration date:} \emph{ 2025-11-05 08:58:37 } \\
-\textbf{Calibration note:} chore(sinq20): Retune CZ for Q5-Q6 and Q17-Q18
+\textbf{Calibration-id:} \emph{ 1e1f7e1d1af58009eda1986bb3689e6b9b2356b6 } \\
+\textbf{Calibration date:} \emph{ 2025-11-20 03:59:33 } \\
+\textbf{Calibration note:} chore(sinq20): Update CZ for Q4-Q5
  \\
 \: \\
 \textbf{Experiment-id:} \emph{ None } \\
-\textbf{Experiment date:} \emph{ 2025-11-16 23:48:24 } \\
-\textbf{Experiment note:} \emph{ temporary note!!! } \\
+\textbf{Experiment date:} \emph{ 2025-11-23 02:38:14 } \\
+\textbf{Experiment note:} \emph{ Scheduled runs of experiments } \\
 
 
 \end{tauenvmine}
@@ -217,7 +217,7 @@ The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ build/fidelity/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_fidelities.pdf }
+\includegraphics[width=\linewidth]{ build/fidelity/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_fidelities.pdf }
 \end{minipage}
 \end{center}
 
@@ -286,10 +286,10 @@ RO Fidelity  & 0.794 & 0.777 & 0.777 & 0.927 \\
 \begin{tabular}{@{}c c c@{}}
 \toprule
 k-qubits & Best Qubits & Fidelity \\ \midrule
-2 & 18, 19 & 0.948 \\
-3 & 17, 18, 19 & 0.946 \\
-4 & 13, 17, 18, 19 & 0.938 \\
-5 & 8, 13, 17, 18, 19 & 0.931 \\
+2 & 2, 3 & 0.914 \\
+3 & 2, 3, 8 & 0.878 \\
+4 & 2, 3, 8, 9 & 0.869 \\
+5 & 0, 2, 3, 8, 9 & 0.858 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -323,17 +323,32 @@ Mermin &  -  &  -  & Max &  -  \\
 Mermin &  -  &  -  & Max &  -  \\
 
 
+Grover - 2 qubits & 2, 3 & 10.08 seconds & Max prob & 0.916 \\
+Grover - 2 qubits & 2, 3 & 10.08 seconds & Max prob & 0.916 \\
+
+
+Grover - 3 qubits & 8, 2, 3 & 4.53 seconds & Max prob & 0.0 \\
+Grover - 3 qubits & 8, 2, 3 & 4.53 seconds & Max prob & 0.0 \\
+
+
+GHZ state preparation & 8, 3, 2 & 9.70 seconds & Success & 0.830 \\
+GHZ state preparation & 8, 3, 2 & 9.70 seconds & Success & 0.830 \\
 
 
 
+Process Tomography &  -  & 680.07 seconds &  -  &  -  \\
+Process Tomography &  -  & 680.07 seconds &  -  &  -  \\
 
 
-Reuploading Classifier & 7 & - & Accuracy test & 0.92 \\
+Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
 Reuploading Classifier & 7 & - & Accuracy test & 0.94 \\
 
 
+QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
+QFT & 0, 2, 3 & 2.59 seconds &  -  &  -  \\
 
-QML: Yeast 3q & 17, 18, 19 & 148.54 seconds & Accuracy & 0.60 \\
+
+QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
 QML: Yeast 3q & 8, 3, 2 & 144.28 seconds & Accuracy & 0.63 \\
 
 
@@ -363,7 +378,7 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 3 & \textcolor{green}{0.998} & $\pm$ 0.000236 \\
 
-4 & 0.99 & $\pm$ 0.00167 \\
+4 & 0.995 & $\pm$ 0.000486 \\
 
 5 & 0.996 & $\pm$ 0.000826 \\
 
@@ -383,7 +398,7 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 13 & \textcolor{green}{0.998} & $\pm$ 0.000344 \\
 
-14 & 0.996 & $\pm$ 0.000846 \\
+14 & 0.997 & $\pm$ 0.000357 \\
 
 15 & 0.995 & $\pm$ 0.000647 \\
 
@@ -502,6 +517,42 @@ Runtime & Qubits & Max \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\section{Grover - 2 qubits}
+Grover's algorithm for 2 qubits executed on sinq20 backend with 1000 shots per circuit. 
+ We measure the success rate of finding the target state '11' for each pair of qubits in [[2, 3]].
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+10.08 sec & 2, 3 & 0.916 \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/grover2q_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{minipage}
+\end{center}
+
+\columnbreak
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+10.08 sec & 2, 3 & 0.916 \\
+\bottomrule
+\end{tabular}
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/grover2q_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{minipage}
+\end{center}
+\end{multicols}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -509,11 +560,82 @@ Runtime & Qubits & Max \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\newpage
+
+\section{Grover - 3 qubits}
+Grover's algorithm for 3 qubits executed on sinq20 backend with 1000 shots per circuit. 
+ We measure the success rate of finding the target state '111' for each pair of qubits in [[8, 3], [2, 3]].
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+4.53 sec & 8, 2, 3 & 0.0 \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/grover3q_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{minipage}
+\end{center}
+
+\columnbreak
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+4.53 sec & 8, 2, 3 & 0.0 \\
+\bottomrule
+\end{tabular}
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ build/grover3q_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{minipage}
+\end{center}
+\end{multicols}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GHZ state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+\section{GHZ state preparation}
+GHZ circuit with 3 qubits executed on sinq20 backend with 1000 shots.
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+9.70 sec & 8, 3, 2 & 0.830 \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/ghz/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_ghz_results.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+9.70 sec & 8, 3, 2 & 0.830 \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/ghz/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_ghz_results.pdf }
+\end{center}
+\end{multicols}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -527,6 +649,41 @@ Runtime & Qubits & Max \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Process tomography state preparation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Process Tomography state preparation}
+Process tomography involves preparing a circuit particular set of states,         appending a gate (process) to the circuit, and measuring the circuit in the Pauli basis. 
+        The data is processed to get the Pauli Liouville representation of a process (gate). 
+         - Single qubit process tomography executed on qubits: [2, 3]
+         - Two qubit process tomography on coupled qubits: [[2, 3]]
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+680.07 sec & - & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/process_tomography/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/process_tomography_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_matrices.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+680.07 sec & - & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/process_tomography/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/process_tomography_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_matrices.pdf }
+\end{center}
+\end{multicols}
 
 
 
@@ -544,14 +701,14 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 \toprule
 Runtime & Qubits & Accuracy test \\
 \midrule
-- & 7 & 0.92 \\
+- & 7 & 0.94 \\
 \bottomrule
 \end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
-\includegraphics[width=\linewidth]{ build/reuploading_classifier/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/reuploading_classifier_results_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453.pdf }
+\includegraphics[width=\linewidth]{ build/reuploading_classifier/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/reuploading_classifier_results_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814.pdf }
 \end{minipage}
 \end{center}
 
@@ -582,6 +739,38 @@ Runtime & Qubits & Accuracy test \\
 
 
 
+\section{QFT Plots}
+Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+\end{multicols}
+
+
 
 
 
@@ -590,6 +779,38 @@ Runtime & Qubits & Accuracy test \\
 % QFT3 SWAP PLOT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\newpage
+\section{QFT3 Swap Plots}
+Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
+
+\begin{multicols}{2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft3_swap/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft3_swap_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+
+\columnbreak
+
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{ build/qft3_swap/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft3_swap_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
+\end{center}
+\end{multicols}
 
 
 
@@ -607,13 +828,13 @@ Runtime & Qubits & Accuracy test \\
 \toprule
 Runtime & Qubits & Accuracy \\
 \midrule
-148.54 sec & 17, 18, 19 & 0.60 \\
+144.28 sec & 8, 3, 2 & 0.63 \\
 \bottomrule
 \end{tabular}
 
 \begin{center}
 \centering
-\includegraphics[width=0.95\linewidth]{ build/yeast/2447f0fad33dfea493b4e7bc4143c8bd2e28d979/20251112131453/3q_yeast_2447f0fad33dfea493b4e7bc4143c8bd2e28d979_20251112131453_qml_confusion_matrices.pdf }
+\includegraphics[width=0.95\linewidth]{ build/yeast/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/3q_yeast_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_qml_confusion_matrices.pdf }
 \end{center}
 
 \columnbreak
