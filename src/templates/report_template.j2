@@ -376,35 +376,71 @@ Amplitude Encoding &  -  &  -  & {{ right.amplitude_encoding_runtime | default('
 
 \section{Randomized Benchmarking Results}
 
-\begin{multicols}{2}
-
 %\subsection{New Fidelities}
+\noindent\begin{minipage}{0.48\textwidth}
+\noindent\begin{minipage}[t]{0.48\linewidth}
 \begin{center}
 \begin{tabular}{@{}c c c@{}}
 \toprule
 Qubit n & Fidelity & Error Bars \\ \midrule
 {% for row in left.fidelities_list %}
+{% if loop.index <= 10 %}
 {{ row.qn }} & {{ row.fidelity }} & $\pm$ {{ row.error_bars }} \\
+{% endif %}
 {% endfor %}
 \bottomrule
 \end{tabular}
 \end{center}
-
-\columnbreak
-
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.48\linewidth}
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+Qubit n & Fidelity & Error Bars \\ \midrule
+{% for row in left.fidelities_list %}
+{% if loop.index > 10 %}
+{{ row.qn }} & {{ row.fidelity }} & $\pm$ {{ row.error_bars }} \\
+{% endif %}
+{% endfor %}
+\bottomrule
+\end{tabular}
+\end{center}
+\end{minipage}
+\end{minipage}%
+\hfill%
 %\subsection{Control Fidelities}
+\begin{minipage}{0.48\textwidth}
+\noindent\begin{minipage}[t]{0.48\linewidth}
 \begin{center}
 \begin{tabular}{@{}c c c@{}}
 \toprule
 Qubit n & Fidelity & Error Bars \\ \midrule
 {% for row in right.fidelities_list %}
+{% if loop.index <= 10 %}
 {{ row.qn }} & {{ row.fidelity }} & $\pm$ {{ row.error_bars }} \\
+{% endif %}
 {% endfor %}
 \bottomrule
 \end{tabular}
 \end{center}
-
-\end{multicols}
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.48\linewidth}
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+Qubit n & Fidelity & Error Bars \\ \midrule
+{% for row in right.fidelities_list %}
+{% if loop.index > 10 %}
+{{ row.qn }} & {{ row.fidelity }} & $\pm$ {{ row.error_bars }} \\
+{% endif %}
+{% endfor %}
+\bottomrule
+\end{tabular}
+\end{center}
+\end{minipage}
+\end{minipage}
 
 \newpage
 
