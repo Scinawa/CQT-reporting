@@ -367,12 +367,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \begin{multicols}{2}
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.mermin_runtime }}
-\item \textbf{Qubits used:} {{ left.mermin_qubits }}
-\item \textbf{Max:} {{ left.mermin_max }}
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max \\
+\midrule
+{{ left.mermin_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.mermin_qubits | default('-') }} & {{ left.mermin_max | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -383,11 +384,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.mermin_runtime }}
-\item \textbf{Qubits used:} {{ right.mermin_qubits }}
-\item \textbf{Max:} {{ right.mermin_max }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max \\
+\midrule
+{{ right.mermin_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.mermin_qubits | default('-') }} & {{ right.mermin_max | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -409,11 +412,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ grover2q_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.grover2q_runtime }}
-\item \textbf{Qubits used:} {{ left.grover2q_qubits }}
-\item \textbf{Max prob:} {{ left.grover2q_max_prob }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+{{ left.grover2q_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.grover2q_qubits | default('-') }} & {{ left.grover2q_max_prob | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -423,11 +428,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 \end{center}
 
 \columnbreak
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.grover2q_runtime }}
-\item \textbf{Qubits used:} {{ right.grover2q_qubits }}
-\item \textbf{Max prob:} {{ right.grover2q_max_prob }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+{{ right.grover2q_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.grover2q_qubits | default('-') }} & {{ right.grover2q_max_prob | default('-') }} \\
+\bottomrule
+\end{tabular}
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
@@ -449,11 +456,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ grover3q_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.grover3q_runtime }}
-\item \textbf{Qubits used:} {{ left.grover3q_qubits }}
-\item \textbf{Max prob:} {{ left.grover3q_max_prob }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+{{ left.grover3q_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.grover3q_qubits | default('-') }} & {{ left.grover3q_max_prob | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -463,11 +472,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 \end{center}
 
 \columnbreak
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.grover3q_runtime }}
-\item \textbf{Qubits used:} {{ right.grover3q_qubits }}
-\item \textbf{Max prob:} {{ right.grover3q_max_prob }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+{{ right.grover3q_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.grover3q_qubits | default('-') }} & {{ right.grover3q_max_prob | default('-') }} \\
+\bottomrule
+\end{tabular}
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
@@ -490,11 +501,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ ghz_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.ghz_runtime }}
-\item \textbf{Qubits used:} {{ left.ghz_qubits }}
-\item \textbf{Success:} {{ left.ghz_success }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+{{ left.ghz_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.ghz_qubits | default('-') }} & {{ left.ghz_success | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ left.plot_ghz }} }
@@ -502,11 +515,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.ghz_runtime }}
-\item \textbf{Qubits used:} {{ right.ghz_qubits }}
-\item \textbf{Success:} {{ right.ghz_success }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+{{ right.ghz_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.ghz_qubits | default('-') }} & {{ right.ghz_success | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ right.plot_ghz }} }
@@ -526,10 +541,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ tomography_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ tomography_duration_left }}
-\item \textbf{Qubits used:} {{ tomography_qubits_left }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ tomography_duration_left | default('-') | replace('seconds', 'sec') }} & {{ tomography_qubits_left | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -540,10 +558,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ tomography_duration_right }}
-\item \textbf{Qubits used:} {{ tomography_qubits_right}}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ tomography_duration_right | default('-') | replace('seconds', 'sec') }} & {{ tomography_qubits_right | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -565,10 +586,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ process_tomography_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.process_tomography_runtime }}
-\item \textbf{Qubits used:} {{ left.process_tomography_qubits }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.process_tomography_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.process_tomography_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ left.plot_process_tomography }} }
@@ -576,10 +600,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.process_tomography_runtime }}
-\item \textbf{Qubits used:} {{ right.process_tomography_qubits }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.process_tomography_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.process_tomography_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ right.plot_process_tomography }} }
@@ -598,11 +625,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ reuploading_classifier_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.reuploading_classifier_runtime }}
-\item \textbf{Qubits used:} {{ left.reuploading_classifier_qubits }}
-\item \textbf{Accuracy test:} {{ left.reuploading_classifier_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy test \\
+\midrule
+{{ left.reuploading_classifier_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.reuploading_classifier_qubits | default('-') }} & {{ left.reuploading_classifier_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -613,11 +642,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.reuploading_classifier_runtime }}
-\item \textbf{Qubits used:} {{ right.reuploading_classifier_qubits }}
-\item \textbf{Accuracy test:} {{ right.reuploading_classifier_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy test \\
+\midrule
+{{ right.reuploading_classifier_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.reuploading_classifier_qubits | default('-') }} & {{ right.reuploading_classifier_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -642,11 +673,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ qft_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.qft_runtime }}
-\item \textbf{Qubits used:} {{ left.qft_qubits }}
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.qft_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.qft_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ left.plot_qft }} }
@@ -654,10 +687,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.qft_runtime }}
-\item \textbf{Qubits used:} {{ right.qft_qubits }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.qft_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.qft_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ right.plot_qft }} }
@@ -679,11 +715,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ qft3_swap_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.qft3_swap_runtime }}
-\item \textbf{Qubits used:} {{ left.qft3_swap_qubits }}
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.qft3_swap_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.qft3_swap_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ left.plot_qft3_swap }} }
@@ -691,10 +729,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.qft3_swap_runtime }}
-\item \textbf{Qubits used:} {{ right.qft3_swap_qubits }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.qft3_swap_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.qft3_swap_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ {{ right.plot_qft3_swap }} }
@@ -713,11 +754,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ yeast_3q_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.yeast_3q_duration }}
-\item \textbf{Qubits used:} {{ left.yeast_3q_qubits }}
-\item \textbf{Accuracy:} {{ left.yeast_3q_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+{{ left.yeast_3q_duration | default('-') | replace('seconds', 'sec') }} & {{ left.yeast_3q_qubits | default('-') }} & {{ left.yeast_3q_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -726,11 +769,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.yeast_3q_duration }}
-\item \textbf{Qubits used:} {{ right.yeast_3q_qubits }}
-\item \textbf{Accuracy:} {{ right.yeast_3q_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+{{ right.yeast_3q_duration | default('-') | replace('seconds', 'sec') }} & {{ right.yeast_3q_qubits | default('-') }} & {{ right.yeast_3q_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -748,10 +793,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ statlog_3q_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Duration:} {{ left.statlog_3q_duration }}
-\item \textbf{Accuracy:} {{ left.statlog_3q_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+{{ left.statlog_3q_duration | default('-') | replace('seconds', 'sec') }} & {{ left.statlog_3q_qubits | default('-') }} & {{ left.statlog_3q_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -760,10 +808,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Duration:} {{ right.statlog_3q_duration }}
-\item \textbf{Accuracy:} {{ right.statlog_3q_accuracy }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+{{ right.statlog_3q_duration | default('-') | replace('seconds', 'sec') }} & {{ right.statlog_3q_qubits | default('-') }} & {{ right.statlog_3q_accuracy | default('-') }} \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -781,9 +832,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ qml_4Q_yeast_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.qml_4Q_yeast_runtime }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.qml_4Q_yeast_runtime | default('-') | replace('seconds', 'sec') }} & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -792,9 +847,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.qml_4Q_yeast_runtime }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.qml_4Q_yeast_runtime | default('-') | replace('seconds', 'sec') }} & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -812,9 +871,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ statlog_4q_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Duration:} {{ left.statlog_4q_duration }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.statlog_4q_duration | default('-') | replace('seconds', 'sec') }} & {{ left.statlog_4q_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -823,9 +886,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Duration:} {{ right.statlog_4q_duration }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.statlog_4q_duration | default('-') | replace('seconds', 'sec') }} & {{ right.statlog_4q_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -844,11 +911,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 {{ amplitude_encoding_description }}
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} {{ left.amplitude_encoding_runtime }}
-\item \textbf{Qubits used:} {{ left.amplitude_encoding_qubits }}
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ left.amplitude_encoding_runtime | default('-') | replace('seconds', 'sec') }} & {{ left.amplitude_encoding_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -857,10 +926,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} {{ right.amplitude_encoding_runtime }}
-\item \textbf{Qubits used:} {{ right.amplitude_encoding_qubits }}
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+{{ right.amplitude_encoding_runtime | default('-') | replace('seconds', 'sec') }} & {{ right.amplitude_encoding_qubits | default('-') }} & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
