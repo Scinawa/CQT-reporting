@@ -265,66 +265,117 @@ k-qubits & Best Qubits & Fidelity \\ \midrule
 
 \section{Summary metrics}
 
+\noindent\begin{minipage}{0.48\textwidth}
+{\small
+\setlength{\tabcolsep}{3pt}
 \begin{center}
-\begin{tabular}{@{}l c c l c@{}}
+\begin{tabular}{@{}l l c c@{}}  % add 'c' column before 'l' to re-enable Qubits used
 \toprule
-Benchmark Experiment & Qubits used & Runtime & Metric name & Metric value \\
+Benchmark & Metric & Value & Runtime \\  % add '& Qubits used' as 2nd column to re-enable
 \midrule
 {% if mermin_plot_is_set %}
-Mermin & {{ left.mermin_qubits | default(' - ') }} & {{ left.mermin_runtime | default(' - ') }} & Max & {{ left.mermin_max | default(' - ') }} \\
-Mermin & {{ right.mermin_qubits | default(' - ') }} & {{ right.mermin_runtime | default(' - ') }} & Max & {{ right.mermin_max | default(' - ') }} \\
+Mermin & Max & {{ left.mermin_max | default(' - ') }} & {{ left.mermin_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.mermin_qubits | default(' - ') }}
 {% endif %}
 {% if grover2q_plot_is_set %}
-Grover - 2 qubits & {{ left.grover2q_qubits | default(' - ') }} & {{ left.grover2q_runtime | default(' - ') }} & Max prob & {{ left.grover2q_max_prob | default(' - ') }} \\
-Grover - 2 qubits & {{ right.grover2q_qubits | default(' - ') }} & {{ right.grover2q_runtime | default(' - ') }} & Max prob & {{ right.grover2q_max_prob | default(' - ') }} \\
+Grover 2q & Max prob & {{ left.grover2q_max_prob | default(' - ') }} & {{ left.grover2q_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.grover2q_qubits | default(' - ') }}
 {% endif %}
 {% if grover3q_plot_is_set %}
-Grover - 3 qubits & {{ left.grover3q_qubits | default(' - ') }} & {{ left.grover3q_runtime | default(' - ') }} & Max prob & {{ left.grover3q_max_prob | default(' - ') }} \\
-Grover - 3 qubits & {{ right.grover3q_qubits | default(' - ') }} & {{ right.grover3q_runtime | default(' - ') }} & Max prob & {{ right.grover3q_max_prob | default(' - ') }} \\
+Grover 3q & Max prob & {{ left.grover3q_max_prob | default(' - ') }} & {{ left.grover3q_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.grover3q_qubits | default(' - ') }}
 {% endif %}
 {% if ghz_plot_is_set %}
-GHZ state preparation & {{ left.ghz_qubits | default(' - ') }} & {{ left.ghz_runtime | default(' - ') }} & Success & {{ left.ghz_success | default(' - ') }} \\
-GHZ state preparation & {{ right.ghz_qubits | default(' - ') }} & {{ right.ghz_runtime | default(' - ') }} & Success & {{ right.ghz_success | default(' - ') }} \\
+GHZ state prep. & Success & {{ left.ghz_success | default(' - ') }} & {{ left.ghz_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.ghz_qubits | default(' - ') }}
 {% endif %}
 {% if tomography_plot_is_set %}
-Tomography & {{ tomography_qubits_left | default(' - ') }} & {{ tomography_duration_left | default(' - ') }} &  -  &  -  \\
-Tomography & {{ tomography_qubits_right | default(' - ') }} & {{ tomography_duration_right | default(' - ') }} &  -  &  -  \\
+Tomography &  -  &  -  & {{ tomography_duration_left | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ tomography_qubits_left | default(' - ') }}
 {% endif %}
 {% if process_tomography_plot_is_set %}
-Process Tomography & {{ left.process_tomography_qubits | default(' - ') }} & {{ left.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
-Process Tomography & {{ right.process_tomography_qubits | default(' - ') }} & {{ right.process_tomography_runtime | default(' - ') }} &  -  &  -  \\
+Tomography &  -  &  -  & {{ left.process_tomography_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.process_tomography_qubits | default(' - ') }}
 {% endif %}
 {% if reuploading_classifier_plot_is_set %}
-Reuploading Classifier & {{ left.reuploading_classifier_qubits | default(' - ') }} & {{ left.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ left.reuploading_classifier_accuracy | default(' - ') }} \\
-Reuploading Classifier & {{ right.reuploading_classifier_qubits | default(' - ') }} & {{ right.reuploading_classifier_runtime | default(' - ') }} & Accuracy test & {{ right.reuploading_classifier_accuracy | default(' - ') }} \\
+Reup. Classif. & Accuracy test & {{ left.reuploading_classifier_accuracy | default(' - ') }} & {{ left.reuploading_classifier_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.reuploading_classifier_qubits | default(' - ') }}
 {% endif %}
 {% if qft_plot_is_set %}
-QFT & {{ left.qft_qubits | default(' - ') }} & {{ left.qft_runtime | default(' - ') }} &  -  &  -  \\
-QFT & {{ right.qft_qubits | default(' - ') }} & {{ right.qft_runtime | default(' - ') }} &  -  &  -  \\
+QFT &  -  &  -  & {{ left.qft_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.qft_qubits | default(' - ') }}
+{% endif %}
+{% if qft3_swap_plot_is_set %}
+QFT 3q swap &  -  &  -  & {{ left.qft3_swap_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.qft3_swap_qubits | default(' - ') }}
 {% endif %}
 {% if yeast_classification_3q_plot_is_set %}
-QML: Yeast 3q & {{ left.yeast_3q_qubits | default(' - ') }} & {{ left.yeast_3q_duration | default(' - ') }} & Accuracy & {{ left.yeast_3q_accuracy | default(' - ') }} \\
-QML: Yeast 3q & {{ right.yeast_3q_qubits | default(' - ') }} & {{ right.yeast_3q_duration | default(' - ') }} & Accuracy & {{ right.yeast_3q_accuracy | default(' - ') }} \\
+QML: Yeast 3q & Accuracy & {{ left.yeast_3q_accuracy | default(' - ') }} & {{ left.yeast_3q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.yeast_3q_qubits | default(' - ') }}
 {% endif %}
 {% if statlog_classification_3q_plot_is_set %}
-QML: Statlog 3q & -  & {{ left.statlog_3q_duration | default(' - ') }} & Accuracy & {{ left.statlog_3q_accuracy | default(' - ') }} \\
-QML: Statlog 3q & -  & {{ right.statlog_3q_duration | default(' - ') }} & Accuracy & {{ right.statlog_3q_accuracy | default(' - ') }} \\
+QML: Statlog 3q & Accuracy & {{ left.statlog_3q_accuracy | default(' - ') }} & {{ left.statlog_3q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & -
 {% endif %}
 {% if yeast_classification_4q_plot_is_set %}
-QML: Yeast 4q & -  & {{ left.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
-QML: Yeast 4q & -  & {{ right.qml_4Q_yeast_runtime | default(' - ') }} &  -  &  -  \\
+QML: Yeast 4q &  -  &  -  & {{ left.qml_4Q_yeast_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & -
 {% endif %}
 {% if statlog_classification_4q_plot_is_set %}
-QML: Statlog 4q & -  & {{ left.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
-QML: Statlog 4q & -  & {{ right.statlog_4q_duration | default(' - ') }} &  -  &  -  \\
+QML: Statlog 4q &  -  &  -  & {{ left.statlog_4q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & -
 {% endif %}
 {% if amplitude_encoding_plot_is_set %}
-Amplitude Encoding & {{ left.amplitude_encoding_qubits | default(' - ') }} & {{ left.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
-Amplitude Encoding & {{ right.amplitude_encoding_qubits | default(' - ') }} & {{ right.amplitude_encoding_runtime | default(' - ') }} &  -  &  -  \\
+Amplitude Encoding &  -  &  -  & {{ left.amplitude_encoding_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ left.amplitude_encoding_qubits | default(' - ') }}
 {% endif %}
 \bottomrule
 \end{tabular}
 \end{center}
+}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+{\small
+\setlength{\tabcolsep}{3pt}
+\begin{center}
+\begin{tabular}{@{}l l c c@{}}  % add 'c' column before 'l' to re-enable Qubits used
+\toprule
+Benchmark & Metric & Value & Runtime \\  % add '& Qubits used' as 2nd column to re-enable
+\midrule
+{% if mermin_plot_is_set %}
+Mermin & Max & {{ right.mermin_max | default(' - ') }} & {{ right.mermin_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.mermin_qubits | default(' - ') }}
+{% endif %}
+{% if grover2q_plot_is_set %}
+Grover 2q & Max prob & {{ right.grover2q_max_prob | default(' - ') }} & {{ right.grover2q_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.grover2q_qubits | default(' - ') }}
+{% endif %}
+{% if grover3q_plot_is_set %}
+Grover 3q & Max prob & {{ right.grover3q_max_prob | default(' - ') }} & {{ right.grover3q_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.grover3q_qubits | default(' - ') }}
+{% endif %}
+{% if ghz_plot_is_set %}
+GHZ state prep. & Success & {{ right.ghz_success | default(' - ') }} & {{ right.ghz_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.ghz_qubits | default(' - ') }}
+{% endif %}
+{% if tomography_plot_is_set %}
+Tomography &  -  &  -  & {{ tomography_duration_right | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ tomography_qubits_right | default(' - ') }}
+{% endif %}
+{% if process_tomography_plot_is_set %}
+Tomography &  -  &  -  & {{ right.process_tomography_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.process_tomography_qubits | default(' - ') }}
+{% endif %}
+{% if reuploading_classifier_plot_is_set %}
+Reup. Classif. & Accuracy test & {{ right.reuploading_classifier_accuracy | default(' - ') }} & {{ right.reuploading_classifier_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.reuploading_classifier_qubits | default(' - ') }}
+{% endif %}
+{% if qft_plot_is_set %}
+QFT &  -  &  -  & {{ right.qft_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.qft_qubits | default(' - ') }}
+{% endif %}
+{% if qft3_swap_plot_is_set %}
+QFT 3q swap &  -  &  -  & {{ right.qft3_swap_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.qft3_swap_qubits | default(' - ') }}
+{% endif %}
+{% if yeast_classification_3q_plot_is_set %}
+QML: Yeast 3q & Accuracy & {{ right.yeast_3q_accuracy | default(' - ') }} & {{ right.yeast_3q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.yeast_3q_qubits | default(' - ') }}
+{% endif %}
+{% if statlog_classification_3q_plot_is_set %}
+QML: Statlog 3q & Accuracy & {{ right.statlog_3q_accuracy | default(' - ') }} & {{ right.statlog_3q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & -
+{% endif %}
+{% if yeast_classification_4q_plot_is_set %}
+QML: Yeast 4q &  -  &  -  & {{ right.qml_4Q_yeast_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & -
+{% endif %}
+{% if statlog_classification_4q_plot_is_set %}
+QML: Statlog 4q &  -  &  -  & {{ right.statlog_4q_duration | default(' - ') | replace('seconds', 'sec') }} \\  % & -
+{% endif %}
+{% if amplitude_encoding_plot_is_set %}
+Amplitude Encoding &  -  &  -  & {{ right.amplitude_encoding_runtime | default(' - ') | replace('seconds', 'sec') }} \\  % & {{ right.amplitude_encoding_qubits | default(' - ') }}
+{% endif %}
+\bottomrule
+\end{tabular}
+\end{center}
+}
+\end{minipage}
 
 
 \section{Randomized Benchmarking Results}
