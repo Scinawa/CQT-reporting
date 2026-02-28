@@ -518,12 +518,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \begin{multicols}{2}
 
-\begin{itemize}
-\item \textbf{Runtime:} 
-\item \textbf{Qubits used:} 
-\item \textbf{Max:} 
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max \\
+\midrule
+- & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -534,11 +535,13 @@ Qubit n & Fidelity & Error Bars \\ \midrule
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 
-\item \textbf{Qubits used:} 
-\item \textbf{Max:} 
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max \\
+\midrule
+- & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -561,11 +564,13 @@ Grover's algorithm for 2 qubits executed on sinq20 backend with 1000 shots per c
  We measure the success rate of finding the target state '11' for each pair of qubits in [[2, 3]].
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 10.08 seconds
-\item \textbf{Qubits used:} 2, 3
-\item \textbf{Max prob:} 0.916
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+10.08 sec & 2, 3 & 0.916 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -575,11 +580,13 @@ Grover's algorithm for 2 qubits executed on sinq20 backend with 1000 shots per c
 \end{center}
 
 \columnbreak
-\begin{itemize}
-\item \textbf{Runtime:} 10.08 seconds
-\item \textbf{Qubits used:} 2, 3
-\item \textbf{Max prob:} 0.916
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+10.08 sec & 2, 3 & 0.916 \\
+\bottomrule
+\end{tabular}
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
@@ -602,11 +609,13 @@ Grover's algorithm for 3 qubits executed on sinq20 backend with 1000 shots per c
  We measure the success rate of finding the target state '111' for each pair of qubits in [[8, 3], [2, 3]].
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 4.53 seconds
-\item \textbf{Qubits used:} 8, 2, 3
-\item \textbf{Max prob:} 0.0
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+4.53 sec & 8, 2, 3 & 0.0 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -616,11 +625,13 @@ Grover's algorithm for 3 qubits executed on sinq20 backend with 1000 shots per c
 \end{center}
 
 \columnbreak
-\begin{itemize}
-\item \textbf{Runtime:} 4.53 seconds
-\item \textbf{Qubits used:} 8, 2, 3
-\item \textbf{Max prob:} 0.0
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Max prob \\
+\midrule
+4.53 sec & 8, 2, 3 & 0.0 \\
+\bottomrule
+\end{tabular}
 \begin{center}
 \begin{minipage}{0.95\linewidth}
 \centering
@@ -641,11 +652,13 @@ Grover's algorithm for 3 qubits executed on sinq20 backend with 1000 shots per c
 GHZ circuit with 3 qubits executed on sinq20 backend with 1000 shots.
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 9.70 seconds
-\item \textbf{Qubits used:} 8, 3, 2
-\item \textbf{Success:} 0.830
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+9.70 sec & 8, 3, 2 & 0.830 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/ghz/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_ghz_results.pdf }
@@ -653,11 +666,13 @@ GHZ circuit with 3 qubits executed on sinq20 backend with 1000 shots.
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 9.70 seconds
-\item \textbf{Qubits used:} 8, 3, 2
-\item \textbf{Success:} 0.830
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Success \\
+\midrule
+9.70 sec & 8, 3, 2 & 0.830 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/ghz/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_ghz_results.pdf }
@@ -685,10 +700,13 @@ Process tomography involves preparing a circuit particular set of states,       
          - Two qubit process tomography on coupled qubits: [[2, 3]]
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 680.07 seconds
-\item \textbf{Qubits used:} 
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+680.07 sec & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/process_tomography/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/process_tomography_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_matrices.pdf }
@@ -696,10 +714,13 @@ Process tomography involves preparing a circuit particular set of states,       
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 680.07 seconds
-\item \textbf{Qubits used:} 
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+680.07 sec & - & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/process_tomography/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/20251123023814/process_tomography_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_matrices.pdf }
@@ -718,11 +739,13 @@ Process tomography involves preparing a circuit particular set of states,       
 Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} -
-\item \textbf{Qubits used:} 7
-\item \textbf{Accuracy test:} 0.94
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy test \\
+\midrule
+- & 7 & 0.94 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -733,11 +756,13 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} -
-\item \textbf{Qubits used:} 7
-\item \textbf{Accuracy test:} 0.94
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy test \\
+\midrule
+- & 7 & 0.94 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \begin{minipage}{0.95\linewidth}
@@ -760,11 +785,13 @@ Reuploading classifier with 1 qubits, 10 layers, depth of 20, 500 shots.
 Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 2.59 seconds
-\item \textbf{Qubits used:} 0, 2, 3
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
@@ -772,10 +799,13 @@ Implementation of the Quantum Fourier Transform on three qubits with manual tran
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 2.59 seconds
-\item \textbf{Qubits used:} 0, 2, 3
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/qft/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
@@ -797,11 +827,13 @@ Implementation of the Quantum Fourier Transform on three qubits with manual tran
 Implementation of the Quantum Fourier Transform on three qubits with manual transpilation. The number of gates is 66, the depth of the circuit is 40
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 2.59 seconds
-\item \textbf{Qubits used:} 0, 2, 3
-
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/qft3_swap/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft3_swap_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
@@ -809,10 +841,13 @@ Implementation of the Quantum Fourier Transform on three qubits with manual tran
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 2.59 seconds
-\item \textbf{Qubits used:} 0, 2, 3
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Metric \\
+\midrule
+2.59 sec & 0, 2, 3 & - \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \includegraphics[width=0.95\linewidth]{ build/qft3_swap/1e1f7e1d1af58009eda1986bb3689e6b9b2356b6/qft3_swap_1e1f7e1d1af58009eda1986bb3689e6b9b2356b6_20251123023814_results.pdf }
@@ -831,11 +866,13 @@ Implementation of the Quantum Fourier Transform on three qubits with manual tran
 
 
 \begin{multicols}{2}
-\begin{itemize}
-\item \textbf{Runtime:} 144.28 seconds
-\item \textbf{Qubits used:} 8, 3, 2
-\item \textbf{Accuracy:} 0.63
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+144.28 sec & 8, 3, 2 & 0.63 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
@@ -844,11 +881,13 @@ Implementation of the Quantum Fourier Transform on three qubits with manual tran
 
 \columnbreak
 
-\begin{itemize}
-\item \textbf{Runtime:} 144.28 seconds
-\item \textbf{Qubits used:} 8, 3, 2
-\item \textbf{Accuracy:} 0.63
-\end{itemize}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Runtime & Qubits & Accuracy \\
+\midrule
+144.28 sec & 8, 3, 2 & 0.63 \\
+\bottomrule
+\end{tabular}
 
 \begin{center}
 \centering
