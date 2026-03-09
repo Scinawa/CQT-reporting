@@ -201,7 +201,10 @@ The single qubit fidelity is obtained via Randomized-Benchmarking. The two-qubit
 T1 (ns) & {{ left.stat_t1.average }} & {{ left.stat_t1.median }} & {{ left.stat_t1.min }} & {{ left.stat_t1.max }} \\
 T2 (ns) & {{ left.stat_t2.average }} & {{ left.stat_t2.median }} & {{ left.stat_t2.min }} & {{ left.stat_t2.max }} \\
 Fidelity & {{ left.stat_fidelity.average }} & {{ left.stat_fidelity.median }} & {{ left.stat_fidelity.min }} & {{ left.stat_fidelity.max }} \\
-RO fidelity  & {{ left.stat_readout_fidelity.average }} & {{ left.stat_readout_fidelity.median }} & {{ left.stat_readout_fidelity.min }} & {{ left.stat_readout_fidelity.max }} \\
+RO Fidelity  & {{ left.stat_readout_fidelity.average }} & {{ left.stat_readout_fidelity.median }} & {{ left.stat_readout_fidelity.min }} & {{ left.stat_readout_fidelity.max }} \\
+2q RB Fidelity & {{ left.stat_2q_rb_fidelity.average }} & {{ left.stat_2q_rb_fidelity.median }} & {{ left.stat_2q_rb_fidelity.min }} & {{ left.stat_2q_rb_fidelity.max }} \\
+2q CZ Fidelity & {{ left.stat_2q_cz_fidelity.average }} & {{ left.stat_2q_cz_fidelity.median }} & {{ left.stat_2q_cz_fidelity.min }} & {{ left.stat_2q_cz_fidelity.max }} \\
+%2q Coupling & {{ left.stat_2q_coupling.average }} & {{ left.stat_2q_coupling.median }} & {{ left.stat_2q_coupling.min }} & {{ left.stat_2q_coupling.max }} \\
 %Mermin Max  & {{ left.mermin_maximum | default('N/A') }} & & & \\
 \bottomrule
 \end{tabular}
@@ -220,6 +223,9 @@ T1 (ns) & {{ right.stat_t1.average }} & {{ right.stat_t1.median }} & {{ right.st
 T2 (ns) & {{ right.stat_t2.average }} & {{ right.stat_t2.median }} & {{ right.stat_t2.min }} & {{ right.stat_t2.max }} \\
 Fidelity  & {{ right.stat_fidelity.average }} & {{ right.stat_fidelity.median }} & {{ right.stat_fidelity.min }} & {{ right.stat_fidelity.max }} \\
 RO Fidelity  & {{ right.stat_readout_fidelity.average }} & {{ right.stat_readout_fidelity.median }} & {{ right.stat_readout_fidelity.min }} & {{ right.stat_readout_fidelity.max }} \\
+2q RB Fidelity & {{ right.stat_2q_rb_fidelity.average }} & {{ right.stat_2q_rb_fidelity.median }} & {{ right.stat_2q_rb_fidelity.min }} & {{ right.stat_2q_rb_fidelity.max }} \\
+2q CZ Fidelity & {{ right.stat_2q_cz_fidelity.average }} & {{ right.stat_2q_cz_fidelity.median }} & {{ right.stat_2q_cz_fidelity.min }} & {{ right.stat_2q_cz_fidelity.max }} \\
+%2q Coupling & {{ right.stat_2q_coupling.average }} & {{ right.stat_2q_coupling.median }} & {{ right.stat_2q_coupling.min }} & {{ right.stat_2q_coupling.max }} \\
 %Mermin Max  & {{ right.mermin_maximum | default('N/A') }} & & & \\
 \bottomrule
 \end{tabular}
