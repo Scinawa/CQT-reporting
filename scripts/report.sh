@@ -11,6 +11,8 @@ RUNID_RIGHT="${RUNID_RIGHT:-20251123023814}"
 calibration_left="${calibration_left:-3826882f81128980b5e49b0e1bec76e24e40e158}"
 RUNID_LEFT="${RUNID_LEFT:-20251201101512}"
 
+SHOW_ERRORS="${SHOW_ERRORS:-false}"
+
 PYTHON=".venv/bin/python"   # ensures uv environment is used
 LATEX="pdflatex"
 DATESTAMP=$(date +%d%m%Y_%H)
@@ -60,12 +62,18 @@ build() {
     mkdir -p build
     cp src/templates/placeholder.png build/placeholder.png
 
+    ERRORS_FLAG=""
+    if [ "$SHOW_ERRORS" = "false" ]; then
+        ERRORS_FLAG="--no-show-errors"
+    fi
+
     echo "Building LaTeX report..."
     $PYTHON src/main.py \
         --calibration-left "$calibration_left" \
         --calibration-right "$calibration_right" \
         --run-left "$RUNID_LEFT" \
         --run-right "$RUNID_RIGHT" \
+        $ERRORS_FLAG
         # --no-tomography-plot
 }
 

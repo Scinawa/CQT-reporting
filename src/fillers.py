@@ -283,35 +283,31 @@ def context_fidelity(experiment_dir):
 
 def get_stat_fidelity(raw_data, experiment_dir):
     """
-    Returns a dictionary with average, min, max, and median fidelity for the given experiment directory.
+    Returns a dictionary with average, min, max, and median RB fidelity
+    from calibration.json's single_qubits section.
     """
-
     with open(raw_data, "r") as f:
         results = json.load(f)
 
-    fidelities = results.get('"fidelity"', {})
-    # Convert dict_values to list and flatten if needed
-    fidelities_list = list(fidelities.values())
-
-    # Convert all values to float if possible
+    single_qubits = results.get("single_qubits", {})
     numeric_fidelities = []
-    for f in fidelities_list:
-        try:
-            numeric_fidelities.append(float(f))
-        except (ValueError, TypeError):
-            continue
+    for qubit_data in single_qubits.values():
+        rb_fidelity = qubit_data.get("rb_fidelity", [])
+        if rb_fidelity and rb_fidelity[0] is not None:
+            try:
+                numeric_fidelities.append(float(rb_fidelity[0]))
+            except (ValueError, TypeError):
+                continue
 
     if not numeric_fidelities:
-        return {"average": None, "min": None, "max": None, "median": None}
+        return {"average": "-", "min": "-", "max": "-", "median": "-"}
 
-    dict_fidelities = {
+    return {
         "average": f"{np.nanmean(numeric_fidelities):.3g}",
         "min": f"{np.nanmin(numeric_fidelities):.3g}",
         "max": f"{np.nanmax(numeric_fidelities):.3g}",
         "median": f"{np.nanmedian(numeric_fidelities):.3g}",
     }
-
-    return dict_fidelities
 
 
 def get_stat_t12(experiment_dir, stat_type):
@@ -347,6 +343,137 @@ def get_stat_t12(experiment_dir, stat_type):
         "median": f"{np.nanmedian(numeric_ts):.3g}",
     }
     return dict_ts
+
+
+def _empty_stats():
+    """Placeholder function until it is clear which 2qubit statistics data is to be sourced from results.json."""
+    return {"average": "-", "min": "-", "max": "-", "median": "-"}
+
+
+def _compute_stats(values):
+    numeric = []
+    for v in values:
+        if v is not None:
+            try:
+                numeric.append(float(v))
+            except (ValueError, TypeError):
+                continue
+    if not numeric:
+        return _empty_stats()
+    return {
+        "average": f"{np.nanmean(numeric):.3g}",
+        "min": f"{np.nanmin(numeric):.3g}",
+        "max": f"{np.nanmax(numeric):.3g}",
+        "median": f"{np.nanmedian(numeric):.3g}",
+    }
+
+
+def get_stat_two_qubit(raw_data, metric, show_errors=True):
+    """
+    Returns statistics with error propagation for a 2-qubit metric from calibration.json.
+    Metrics: 'rb_fidelity', 'cz_fidelity', 'coupling'.
+    For rb_fidelity/cz_fidelity: each pair has [value, error].
+    For coupling: each pair has a direct value (often null).
+    """
+    with open(raw_data, "r") as f:
+        results = json.load(f)
+
+    two_qubits = results.get("two_qubits", {})
+
+    values = []
+    errors = []
+    for pair_data in two_qubits.values():
+        entry = pair_data.get(metric)
+        if entry is None:
+            continue
+        if isinstance(entry, list) and len(entry) >= 2:
+            if entry[0] is not None:
+                values.append(float(entry[0]))
+                errors.append(float(entry[1]) if entry[1] is not None else 0.0)
+        else:
+            if entry is not None:
+                try:
+                    values.append(float(entry))
+                    errors.append(0.0)
+                except (ValueError, TypeError):
+                    continue
+
+    if not values:
+        return _empty_stats()
+
+    values = np.array(values)
+    errors = np.array(errors)
+    n = len(values)
+
+    avg_val = np.nanmean(values)
+    avg_err = np.sqrt(np.sum(errors**2)) / n
+
+    min_idx = np.nanargmin(values)
+    min_val = values[min_idx]
+    min_err = errors[min_idx]
+
+    max_idx = np.nanargmax(values)
+    max_val = values[max_idx]
+    max_err = errors[max_idx]
+
+    sorted_indices = np.argsort(values)
+    median_idx = sorted_indices[n // 2]
+    median_val = np.nanmedian(values)
+    median_err = errors[median_idx]
+
+    def fmt(val, err):
+        if not show_errors or err == 0.0:
+            return f"{val:.3g}"
+        return f"{val:.3g} ± {err:.3g}"
+
+    return {
+        "average": fmt(avg_val, avg_err),
+        "min": fmt(min_val, min_err),
+        "max": fmt(max_val, max_err),
+        "median": fmt(median_val, median_err),
+    }
+
+
+def get_stat_t12_from_run(base_dir, calibration_id, run_id, stat_type):
+    """
+    Returns T1 or T2 statistics from the coherence experiment results.json.
+    """
+    results_path = Path(base_dir) / calibration_id / run_id / "coherence" / "results.json"
+    try:
+        with open(results_path, "r") as f:
+            results = json.load(f)
+        values = results.get(stat_type, {}).values()
+        return _compute_stats(values)
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        return _empty_stats()
+
+
+def get_stat_fidelity_from_run(base_dir, calibration_id, run_id):
+    """
+    Returns fidelity statistics from the standard_rb experiment results.json.
+    """
+    results_path = Path(base_dir) / calibration_id / run_id / "standard_rb" / "results.json"
+    try:
+        with open(results_path, "r") as f:
+            results = json.load(f)
+        values = results.get("fidelity", {}).values()
+        return _compute_stats(values)
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        return _empty_stats()
+
+
+def get_readout_fidelity_from_run(base_dir, calibration_id, run_id):
+    """
+    Returns readout fidelity statistics from the readout experiment results.json.
+    """
+    results_path = Path(base_dir) / calibration_id / run_id / "readout" / "results.json"
+    try:
+        with open(results_path, "r") as f:
+            results = json.load(f)
+        values = results.get("readout_fidelity", {}).values()
+        return _compute_stats(values)
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        return _empty_stats()
 
 
 def get_stat_pulse_fidelity(experiment_dir):

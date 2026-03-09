@@ -84,6 +84,14 @@ def setup_argument_parser():
         help="Run id for the left experiment.",
     )
 
+    parser.add_argument(
+        "--no-show-errors",
+        dest="show_errors",
+        default=True,
+        action="store_false",
+        help="Hide error bars (±) in 2-qubit statistics.",
+    )
+
     # Plot toggles (default: True). Use --no-<flag> to disable.
     parser.add_argument(
         "--no-t1-plot", dest="t1_plot", default=False, action="store_false"
@@ -209,7 +217,7 @@ def prepare_template_context(cfg):
 
     ##### T1 statistics
     try:
-        stat_t1 = fl.get_stat_t12("calibrations/"+cfg.calibration_left + "/sinq20", "t1")
+        stat_t1 = fl.get_stat_t12_from_run(cfg.base_dir, cfg.calibration_left, cfg.run_left, "t1")
         stat_t1_right = fl.get_stat_t12("calibrations/"+cfg.calibration_right + "/sinq20", "t1")
         stat_t1_with_improvement = add_stat_changes(stat_t1, stat_t1_right)
 
@@ -226,7 +234,7 @@ def prepare_template_context(cfg):
     ##### T2 statistics
     try:    
         """Prepare T2 statistics for both experiments."""
-        stat_t2 = fl.get_stat_t12("calibrations/" + cfg.calibration_left + "/sinq20", "t2")
+        stat_t2 = fl.get_stat_t12_from_run(cfg.base_dir, cfg.calibration_left, cfg.run_left, "t2")
         stat_t2_right = fl.get_stat_t12("calibrations/" + cfg.calibration_right + "/sinq20", "t2")
         stat_t2_with_improvement = add_stat_changes(stat_t2, stat_t2_right)
 
@@ -243,10 +251,7 @@ def prepare_template_context(cfg):
     ##### FIDELITY 
     try:
         """Prepare fidelity statistics for both experiments."""
-        stat_fidelity = fl.get_stat_fidelity(
-            os.path.join("data", "calibrations", cfg.calibration_left, "sinq20", "calibration.json"),
-            cfg.calibration_left,
-        )
+        stat_fidelity = fl.get_stat_fidelity_from_run(cfg.base_dir, cfg.calibration_left, cfg.run_left)
         stat_fidelity_right = fl.get_stat_fidelity(
             os.path.join("data", "calibrations", cfg.calibration_right, "sinq20", "calibration.json"),
             cfg.calibration_right,
@@ -265,10 +270,7 @@ def prepare_template_context(cfg):
     ##### READOUT FIDELITY
     try:
         """Prepare readout fidelity statistics for both experiments."""
-        stat_readout_fidelity = fl.get_readout_fidelity(
-            os.path.join("data", "calibrations", cfg.calibration_left, "sinq20", "calibration.json"),
-            cfg.calibration_left,
-        )
+        stat_readout_fidelity = fl.get_readout_fidelity_from_run(cfg.base_dir, cfg.calibration_left, cfg.run_left)
         stat_readout_fidelity_right = fl.get_readout_fidelity(
             os.path.join("data", "calibrations", cfg.calibration_right, "sinq20", "calibration.json"),
             cfg.calibration_right,
@@ -283,7 +285,20 @@ def prepare_template_context(cfg):
         # context = context_mermin_table(context, cfg)
         # context = context_pulse_fidelity_statistics(context, cfg)
 
-
+    ##### 2-QUBIT STATISTICS (rb_fidelity, cz_fidelity, coupling)
+    calibration_right_path = os.path.join(
+        "data", "calibrations", cfg.calibration_right, "sinq20", "calibration.json"
+    )
+    for metric in ["rb_fidelity", "cz_fidelity", "coupling"]:
+        ctx_key = f"stat_2q_{metric}"
+        try:
+            context["left"][ctx_key] = fl._empty_stats()
+            context["right"][ctx_key] = fl.get_stat_two_qubit(calibration_right_path, metric, show_errors=cfg.show_errors)
+            logging.info(f"Prepared 2Q {metric} statistics")
+        except Exception as e:
+            logging.error(f"Error preparing 2Q {metric} statistics: {e}")
+            context["left"][ctx_key] = fl._empty_stats()
+            context["right"][ctx_key] = fl._empty_stats()
 
     # FIDELITY PLOT MAIN PAGE
     try:
