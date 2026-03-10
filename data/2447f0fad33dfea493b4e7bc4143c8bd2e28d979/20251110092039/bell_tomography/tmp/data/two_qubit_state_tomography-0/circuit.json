@@ -1,1 +1,0 @@
-{"queue": [{"name": "h", "init_args": [0], "init_kwargs": {}, "_target_qubits": [0], "_control_qubits": [], "_class": "H"}, {"name": "cx", "init_args": [0, 1], "init_kwargs": {}, "_target_qubits": [1], "_control_qubits": [0], "_class": "CNOT"}], "nqubits": 2, "density_matrix": false, "wire_names": [0, 1], "qibo_version": "0.2.19"}
