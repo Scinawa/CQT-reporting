@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CQT Calibration Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f4f5;
+      color: #18181b;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #18181b;
+      color: #fafafa;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    header span {
+      font-size: 0.8rem;
+      color: #a1a1aa;
+    }
+
+    .viewer {
+      flex: 1;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CQT — Calibration Report</h1>
+    <span id="timestamp"></span>
+  </header>
+  <div class="viewer">
+    <iframe src="report.pdf" type="application/pdf" title="Calibration Report"></iframe>
+  </div>
+  <script>
+    document.getElementById("timestamp").textContent =
+      "Last updated: " + new Date().toISOString().slice(0, 10);
+  </script>
+</body>
+</html>

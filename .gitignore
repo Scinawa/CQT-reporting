@@ -3,7 +3,6 @@
 build/
 claude/
 data/
-index.html
 logs/
 reports/
 src/
