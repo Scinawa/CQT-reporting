@@ -15,6 +15,16 @@ PYTHON=".venv/bin/python"   # ensures uv environment is used
 LATEX="pdflatex"
 DATESTAMP=$(date +%d%m%Y_%H)
 
+# Parse --show-errors from any position in the argument list
+SHOW_ERRORS=""
+for arg in "$@"; do
+    case "$arg" in
+        --show-errors|--show-errors=true|--show-errors=True)
+            SHOW_ERRORS="--show-errors"
+            ;;
+    esac
+done
+
 ##############################
 # Helper: ensure venv exists
 ##############################
@@ -30,19 +40,27 @@ ensure_venv() {
 # Download commands
 ##############################
 
-download_latest_two() {
+latest_two_pdf() {
     mkdir -p data
     echo "Downloading latest two experiments..."
-    $PYTHON download.py --latest-two
-}
 
-download_data() {
-    mkdir -p data
-    echo "Downloading data for experiment $calibration_left"
-    $PYTHON download.py --hash-id "$calibration_left" --run-id "$RUNID_LEFT"
+    # download.py 'latest-two' prints two lines to stdout: newest run first
+    # Capture both lines; assign newest to left, second newest to right
+    latest_two_output=$("$PYTHON" download.py latest-two)
 
-    echo "Downloading data for experiment $calibration_right"
-    $PYTHON download.py --hash-id "$calibration_right" --run-id "$RUNID_RIGHT"
+    if [ -z "$latest_two_output" ]; then
+        echo "Error: latest-two returned no results" >&2
+        exit 1
+    fi
+
+    read calibration_left RUNID_LEFT <<< "$(echo "$latest_two_output" | head -1)"
+    read calibration_right RUNID_RIGHT <<< "$(echo "$latest_two_output" | tail -1)"
+
+    echo "  calibration_left=$calibration_left  RUNID_LEFT=$RUNID_LEFT"
+    echo "  calibration_right=$calibration_right  RUNID_RIGHT=$RUNID_RIGHT"
+
+    # Build the report: left=newest run, right=second newest run
+    pdf
 }
 
 ##############################
@@ -66,7 +84,7 @@ build() {
         --calibration-right "$calibration_right" \
         --run-left "$RUNID_LEFT" \
         --run-right "$RUNID_RIGHT" \
-        # --no-tomography-plot
+        $SHOW_ERRORS
 }
 
 ##############################
@@ -167,19 +185,15 @@ all() {
 ##############################
 
 case "$1" in
-    download-latest-two) download_latest_two ;;
-    download-data)       download_data ;;
-    clean)               clean ;;
-    build)               build ;;
-    pdf-only)            pdf_only ;;
-    pdf)                 pdf ;;
+    latest-two-pdf)      latest_two_pdf ;;
     best-latest-pdf)     best_latest_pdf "$@" ;;
     specific-pdf)        specific_pdf "$@" ;;
+    clean)               clean ;;
     batch-runscripts-numpy) batch_runscripts_numpy ;;
     batch-runscripts-sinq20) batch_runscripts_sinq20 ;;
     all)                 all ;;
     *)
-        echo "Usage: $0 {download-latest-two|download-data|clean|build|pdf-only|pdf|best-latest-pdf|specific-pdf|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
+        echo "Usage: $0 {latest-two-pdf|best-latest-pdf|specific-pdf|clean|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
         exit 1
         ;;
 esac
