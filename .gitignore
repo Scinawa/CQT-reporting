@@ -1,0 +1,9 @@
+.secrets.toml
+.DS_Store
+build/
+claude/
+data/
+index.html
+logs/
+reports/
+src/
