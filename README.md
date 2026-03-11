@@ -40,21 +40,41 @@ Build requires: `pdflatex`, `uv`
 # Install dependencies (requires Python >=3.12 and uv)
 uv sync
 
-# Generate PDF comparing best vs latest run (download + build + compile)
-./scripts/report.sh best-latest-pdf
+# Generate PDF from the two most recent runs under the latest calibration
+./report.sh latest-2nd_latest-pdf
 
-# Generate PDF for specific runs (download + build + compile)
-./scripts/report.sh specific-pdf <calib_left> <run_left> <calib_right> <run_right>
+# Generate PDF comparing the server's best-scored run (right) vs latest run (left)
+./report.sh latest-best-pdf
 
-# Or step by step:
-./scripts/report.sh download-data   # download configured runs
-./scripts/report.sh build            # generate report.tex
-./scripts/report.sh pdf-only         # compile to PDF
-./scripts/report.sh pdf              # build + compile in one step
+# Generate PDF for two fully explicit runs
+./report.sh specific_left-specific_right-pdf <calib_left> <run_left> <calib_right> <run_right>
+
+# Show ± error bars in 2-qubit statistics (hidden by default)
+./report.sh latest-2nd_latest-pdf --show-errors
 
 # Web UI (ad-hoc comparisons)
 python server.py   # http://localhost:5000
 ```
+
+## report.sh commands
+
+All PDF commands download data, build the LaTeX, and compile to PDF in one step.
+
+| Command | What it does |
+|---|---|
+| `latest-2nd_latest-pdf` | Downloads the two most recent runs under the latest calibration hash. Newest run → left side, second newest → right side. |
+| `latest-best-pdf` | Downloads the server's highest-scored run (right) and the most recent run (left). |
+| `specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT` | Downloads two fully explicit runs by hash + run ID. No ambiguity about which data is used. |
+| `clean` | Wipes the `build/` directory. |
+| `batch-runscripts-numpy` | Submits the numpy sbatch job via `sbatch scripts/runscripts_numpy.sh`. |
+| `batch-runscripts-sinq20` | Submits the sinq20 sbatch job via `sbatch scripts/runscripts_sinq20.sh`. |
+| `all` | Submits both sbatch jobs then builds the PDF. |
+
+**Optional flag (works with any command):**
+
+| Flag | Effect |
+|---|---|
+| `--show-errors` | Show ± error bars in 2-qubit statistics rows. Hidden by default. |
 
 ## Repository Structure
 
@@ -132,7 +152,7 @@ Remote API (54.169.91.191)
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/report.sh` | Main automation. Commands: `download-data`, `build`, `pdf`, `best-latest-pdf`, `specific-pdf`. Handles venv setup, data download, LaTeX generation, PDF compilation, and archival to `reports/`. |
+| `scripts/report.sh` | Main automation. Commands: `latest-2nd_latest-pdf`, `latest-best-pdf`, `specific_left-specific_right-pdf`, `clean`. Handles venv setup, data download, LaTeX generation, PDF compilation, and archival to `reports/`. |
 | `scripts/periodic.sh` | Cron-job script. Git pulls, downloads latest data, generates PDF, commits and pushes. Runs on `/opt/cqt-reporting`. |
 | `scripts/sync-nqch.sh` | Rsyncs experiment data from NQCH machine to reporting server with automatic backups. |
 
@@ -154,8 +174,3 @@ Contributions are welcome! Please submit a pull request or open an issue for enh
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
-
-
-    "http.proxy": "socks5h://127.0.0.1:30334",
-    "http.proxyStrictSSL": false,
-    "http.systemCertificates": true,

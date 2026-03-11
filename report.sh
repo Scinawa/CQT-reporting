@@ -40,7 +40,7 @@ ensure_venv() {
 # Download commands
 ##############################
 
-latest_two_pdf() {
+latest_2nd_latest_pdf() {
     mkdir -p data
     echo "Downloading latest two experiments..."
 
@@ -113,7 +113,7 @@ pdf() {
 # High-level PDF helpers
 ##############################
 
-best_latest_pdf() {
+latest_best_pdf() {
     echo "Downloading BEST result (right side)..."
     mkdir -p data
     # download.py 'best' prints: <hashID> <runID> on stdout
@@ -131,9 +131,9 @@ best_latest_pdf() {
     pdf
 }
 
-specific_pdf() {
+specific_left_specific_right_pdf() {
     if [ "$#" -ne 5 ]; then
-        echo "Usage: $0 specific-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT" >&2
+        echo "Usage: $0 specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT" >&2
         exit 1
     fi
 
@@ -185,15 +185,15 @@ all() {
 ##############################
 
 case "$1" in
-    latest-two-pdf)      latest_two_pdf ;;
-    best-latest-pdf)     best_latest_pdf "$@" ;;
-    specific-pdf)        specific_pdf "$@" ;;
+    latest-2nd_latest-pdf)          latest_2nd_latest_pdf ;;
+    latest-best-pdf)                latest_best_pdf "$@" ;;
+    specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
     clean)               clean ;;
     batch-runscripts-numpy) batch_runscripts_numpy ;;
     batch-runscripts-sinq20) batch_runscripts_sinq20 ;;
     all)                 all ;;
     *)
-        echo "Usage: $0 {latest-two-pdf|best-latest-pdf|specific-pdf|clean|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
+        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|clean|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
         exit 1
         ;;
 esac
