@@ -1,6 +1,6 @@
 # Quantum Benchmark Reporter
 
-This project automates the generation of PDF reports for quantum benchmarking experiments. It uses a LaTeX template (with Jinja2) populated from JSON files containing experiment results and metadata.
+This project automates the generation of PDF reports for quantum benchmarking experiments. It uses a LaTeX template (with Jinja2) populated from JSON files containing experiment results and metadata. 
 
 Currently targets the **sinq20** platform but calibration bundles may include data for other platforms (e.g. sinq-5).
 
@@ -53,11 +53,16 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 | `specific-best-pdf CALIB_LEFT RUN_LEFT` | Downloads a specific run (left) and the server's highest-scored run (right). |
 | `clean` | Wipes the `build/` directory. |
 
-**Optional flag (works with any command):**
+**Default behaviour and `--show-errors` flag:**
 
-| Flag | Effect |
+All commands accept `--show-errors` anywhere in the argument list to show ± error bars in the 2-qubit statistics rows (hidden by default). Running the script with no arguments defaults to `latest-best-pdf`.
+
+| Command | What happens |
 |---|---|
-| `--show-errors` | Show ± error bars in 2-qubit statistics rows. Hidden by default. |
+| `./report.sh` | runs `latest-best-pdf` |
+| `./report.sh --show-errors` | runs `latest-best-pdf` with ± errors shown |
+| `./report.sh latest-best-pdf` | same as above, explicit |
+| `./report.sh latest-best-pdf --show-errors` | same, explicit with errors |
 
 ### Examples
 

@@ -181,8 +181,10 @@ specific_left_specific_right_pdf() {
 ##############################
 
 case "$1" in
+    ""|latest-best-pdf|\
+    --show-errors|--show-errors=true|--show-errors=True)
+                                    latest_best_pdf "$@" ;;
     latest-2nd_latest-pdf)          latest_2nd_latest_pdf ;;
-    latest-best-pdf)                latest_best_pdf "$@" ;;
     specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
     specific-best-pdf)              specific_best_pdf "$@" ;;
     clean)               clean ;;
