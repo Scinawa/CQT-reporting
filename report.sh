@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-##############################
-# Default Configuration
-##############################
-
-calibration_right="${calibration_right:-1e1f7e1d1af58009eda1986bb3689e6b9b2356b6}"
-RUNID_RIGHT="${RUNID_RIGHT:-20251123023814}"
-
-calibration_left="${calibration_left:-3826882f81128980b5e49b0e1bec76e24e40e158}"
-RUNID_LEFT="${RUNID_LEFT:-20251201101512}"
-
 PYTHON=".venv/bin/python"   # ensures uv environment is used
 LATEX="pdflatex"
 DATESTAMP=$(date +%d%m%Y_%H)
@@ -131,6 +121,32 @@ latest_best_pdf() {
     pdf
 }
 
+specific_left_best_right_pdf() {
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: $0 specific_left-best_right-pdf CALIB_LEFT RUN_LEFT" >&2
+        exit 1
+    fi
+
+    # Positional arguments:
+    #   $2 = CALIB_LEFT
+    #   $3 = RUN_LEFT
+    calibration_left="$2"
+    RUNID_LEFT="$3"
+
+    mkdir -p data
+
+    echo "Downloading specific LEFT result: hashID=$calibration_left runID=$RUNID_LEFT"
+    "$PYTHON" download.py specific "$calibration_left" "$RUNID_LEFT" >/dev/null
+
+    echo "Downloading BEST result (right side)..."
+    read calibration_right RUNID_RIGHT < <("$PYTHON" download.py best)
+    echo "  calibration_right=$calibration_right"
+    echo "  RUNID_RIGHT=$RUNID_RIGHT"
+
+    # Now build and compile the report using these values
+    pdf
+}
+
 specific_left_specific_right_pdf() {
     if [ "$#" -ne 5 ]; then
         echo "Usage: $0 specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT" >&2
@@ -168,9 +184,10 @@ case "$1" in
     latest-2nd_latest-pdf)          latest_2nd_latest_pdf ;;
     latest-best-pdf)                latest_best_pdf "$@" ;;
     specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
+    specific_left-best_right-pdf)   specific_left_best_right_pdf "$@" ;;
     clean)               clean ;;
     *)
-        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|clean}"
+        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|specific_left-best_right-pdf|clean}"
         exit 1
         ;;
 esac

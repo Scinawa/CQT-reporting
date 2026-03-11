@@ -39,21 +39,6 @@ Build requires: `pdflatex`, `uv`
 ```bash
 # Install dependencies (requires Python >=3.12 and uv)
 uv sync
-
-# Generate PDF from the two most recent runs under the latest calibration
-./report.sh latest-2nd_latest-pdf
-
-# Generate PDF comparing the server's best-scored run (right) vs latest run (left)
-./report.sh latest-best-pdf
-
-# Generate PDF for two fully explicit runs
-./report.sh specific_left-specific_right-pdf <calib_left> <run_left> <calib_right> <run_right>
-
-# Show ± error bars in 2-qubit statistics (hidden by default)
-./report.sh latest-2nd_latest-pdf --show-errors
-
-# Web UI (ad-hoc comparisons)
-python server.py   # http://localhost:5000
 ```
 
 ## report.sh commands
@@ -65,6 +50,7 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 | `latest-2nd_latest-pdf` | Downloads the two most recent runs under the latest calibration hash. Newest run → left side, second newest → right side. |
 | `latest-best-pdf` | Downloads the server's highest-scored run (right) and the most recent run (left). |
 | `specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT` | Downloads two fully explicit runs by hash + run ID. No ambiguity about which data is used. |
+| `specific_left-best_right-pdf CALIB_LEFT RUN_LEFT` | Downloads a specific run (left) and the server's highest-scored run (right). |
 | `clean` | Wipes the `build/` directory. |
 
 **Optional flag (works with any command):**
@@ -72,6 +58,35 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 | Flag | Effect |
 |---|---|
 | `--show-errors` | Show ± error bars in 2-qubit statistics rows. Hidden by default. |
+
+### Examples
+
+```bash
+# Compare the two most recent runs (most common use case)
+./report.sh latest-2nd_latest-pdf
+
+# Compare best-scored run (right) vs most recent run (left)
+./report.sh latest-best-pdf
+
+# Compare two fully explicit runs by hash and run ID
+./report.sh specific_left-specific_right-pdf \
+  3826882f81128980b5e49b0e1bec76e24e40e158 20251201101512 \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748
+
+# Compare your specific run (left) against the server's best (right)
+./report.sh specific_left-best_right-pdf \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748
+
+# Any command above with ± error bars shown
+./report.sh latest-2nd_latest-pdf --show-errors
+./report.sh specific_left-specific_right-pdf \
+  3826882f81128980b5e49b0e1bec76e24e40e158 20251201101512 \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748 \
+  --show-errors
+
+# Wipe the build directory
+./report.sh clean
+```
 
 ## Repository Structure
 
