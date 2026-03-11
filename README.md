@@ -66,9 +66,6 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 | `latest-best-pdf` | Downloads the server's highest-scored run (right) and the most recent run (left). |
 | `specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT` | Downloads two fully explicit runs by hash + run ID. No ambiguity about which data is used. |
 | `clean` | Wipes the `build/` directory. |
-| `batch-runscripts-numpy` | Submits the numpy sbatch job via `sbatch scripts/runscripts_numpy.sh`. |
-| `batch-runscripts-sinq20` | Submits the sinq20 sbatch job via `sbatch scripts/runscripts_sinq20.sh`. |
-| `all` | Submits both sbatch jobs then builds the PDF. |
 
 **Optional flag (works with any command):**
 

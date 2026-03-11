@@ -161,26 +161,6 @@ specific_left_specific_right_pdf() {
 
 
 ##############################
-# Batch functions
-##############################
-
-batch_runscripts_numpy() {
-    echo "Submitting sbatch job for device=numpy..."
-    sbatch scripts/runscripts_numpy.sh
-}
-
-batch_runscripts_sinq20() {
-    echo "Submitting sbatch job for device=sinq20..."
-    sbatch scripts/runscripts_sinq20.sh
-}
-
-all() {
-    batch_runscripts_numpy
-    batch_runscripts_sinq20
-    pdf
-}
-
-##############################
 # Command-line interface
 ##############################
 
@@ -189,11 +169,8 @@ case "$1" in
     latest-best-pdf)                latest_best_pdf "$@" ;;
     specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
     clean)               clean ;;
-    batch-runscripts-numpy) batch_runscripts_numpy ;;
-    batch-runscripts-sinq20) batch_runscripts_sinq20 ;;
-    all)                 all ;;
     *)
-        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|clean|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
+        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|clean}"
         exit 1
         ;;
 esac
