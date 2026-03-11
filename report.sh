@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
-##############################
-# Default Configuration
-##############################
-
-calibration_right="${calibration_right:-1e1f7e1d1af58009eda1986bb3689e6b9b2356b6}"
-RUNID_RIGHT="${RUNID_RIGHT:-20251123023814}"
-
-calibration_left="${calibration_left:-3826882f81128980b5e49b0e1bec76e24e40e158}"
-RUNID_LEFT="${RUNID_LEFT:-20251201101512}"
-
 PYTHON=".venv/bin/python"   # ensures uv environment is used
 LATEX="pdflatex"
 DATESTAMP=$(date +%d%m%Y_%H)
+
+# Parse --show-errors from any position in the argument list
+SHOW_ERRORS=""
+for arg in "$@"; do
+    case "$arg" in
+        --show-errors|--show-errors=true|--show-errors=True)
+            SHOW_ERRORS="--show-errors"
+            ;;
+    esac
+done
 
 ##############################
 # Helper: ensure venv exists
@@ -30,19 +30,27 @@ ensure_venv() {
 # Download commands
 ##############################
 
-download_latest_two() {
+latest_2nd_latest_pdf() {
     mkdir -p data
     echo "Downloading latest two experiments..."
-    $PYTHON download.py --latest-two
-}
 
-download_data() {
-    mkdir -p data
-    echo "Downloading data for experiment $calibration_left"
-    $PYTHON download.py --hash-id "$calibration_left" --run-id "$RUNID_LEFT"
+    # download.py 'latest-two' prints two lines to stdout: newest run first
+    # Capture both lines; assign newest to left, second newest to right
+    latest_two_output=$("$PYTHON" download.py latest-two)
 
-    echo "Downloading data for experiment $calibration_right"
-    $PYTHON download.py --hash-id "$calibration_right" --run-id "$RUNID_RIGHT"
+    if [ -z "$latest_two_output" ]; then
+        echo "Error: latest-two returned no results" >&2
+        exit 1
+    fi
+
+    read calibration_left RUNID_LEFT <<< "$(echo "$latest_two_output" | head -1)"
+    read calibration_right RUNID_RIGHT <<< "$(echo "$latest_two_output" | tail -1)"
+
+    echo "  calibration_left=$calibration_left  RUNID_LEFT=$RUNID_LEFT"
+    echo "  calibration_right=$calibration_right  RUNID_RIGHT=$RUNID_RIGHT"
+
+    # Build the report: left=newest run, right=second newest run
+    pdf
 }
 
 ##############################
@@ -66,7 +74,7 @@ build() {
         --calibration-right "$calibration_right" \
         --run-left "$RUNID_LEFT" \
         --run-right "$RUNID_RIGHT" \
-        # --no-tomography-plot
+        $SHOW_ERRORS
 }
 
 ##############################
@@ -95,7 +103,7 @@ pdf() {
 # High-level PDF helpers
 ##############################
 
-best_latest_pdf() {
+latest_best_pdf() {
     echo "Downloading BEST result (right side)..."
     mkdir -p data
     # download.py 'best' prints: <hashID> <runID> on stdout
@@ -113,9 +121,35 @@ best_latest_pdf() {
     pdf
 }
 
-specific_pdf() {
+specific_best_pdf() {
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: $0 specific-best-pdf CALIB_LEFT RUN_LEFT" >&2
+        exit 1
+    fi
+
+    # Positional arguments:
+    #   $2 = CALIB_LEFT
+    #   $3 = RUN_LEFT
+    calibration_left="$2"
+    RUNID_LEFT="$3"
+
+    mkdir -p data
+
+    echo "Downloading specific LEFT result: hashID=$calibration_left runID=$RUNID_LEFT"
+    "$PYTHON" download.py specific "$calibration_left" "$RUNID_LEFT" >/dev/null
+
+    echo "Downloading BEST result (right side)..."
+    read calibration_right RUNID_RIGHT < <("$PYTHON" download.py best)
+    echo "  calibration_right=$calibration_right"
+    echo "  RUNID_RIGHT=$RUNID_RIGHT"
+
+    # Now build and compile the report using these values
+    pdf
+}
+
+specific_left_specific_right_pdf() {
     if [ "$#" -ne 5 ]; then
-        echo "Usage: $0 specific-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT" >&2
+        echo "Usage: $0 specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT" >&2
         exit 1
     fi
 
@@ -143,43 +177,19 @@ specific_pdf() {
 
 
 ##############################
-# Batch functions
-##############################
-
-batch_runscripts_numpy() {
-    echo "Submitting sbatch job for device=numpy..."
-    sbatch scripts/runscripts_numpy.sh
-}
-
-batch_runscripts_sinq20() {
-    echo "Submitting sbatch job for device=sinq20..."
-    sbatch scripts/runscripts_sinq20.sh
-}
-
-all() {
-    batch_runscripts_numpy
-    batch_runscripts_sinq20
-    pdf
-}
-
-##############################
 # Command-line interface
 ##############################
 
 case "$1" in
-    download-latest-two) download_latest_two ;;
-    download-data)       download_data ;;
+    ""|latest-best-pdf|\
+    --show-errors|--show-errors=true|--show-errors=True)
+                                    latest_best_pdf "$@" ;;
+    latest-2nd_latest-pdf)          latest_2nd_latest_pdf ;;
+    specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
+    specific-best-pdf)              specific_best_pdf "$@" ;;
     clean)               clean ;;
-    build)               build ;;
-    pdf-only)            pdf_only ;;
-    pdf)                 pdf ;;
-    best-latest-pdf)     best_latest_pdf "$@" ;;
-    specific-pdf)        specific_pdf "$@" ;;
-    batch-runscripts-numpy) batch_runscripts_numpy ;;
-    batch-runscripts-sinq20) batch_runscripts_sinq20 ;;
-    all)                 all ;;
     *)
-        echo "Usage: $0 {download-latest-two|download-data|clean|build|pdf-only|pdf|best-latest-pdf|specific-pdf|batch-runscripts-numpy|batch-runscripts-sinq20|all}"
+        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|specific-best-pdf|clean}"
         exit 1
         ;;
 esac

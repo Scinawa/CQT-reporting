@@ -88,6 +88,56 @@ def download_latest(args):
     return 0
 
 
+def download_latest_two(args):
+    # 1. Get latest calibration metadata
+    meta = client.calibrations_get_latest()
+    if not meta:
+        print("[latest-two] No calibrations found on the server.", file=sys.stderr)
+        return 1
+
+    hash_id = meta["hashID"]
+
+    print(f"[latest-two] Latest calibration is {hash_id}", file=sys.stderr)
+
+    # 2. Download that calibration
+    print(f"[latest-two] Downloading calibration for {hash_id}", file=sys.stderr)
+    client.calibrations_download(
+        hashID=hash_id,
+        output_folder=args.calib_folder,
+    )
+
+    # 3. List all results for this calibration (already newest first)
+    items = client.results_list(hashID=hash_id)
+    if not items:
+        print(f"[latest-two] No results found for {hash_id}", file=sys.stderr)
+        return 1
+
+    # Collect the two most recent non-empty run_ids
+    run_ids = []
+    for row in items:
+        if row.get("run_id"):
+            run_ids.append(row["run_id"])
+        if len(run_ids) == 2:
+            break
+
+    if not run_ids:
+        print(f"[latest-two] No valid runIDs found for {hash_id}", file=sys.stderr)
+        return 1
+
+    # 4. Download both results
+    for run_id in run_ids:
+        print(f"[latest-two] Downloading results for {hash_id} {run_id}", file=sys.stderr)
+        client.results_download(
+            hashID=hash_id,
+            runID=run_id,
+            output_folder=args.data_folder,
+        )
+
+    # 5. Output both hashID runID pairs to stdout, newest first (for bash scripting)
+    for run_id in run_ids:
+        print(f"{hash_id} {run_id}")
+    return 0
+
 
 def download_specific(args):
     if not args.hashID or not args.runID:
@@ -116,10 +166,9 @@ def download_specific(args):
     return 0
 
 
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=["best", "latest", "specific"])
+    parser.add_argument("mode", choices=["best", "latest", "latest-two", "specific"])
     parser.add_argument("hashID", nargs="?")
     parser.add_argument("runID", nargs="?")
     parser.add_argument("--data-folder", default="./data")
@@ -130,6 +179,8 @@ def main():
         return download_best(args)
     elif args.mode == "latest":
         return download_latest(args)
+    elif args.mode == "latest-two":
+        return download_latest_two(args)
     else:
         return download_specific(args)
 

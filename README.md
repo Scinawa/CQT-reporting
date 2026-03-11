@@ -1,6 +1,6 @@
 # Quantum Benchmark Reporter
 
-This project automates the generation of PDF reports for quantum benchmarking experiments. It uses a LaTeX template (with Jinja2) populated from JSON files containing experiment results and metadata.
+This project automates the generation of PDF reports for quantum benchmarking experiments. It uses a LaTeX template (with Jinja2) populated from JSON files containing experiment results and metadata. 
 
 Currently targets the **sinq20** platform but calibration bundles may include data for other platforms (e.g. sinq-5).
 
@@ -39,21 +39,58 @@ Build requires: `pdflatex`, `uv`
 ```bash
 # Install dependencies (requires Python >=3.12 and uv)
 uv sync
+```
 
-# Generate PDF comparing best vs latest run (download + build + compile)
-./scripts/report.sh best-latest-pdf
+## report.sh commands
 
-# Generate PDF for specific runs (download + build + compile)
-./scripts/report.sh specific-pdf <calib_left> <run_left> <calib_right> <run_right>
+All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 
-# Or step by step:
-./scripts/report.sh download-data   # download configured runs
-./scripts/report.sh build            # generate report.tex
-./scripts/report.sh pdf-only         # compile to PDF
-./scripts/report.sh pdf              # build + compile in one step
+| Command | What it does |
+|---|---|
+| `latest-2nd_latest-pdf` | Downloads the two most recent runs under the latest calibration hash. Newest run → left side, second newest → right side. |
+| `latest-best-pdf` | Downloads the server's highest-scored run (right) and the most recent run (left). |
+| `specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT` | Downloads two fully explicit runs by hash + run ID. No ambiguity about which data is used. |
+| `specific-best-pdf CALIB_LEFT RUN_LEFT` | Downloads a specific run (left) and the server's highest-scored run (right). |
+| `clean` | Wipes the `build/` directory. |
 
-# Web UI (ad-hoc comparisons)
-python server.py   # http://localhost:5000
+**Default behaviour and `--show-errors` flag:**
+
+All commands accept `--show-errors` anywhere in the argument list to show ± error bars in the 2-qubit statistics rows (hidden by default). Running the script with no arguments defaults to `latest-best-pdf`.
+
+| Command | What happens |
+|---|---|
+| `./report.sh` | runs `latest-best-pdf` |
+| `./report.sh --show-errors` | runs `latest-best-pdf` with ± errors shown |
+| `./report.sh latest-best-pdf` | same as above, explicit |
+| `./report.sh latest-best-pdf --show-errors` | same, explicit with errors |
+
+### Examples
+
+```bash
+# Compare the two most recent runs (most common use case)
+./report.sh latest-2nd_latest-pdf
+
+# Compare best-scored run (right) vs most recent run (left)
+./report.sh latest-best-pdf
+
+# Compare two fully explicit runs by hash and run ID
+./report.sh specific_left-specific_right-pdf \
+  3826882f81128980b5e49b0e1bec76e24e40e158 20251201101512 \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748
+
+# Compare your specific run (left) against the server's best (right)
+./report.sh specific-best-pdf \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748
+
+# Any command above with ± error bars shown
+./report.sh latest-2nd_latest-pdf --show-errors
+./report.sh specific_left-specific_right-pdf \
+  3826882f81128980b5e49b0e1bec76e24e40e158 20251201101512 \
+  44a690428e4e7e478965661e456986232914ef40 20260309202748 \
+  --show-errors
+
+# Wipe the build directory
+./report.sh clean
 ```
 
 ## Repository Structure
@@ -132,7 +169,7 @@ Remote API (54.169.91.191)
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/report.sh` | Main automation. Commands: `download-data`, `build`, `pdf`, `best-latest-pdf`, `specific-pdf`. Handles venv setup, data download, LaTeX generation, PDF compilation, and archival to `reports/`. |
+| `scripts/report.sh` | Main automation. Commands: `latest-2nd_latest-pdf`, `latest-best-pdf`, `specific_left-specific_right-pdf`, `clean`. Handles venv setup, data download, LaTeX generation, PDF compilation, and archival to `reports/`. |
 | `scripts/periodic.sh` | Cron-job script. Git pulls, downloads latest data, generates PDF, commits and pushes. Runs on `/opt/cqt-reporting`. |
 | `scripts/sync-nqch.sh` | Rsyncs experiment data from NQCH machine to reporting server with automatic backups. |
 
@@ -154,8 +191,3 @@ Contributions are welcome! Please submit a pull request or open an issue for enh
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
-
-
-    "http.proxy": "socks5h://127.0.0.1:30334",
-    "http.proxyStrictSSL": false,
-    "http.systemCertificates": true,
