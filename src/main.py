@@ -85,11 +85,11 @@ def setup_argument_parser():
     )
 
     parser.add_argument(
-        "--no-show-errors",
+        "--show-errors",
         dest="show_errors",
-        default=True,
-        action="store_false",
-        help="Hide error bars (±) in 2-qubit statistics.",
+        default=False,
+        action="store_true",
+        help="Show error bars (±) in 2-qubit statistics.",
     )
 
     # Plot toggles (default: True). Use --no-<flag> to disable.
