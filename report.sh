@@ -121,9 +121,9 @@ latest_best_pdf() {
     pdf
 }
 
-specific_left_best_right_pdf() {
+specific_best_pdf() {
     if [ "$#" -ne 3 ]; then
-        echo "Usage: $0 specific_left-best_right-pdf CALIB_LEFT RUN_LEFT" >&2
+        echo "Usage: $0 specific-best-pdf CALIB_LEFT RUN_LEFT" >&2
         exit 1
     fi
 
@@ -184,10 +184,10 @@ case "$1" in
     latest-2nd_latest-pdf)          latest_2nd_latest_pdf ;;
     latest-best-pdf)                latest_best_pdf "$@" ;;
     specific_left-specific_right-pdf) specific_left_specific_right_pdf "$@" ;;
-    specific_left-best_right-pdf)   specific_left_best_right_pdf "$@" ;;
+    specific-best-pdf)              specific_best_pdf "$@" ;;
     clean)               clean ;;
     *)
-        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|specific_left-best_right-pdf|clean}"
+        echo "Usage: $0 {latest-2nd_latest-pdf|latest-best-pdf|specific_left-specific_right-pdf|specific-best-pdf|clean}"
         exit 1
         ;;
 esac

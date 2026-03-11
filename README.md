@@ -50,7 +50,7 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
 | `latest-2nd_latest-pdf` | Downloads the two most recent runs under the latest calibration hash. Newest run → left side, second newest → right side. |
 | `latest-best-pdf` | Downloads the server's highest-scored run (right) and the most recent run (left). |
 | `specific_left-specific_right-pdf CALIB_LEFT RUN_LEFT CALIB_RIGHT RUN_RIGHT` | Downloads two fully explicit runs by hash + run ID. No ambiguity about which data is used. |
-| `specific_left-best_right-pdf CALIB_LEFT RUN_LEFT` | Downloads a specific run (left) and the server's highest-scored run (right). |
+| `specific-best-pdf CALIB_LEFT RUN_LEFT` | Downloads a specific run (left) and the server's highest-scored run (right). |
 | `clean` | Wipes the `build/` directory. |
 
 **Optional flag (works with any command):**
@@ -74,7 +74,7 @@ All PDF commands download data, build the LaTeX, and compile to PDF in one step.
   44a690428e4e7e478965661e456986232914ef40 20260309202748
 
 # Compare your specific run (left) against the server's best (right)
-./report.sh specific_left-best_right-pdf \
+./report.sh specific-best-pdf \
   44a690428e4e7e478965661e456986232914ef40 20260309202748
 
 # Any command above with ± error bars shown
