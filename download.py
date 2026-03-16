@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import os
 import sys
 
 # try:
@@ -7,7 +8,10 @@ from clientdb import client
 # except ImportError:
 #     import client
 
-client.set_server(server_url='http://54.169.91.191',api_token='EtadObqx4MRwCTLsTa_YWmTfUl24Jg57tngu_feXna4')
+client.set_server(
+    server_url=os.environ["CQT_SERVER_URL"],
+    api_token=os.environ["CQT_API_TOKEN"],
+)
 
 
 def download_best(args):
