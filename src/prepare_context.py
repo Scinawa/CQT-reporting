@@ -102,7 +102,7 @@ def context_version_extractor(context, cfg):
             context[label]["calibration_date"] = file.get("commit_date", "Unknown")
             context[label]["calibration_note"] = file.get("commit_message", "N/A")
 
-            context[label]["versions"] = file.get("versions", "N/A")
+            context[label]["versions"] = file.get("versions", {})
 
             context[label]["run_id"] = file.get("run_id", "N/A")
             context[label]["run_date"] = file.get("experiment_date", "Unknown")
