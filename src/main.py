@@ -494,7 +494,14 @@ def render_and_save_report(context, args):
     template = env.get_template("report_template.j2")
 
     # Render template with context
-    rendered_content = template.render(context)
+    try:
+        rendered_content = template.render(context)
+    except Exception as e:
+        logging.error(f"Error rendering template: {e}")
+        # Return empty content to allow graceful degradation
+        rendered_content = ""
+        if not rendered_content:
+            raise RuntimeError(f"Failed to render the report template: {e}")
 
     # Ensure build directory exists
     build_dir = Path(".")
