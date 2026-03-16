@@ -211,6 +211,7 @@ def prepare_template_context(cfg):
             "platform": "Unknown",
             "start_time": "Unknown",
             "end_time": "Unknown",
+            "versions": {},
         }
         context.setdefault("left", {}).update(default_meta)
         context.setdefault("right", {}).update(default_meta)
