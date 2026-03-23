@@ -10,6 +10,16 @@ import fillers as fl
 import config as config
 
 
+def escape_latex(text):
+    """Escape special LaTeX characters in a string."""
+    if not isinstance(text, str):
+        return text
+    special_chars = {'#': r'\#', '$': r'\$', '%': r'\%', '&': r'\&', '_': r'\_', '{': r'\{', '}': r'\}'}
+    for char, escaped in special_chars.items():
+        text = text.replace(char, escaped)
+    return text
+
+
 def add_stat_changes(current, baseline):
     """
     Returns a dict with average, min, max, median and their changes vs baseline.
@@ -100,13 +110,13 @@ def context_version_extractor(context, cfg):
             context[label]["device"] = file.get("device", "N/A")
             context[label]["calibration_id"] = file.get("commit_hash", "N/A")
             context[label]["calibration_date"] = file.get("commit_date", "Unknown")
-            context[label]["calibration_note"] = file.get("commit_message", "N/A")
+            context[label]["calibration_note"] = escape_latex(file.get("commit_message", "N/A"))
 
             context[label]["versions"] = file.get("versions", {})
 
             context[label]["run_id"] = file.get("run_id", "N/A")
             context[label]["run_date"] = file.get("experiment_date", "Unknown")
-            context[label]["run_note"] = file.get("experiment_note", "N/A")
+            context[label]["run_note"] = escape_latex(file.get("experiment_note", "N/A"))
             # import pdb
 
             # pdb.set_trace()
